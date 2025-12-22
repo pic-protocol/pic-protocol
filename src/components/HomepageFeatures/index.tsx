@@ -33,7 +33,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Continuity is proven at every step. Proof of Continuity replaces Proof of Possession. Authority can only shrink.
+        Continuity is proven at every step. Proof of Continuity replaces Proof of Possession. Authority never expands.
       </>
     ),
   },
