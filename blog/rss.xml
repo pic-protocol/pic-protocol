@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="rss.xsl"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>PIC Blog</title>
+        <link>https://pic-protocol.com/blog</link>
+        <description>PIC Blog</description>
+        <lastBuildDate>Mon, 22 Dec 2025 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[Welcome to PIC]]></title>
+            <link>https://pic-protocol.com/blog/Welcome to PIC</link>
+            <guid>https://pic-protocol.com/blog/Welcome to PIC</guid>
+            <pubDate>Mon, 22 Dec 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[PIC (Provenance Identity Continuity) is a new authorization model that changes how we think about trust in distributed systems.]]></description>
+            <content:encoded><![CDATA[<p><strong>PIC (Provenance Identity Continuity)</strong> is a new authorization model that changes how we think about trust in distributed systems.</p>
+<p>For 40 years, security has been built on Proof of Possession: "Do you have a valid token? Come in."</p>
+<p>But possession can be stolen. And trust doesn't survive multiple hops.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-problem">The Problem<a href="https://pic-protocol.com/blog/Welcome%20to%20PIC#the-problem" class="hash-link" aria-label="Direct link to The Problem" title="Direct link to The Problem" translate="no">​</a></h2>
+<p>Today's systems verify possession at each hop:</p>
+<ul>
+<li class="">Service A has token. Ok.</li>
+<li class="">Service A calls Service B. Service B checks its own token. Ok.</li>
+</ul>
+<p>Nobody asks:</p>
+<ul>
+<li class="">Who started this?</li>
+<li class="">What were the original bounds?</li>
+<li class="">Is this a valid continuation?</li>
+</ul>
+<p>Each hop restarts. Origin lost. Chain broken.</p>
+<p>This is why AI agents are breaking everything.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-solution">The Solution<a href="https://pic-protocol.com/blog/Welcome%20to%20PIC#the-solution" class="hash-link" aria-label="Direct link to The Solution" title="Direct link to The Solution" translate="no">​</a></h2>
+<p>PIC flips the model.</p>
+<p>Old question: "Do you have a valid token?"</p>
+<p>New question: "Can you prove you can continue this chain?"</p>
+<p>Every action carries:</p>
+<ul>
+<li class=""><strong>Origin</strong> — who started. Immutable.</li>
+<li class=""><strong>Authority</strong> — what's allowed. Can only shrink.</li>
+<li class=""><strong>Continuity</strong> — proof linking every action to the source.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-it-matters">Why It Matters<a href="https://pic-protocol.com/blog/Welcome%20to%20PIC#why-it-matters" class="hash-link" aria-label="Direct link to Why It Matters" title="Direct link to Why It Matters" translate="no">​</a></h2>
+<p>You tell an AI: "Book a flight, max €500."</p>
+<p>AI calls booking. Booking calls payment. Payment calls bank.</p>
+<p>Fifty hops. Doesn't matter.</p>
+<p>Every hop: origin is you. Authority is €500.</p>
+<p>AI tries €5000? Rejected. Someone intercepts? Nothing to steal.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="get-started">Get Started<a href="https://pic-protocol.com/blog/Welcome%20to%20PIC#get-started" class="hash-link" aria-label="Direct link to Get Started" title="Direct link to Get Started" translate="no">​</a></h2>
+<ul>
+<li class="">Read the <a href="https://github.com/pic-protocol/pic-spec" target="_blank" rel="noopener noreferrer" class="">PIC Specification</a></li>
+<li class="">Explore the <a href="https://zenodo.org/records/17833000" target="_blank" rel="noopener noreferrer" class="">formal proofs</a></li>
+<li class="">Join the discussion</li>
+</ul>
+<p>Not "what do you have?" — but "can you prove you can continue?"</p>
+<p>That's PIC.</p>]]></content:encoded>
+            <category>pic</category>
+            <category>authorization</category>
+            <category>security</category>
+            <category>ai-agents</category>
+        </item>
+    </channel>
+</rss>

@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkpic_protocol=globalThis.webpackChunkpic_protocol||[]).push([[472],{5513(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Welcome to PIC","permalink":"/blog/Welcome to PIC","unlisted":false,"date":"2025-12-22T00:00:00.000Z"}]}')}}]);
