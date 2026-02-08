@@ -154,7 +154,3 @@ const config: Config = {
 };
 
 export default config;
-
-
-
-https://pic-protocol.org/img/social-card.jpg
