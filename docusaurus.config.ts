@@ -151,6 +151,13 @@ const config: Config = {
     ],
     "./src/plugins/tailwind-config.js",
   ],
+  scripts: [
+    {
+      src: "https://plausible.io/js/pa-i7fASAHMgS-8ZoTMzxiGY.js",
+      async: true,
+    },
+  ],
+  clientModules: ["./src/clientModules/plausible.js"],
 };
 
 export default config;
