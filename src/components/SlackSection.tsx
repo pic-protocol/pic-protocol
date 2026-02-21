@@ -12,8 +12,7 @@ export const SlackSection = () => {
             Join Our Slack Community!
           </h1>
           <p className="text-center md:text-start text-white font-light max-w-126 text-[18px] leading-normal tracking-[-0.36px] mb-6">
-            Lorem ipsum dolor sit amet consectetur. Iaculis lacus aenean amet
-            lectus tempus et id vulputate.
+            Join the conversation on authority models, distributed execution, and the future of authorization. Open to researchers, engineers, and contributors.
           </p>
           <a
             href="https://join.slack.com/t/picprotocol/shared_invite/zt-3ncso53dt-6NOORKgZnbQkMpmZinJJsA"
