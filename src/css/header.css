@@ -52,13 +52,13 @@
 }
 
 nav.navbar--fixed-top {
-  position: sticky;
-  top: 2px;
+  position: fixed;  /* ← ripristina fixed */
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 999;
   background-color: rgba(26, 26, 28, 0.97) !important;
   background: rgba(26, 26, 28, 0.97) !important;
-  backdrop-filter: blur(20px) saturate(1.2);
-  -webkit-backdrop-filter: blur(20px) saturate(1.2);
   border-bottom: 1px solid rgba(37, 194, 160, 0.2) !important;
 }
 
