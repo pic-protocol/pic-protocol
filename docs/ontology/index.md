@@ -362,15 +362,11 @@ Governance:
 
 ---
 
-## ZTAuth* Model
+## Governance Layer
 
 Authority continuity defines what is structurally possible.
 It guarantees that authority cannot expand, cannot be reconstructed,
 and cannot escape its origin.
-
-> Authority continuity is formally defined in the
-> [PIC Model](https://www.pic-protocol.org) — Provenance Identity Continuity.
-> ZTAuth* builds its governance layer above it.
 
 But structural guarantees are not enough for real systems.
 
@@ -381,32 +377,8 @@ Real systems need to answer a different set of questions:
 - Under what conditions can execution operate within another origin's context?
 
 These are governance questions. They sit above authority continuity.
-**ZTAuth* is the governance layer that operates above authority continuity.**
 
-It introduces structured governance through:
-
-- **Auth* Models**: the storage and distribution layer for trust policies.
-  Auth* models define how trust policies, business policies, and trust
-  statements are stored, versioned, and shared across execution boundaries.
-  Trust Elevation and Trust Levels read from Auth* models to evaluate
-  whether conditions for elevation are met.
-
-- **Trust Elevation**: a controlled process that allows execution to
-  operate within the authorization context of an origin. That origin
-  may be an identity or any other principal. Elevation requires verified
-  conditions and is always bounded by the origin's authority.
-
-- **Trust Levels**: a mechanism that defines the levels at which
-  elevation can occur. Trust levels can be restricted by Auth* models,
-  which in turn constrain how and when elevation is permitted.
-
-Formally:
-
-$$
-EffectiveAuthority = Governance(Authority)
-$$
-
-Subject to:
+Any governance layer built above PIC must respect one rule:
 
 $$
 EffectiveAuthority \subseteq Authority
@@ -416,13 +388,12 @@ Governance cannot introduce new privileges.
 It can only restrict what authority already permits.
 
 The relationship between the two layers is fixed:
-
 ```text
-    Authority Continuity
+    Authority Continuity (PIC)
 (structural — cannot be violated)
            │
            ▼
-    ZTAuth* Governance
+    Governance Layer
 (policy — restricts what authority permits)
            │
            ▼
@@ -430,10 +401,18 @@ The relationship between the two layers is fixed:
 ```
 
 Authority continuity provides the floor.
-ZTAuth* governance operates within it.
+Any governance layer operates within it.
 Neither layer can expand authority.
 
----
+:::tip External governance implementations
+[ZTAuth*](https://spec.ztauthstar.com) is a governance protocol designed
+to operate above PIC. It formalizes distributed governance for cross-workload
+execution through trust policies, trust elevation, and trust levels.
+
+ZTAuth* is not required to use PIC.
+It is one example of a governance layer that respects and builds upon
+authority continuity.
+:::
 
 ## Final Principle
 
