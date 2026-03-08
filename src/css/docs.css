@@ -137,11 +137,17 @@ main[class*="docMainContainer"]::before,
   border-radius: 12px !important;
   border: 1px solid var(--pic-border) !important;
   font-size: 13.5px !important;
+  padding: 1.25rem !important;
 }
 
 [data-theme="dark"] .prism-code {
   border: 1px solid rgba(37, 194, 160, 0.1) !important;
   background: #0d0d0f !important;
+}
+
+/* Code block container */
+div[class*="codeBlockContainer"] {
+  margin: 1.25rem 0 !important;
 }
 
 /* Code block title bar */
@@ -152,6 +158,7 @@ div[class*="codeBlockTitle"] {
   text-transform: uppercase;
   border-bottom: 1px solid var(--pic-border);
   background: rgba(0, 0, 0, 0.02);
+  padding: 0.75rem 1.25rem !important;
 }
 
 [data-theme="dark"] div[class*="codeBlockTitle"] {
@@ -164,8 +171,8 @@ div[class*="codeBlockTitle"] {
 .markdown code {
   font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace;
   font-size: 0.875em;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
   border: 1px solid var(--pic-border);
   background: rgba(37, 194, 160, 0.05);
 }
@@ -176,6 +183,30 @@ div[class*="codeBlockTitle"] {
   color: #4fddbf;
 }
 
+/* ── Math/formula code blocks ────────────────────────────────── */
+.math,
+.katex-display,
+.markdown pre {
+  overflow-x: auto;
+  padding: 1rem 1.25rem;
+}
+
+/* Prevent content from overflowing container */
+.markdown {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.markdown pre {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.markdown img {
+  max-width: 100%;
+  height: auto;
+}
+
 /* ── Admonitions / callouts ──────────────────────────────────── */
 .admonition {
   border-radius: 12px !important;
@@ -184,6 +215,8 @@ div[class*="codeBlockTitle"] {
   border-right: none !important;
   border-bottom: none !important;
   backdrop-filter: blur(8px);
+  padding: 1.25rem 1.5rem !important;
+  margin: 1.25rem 0 !important;
 }
 
 [data-theme="dark"] .admonition {
@@ -248,7 +281,8 @@ div[class*="codeBlockTitle"] {
   border-left: 3px solid var(--pic-accent);
   background: var(--pic-accent-dim);
   border-radius: 0 8px 8px 0;
-  padding: 12px 20px;
+  padding: 1rem 1.5rem;
+  margin: 1.25rem 0;
   font-style: normal;
 }
 
