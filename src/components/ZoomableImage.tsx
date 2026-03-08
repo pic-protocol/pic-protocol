@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { useLocation } from "@docusaurus/router";
 
 interface ZoomableImageProps {
   src?: string;
@@ -11,33 +10,11 @@ interface ZoomableImageProps {
   loading?: "lazy" | "eager";
 }
 
-/* ── Figure counter: resets on each route change ── */
-let figureCounter = 0;
-let lastPathname = "";
-
-function useFigureNumber(): number {
-  const { pathname } = useLocation();
-  const numberRef = useRef<number>(0);
-
-  if (pathname !== lastPathname) {
-    figureCounter = 0;
-    lastPathname = pathname;
-  }
-
-  // Assign number only once per mount
-  if (numberRef.current === 0) {
-    figureCounter += 1;
-    numberRef.current = figureCounter;
-  }
-
-  return numberRef.current;
-}
-
 /**
  * A doc image wrapped in <figure> with:
  *  – pointer cursor & subtle glow on hover
- *  – click-to-zoom lightbox overlay with portal
- *  – auto-numbered figcaption with title from alt text
+ *  – click-to-zoom lightbox overlay (portalled to body)
+ *  – auto-numbered figcaption derived from DOM position
  *  – figure number visible in both page and lightbox
  */
 export default function ZoomableImage({
@@ -47,10 +24,30 @@ export default function ZoomableImage({
   ...rest
 }: ZoomableImageProps) {
   const [open, setOpen] = useState(false);
-  const figNum = useFigureNumber();
+  const [figNum, setFigNum] = useState(0);
+  const figureRef = useRef<HTMLElement>(null);
 
   const openLightbox = useCallback(() => setOpen(true), []);
   const closeLightbox = useCallback(() => setOpen(false), []);
+
+  // Compute figure number from DOM position (stable across refreshes)
+  useEffect(() => {
+    if (!figureRef.current) return;
+    const allFigures = document.querySelectorAll(".zoomable-figure");
+    const index = Array.from(allFigures).indexOf(figureRef.current);
+    setFigNum(index + 1);
+  }, []);
+
+  // Native click listener on the wrapper
+  useEffect(() => {
+    const wrapper = figureRef.current?.querySelector(
+      ".zoomable-image-wrapper"
+    ) as HTMLElement | null;
+    if (!wrapper) return;
+    const handler = () => setOpen(true);
+    wrapper.addEventListener("click", handler);
+    return () => wrapper.removeEventListener("click", handler);
+  }, []);
 
   // Close on Escape key
   useEffect(() => {
@@ -75,13 +72,20 @@ export default function ZoomableImage({
   }, [open]);
 
   const caption = alt || title;
-  const figLabel = `Fig. ${figNum}`;
-  const fullCaption = caption ? `${figLabel} — ${caption}` : figLabel;
+  const figLabel = figNum > 0 ? `Fig. ${figNum}` : "";
 
   return (
     <>
-      <figure className="zoomable-figure">
-        <div className="zoomable-image-wrapper" onClick={openLightbox}>
+      <figure ref={figureRef} className="zoomable-figure">
+        <div
+          className="zoomable-image-wrapper"
+          role="button"
+          tabIndex={0}
+          aria-label={`Zoom: ${caption || "image"}`}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") openLightbox();
+          }}
+        >
           <img src={src} alt={alt} title={title} loading="lazy" {...rest} />
           <div className="zoom-hint" aria-hidden="true">
             <svg
@@ -102,18 +106,23 @@ export default function ZoomableImage({
           </div>
         </div>
         <figcaption className="zoomable-caption">
-          <span className="fig-number">{figLabel}</span>
-          {caption && <> — {caption}</>}
+          {figLabel && <span className="fig-number">{figLabel}</span>}
+          {figLabel && caption && " — "}
+          {caption}
         </figcaption>
       </figure>
 
       {/* Lightbox overlay — portalled to <body> for correct z-index stacking */}
       {open &&
+        typeof document !== "undefined" &&
         createPortal(
           <div className="lightbox-overlay" onClick={closeLightbox}>
             <button
               className="lightbox-close"
-              onClick={closeLightbox}
+              onClick={(e) => {
+                e.stopPropagation();
+                closeLightbox();
+              }}
               aria-label="Close"
             >
               ✕
@@ -125,8 +134,9 @@ export default function ZoomableImage({
               onClick={(e) => e.stopPropagation()}
             />
             <p className="lightbox-caption">
-              <span className="fig-number">{figLabel}</span>
-              {caption && <> — {caption}</>}
+              {figLabel && <span className="fig-number">{figLabel}</span>}
+              {figLabel && caption && " — "}
+              {caption}
             </p>
           </div>,
           document.body
