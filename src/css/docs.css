@@ -147,7 +147,6 @@ main[class*="docMainContainer"]::before,
 .markdown {
   overflow-wrap: break-word;
   word-wrap: break-word;
-  counter-reset: figure-counter;
 }
 
 .markdown img {
@@ -157,7 +156,6 @@ main[class*="docMainContainer"]::before,
 
 /* ── Zoomable figures ────────────────────────────────────────── */
 .zoomable-figure {
-  counter-increment: figure-counter;
   margin: 2rem 0;
   padding: 0;
   text-align: center;
@@ -225,7 +223,7 @@ main[class*="docMainContainer"]::before,
   opacity: 1;
 }
 
-/* Figure caption with auto-numbering */
+/* Figure caption with numbering */
 .zoomable-caption {
   font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace;
   font-size: 12px;
@@ -236,8 +234,7 @@ main[class*="docMainContainer"]::before,
   text-align: center;
 }
 
-.zoomable-caption::before {
-  content: "Fig. " counter(figure-counter) " — ";
+.fig-number {
   color: var(--pic-accent);
   font-weight: 600;
 }
@@ -280,6 +277,11 @@ main[class*="docMainContainer"]::before,
   color: rgba(255, 255, 255, 0.6);
   margin-top: 1rem;
   text-align: center;
+}
+
+.lightbox-caption .fig-number {
+  color: var(--pic-accent);
+  font-weight: 600;
 }
 
 .lightbox-close {

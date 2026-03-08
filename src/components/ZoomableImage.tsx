@@ -1,4 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import { useLocation } from "@docusaurus/router";
 
 interface ZoomableImageProps {
   src?: string;
@@ -9,11 +11,34 @@ interface ZoomableImageProps {
   loading?: "lazy" | "eager";
 }
 
+/* ── Figure counter: resets on each route change ── */
+let figureCounter = 0;
+let lastPathname = "";
+
+function useFigureNumber(): number {
+  const { pathname } = useLocation();
+  const numberRef = useRef<number>(0);
+
+  if (pathname !== lastPathname) {
+    figureCounter = 0;
+    lastPathname = pathname;
+  }
+
+  // Assign number only once per mount
+  if (numberRef.current === 0) {
+    figureCounter += 1;
+    numberRef.current = figureCounter;
+  }
+
+  return numberRef.current;
+}
+
 /**
  * A doc image wrapped in <figure> with:
  *  – pointer cursor & subtle glow on hover
- *  – click-to-zoom lightbox overlay
- *  – auto-numbered figcaption (via CSS counter) with title from alt text
+ *  – click-to-zoom lightbox overlay with portal
+ *  – auto-numbered figcaption with title from alt text
+ *  – figure number visible in both page and lightbox
  */
 export default function ZoomableImage({
   src,
@@ -22,6 +47,7 @@ export default function ZoomableImage({
   ...rest
 }: ZoomableImageProps) {
   const [open, setOpen] = useState(false);
+  const figNum = useFigureNumber();
 
   const openLightbox = useCallback(() => setOpen(true), []);
   const closeLightbox = useCallback(() => setOpen(false), []);
@@ -49,6 +75,8 @@ export default function ZoomableImage({
   }, [open]);
 
   const caption = alt || title;
+  const figLabel = `Fig. ${figNum}`;
+  const fullCaption = caption ? `${figLabel} — ${caption}` : figLabel;
 
   return (
     <>
@@ -73,28 +101,36 @@ export default function ZoomableImage({
             </svg>
           </div>
         </div>
-        {caption && <figcaption className="zoomable-caption">{caption}</figcaption>}
+        <figcaption className="zoomable-caption">
+          <span className="fig-number">{figLabel}</span>
+          {caption && <> — {caption}</>}
+        </figcaption>
       </figure>
 
-      {/* Lightbox overlay */}
-      {open && (
-        <div className="lightbox-overlay" onClick={closeLightbox}>
-          <button
-            className="lightbox-close"
-            onClick={closeLightbox}
-            aria-label="Close"
-          >
-            ✕
-          </button>
-          <img
-            src={src}
-            alt={alt}
-            className="lightbox-image"
-            onClick={(e) => e.stopPropagation()}
-          />
-          {caption && <p className="lightbox-caption">{caption}</p>}
-        </div>
-      )}
+      {/* Lightbox overlay — portalled to <body> for correct z-index stacking */}
+      {open &&
+        createPortal(
+          <div className="lightbox-overlay" onClick={closeLightbox}>
+            <button
+              className="lightbox-close"
+              onClick={closeLightbox}
+              aria-label="Close"
+            >
+              ✕
+            </button>
+            <img
+              src={src}
+              alt={alt}
+              className="lightbox-image"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <p className="lightbox-caption">
+              <span className="fig-number">{figLabel}</span>
+              {caption && <> — {caption}</>}
+            </p>
+          </div>,
+          document.body
+        )}
     </>
   );
 }

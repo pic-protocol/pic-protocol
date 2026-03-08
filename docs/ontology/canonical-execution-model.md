@@ -21,7 +21,7 @@ This is why possession-based models fail in distributed execution. They assume t
 
 ## Authority Continuity
 
-PIC defines three invariants that must hold at every execution hop:
+`PIC` defines three invariants that must hold at every execution hop:
 
 - **Provenance**: the causal chain is always traceable from origin to current state, unbroken.
 - **Identity**: the origin principal `p₀` is immutable throughout the chain.
