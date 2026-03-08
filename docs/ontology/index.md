@@ -420,6 +420,4 @@ Authority is not identity.
 Authority is not possession.
 Authority is **continuity of intent across execution**.
 
-ZTAuth* governs that continuity.
-
 But **authority must never expand.**
