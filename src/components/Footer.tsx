@@ -29,7 +29,6 @@ const NAV_SECTIONS = [
   {
     title: "Community",
     links: [
-      { title: "Blog", href: "/blog" },
       { title: "GitHub", href: "https://github.com/pic-protocol" },
     ],
   },
@@ -63,8 +62,7 @@ export const Footer = () => {
           <ul className="w-full grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-6">
             {NAV_SECTIONS.map((section) => (
               <li key={section.title} className="flex flex-col gap-y-4">
-                <h3 className="text-[#25c2a0] text-xs sm:text-sm font-bold uppercase tracking-widest leading-none m-0 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#25c2a0]/30 inline-block" />
+                <h3 className="text-[#25c2a0] text-xs sm:text-sm font-bold uppercase tracking-widest leading-none m-0">
                   {section.title}
                 </h3>
                 <ul className="flex flex-col gap-y-3 list-none p-0 m-0">

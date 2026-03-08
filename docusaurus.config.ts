@@ -44,21 +44,7 @@ const config: Config = {
         // /ontology, /specification, /protocol, /code
         // (instead of the default /docs/...)
         docs: false,
-        blog: {
-          showReadingTime: true,
-          feedOptions: {
-            type: ["rss", "atom"],
-            xslt: true,
-          },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //   'https://github.com/pic-protocol/pic-protocol/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
-          onInlineTags: "warn",
-          onInlineAuthors: "warn",
-          onUntruncatedBlogPosts: "warn",
-        },
+        blog: false,
         theme: {
           customCss: "./src/css/custom.css",
         },
@@ -96,15 +82,7 @@ const config: Config = {
           position: "left",
           label: "Code",
           to: "/code",
-        },
-        { to: "/blog", label: "Blog", position: "left" },
-        {
-          href: "https://github.com/pic-protocol",
-          label: "GitHub",
-          position: "right",
-          className: "header-github-link",
-          "aria-label": "GitHub repository",
-        },
+        }
       ],
     },
     prism: {

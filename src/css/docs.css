@@ -11,7 +11,6 @@
   position: relative;
 }
 
-/* Add dot grid to doc pages via main container */
 main[class*="docMainContainer"]::before,
 .main-wrapper .container::before {
   content: "";
@@ -36,7 +35,6 @@ main[class*="docMainContainer"]::before,
   border-right: 1px solid rgba(37, 194, 160, 0.08) !important;
 }
 
-/* Sidebar nav items */
 .theme-doc-sidebar-menu .menu__link {
   font-size: 14px;
   border-radius: 8px;
@@ -50,7 +48,6 @@ main[class*="docMainContainer"]::before,
   color: var(--pic-accent);
 }
 
-/* Active sidebar link with left accent */
 .theme-doc-sidebar-menu .menu__link--active:not(.menu__link--sublist) {
   background: var(--pic-accent-dim) !important;
   color: var(--pic-accent) !important;
@@ -59,7 +56,6 @@ main[class*="docMainContainer"]::before,
   padding-left: 10px;
 }
 
-/* Sidebar category headers */
 .theme-doc-sidebar-menu .menu__link--sublist {
   font-weight: 600;
   font-size: 11px;
@@ -72,7 +68,7 @@ main[class*="docMainContainer"]::before,
   color: rgba(37, 194, 160, 0.6);
 }
 
-/* ── Table of Contents (right sidebar) ───────────────────────── */
+/* ── Table of Contents ───────────────────────────────────────── */
 .table-of-contents {
   border-left: 1px solid var(--pic-border) !important;
 }
@@ -95,7 +91,7 @@ main[class*="docMainContainer"]::before,
   font-weight: 600;
 }
 
-/* ── Doc content headings ────────────────────────────────────── */
+/* ── Headings ────────────────────────────────────────────────── */
 .markdown h1 {
   font-family: "Clash Grotesk", "Inter", sans-serif;
   font-weight: 600;
@@ -115,7 +111,6 @@ main[class*="docMainContainer"]::before,
   position: relative;
 }
 
-/* Subtle accent line under h2 in dark mode */
 [data-theme="dark"] .markdown h2::after {
   content: "";
   display: block;
@@ -132,47 +127,12 @@ main[class*="docMainContainer"]::before,
   margin-top: 2rem;
 }
 
-/* ── Code blocks — terminal/techy feel ───────────────────────── */
-.prism-code {
-  border-radius: 12px !important;
-  border: 1px solid var(--pic-border) !important;
-  font-size: 13.5px !important;
-  padding: 1.25rem !important;
-}
-
-[data-theme="dark"] .prism-code {
-  border: 1px solid rgba(37, 194, 160, 0.1) !important;
-  background: #0d0d0f !important;
-}
-
-/* Code block container */
-div[class*="codeBlockContainer"] {
-  margin: 1.25rem 0 !important;
-}
-
-/* Code block title bar */
-div[class*="codeBlockTitle"] {
-  font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace !important;
-  font-size: 12px !important;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--pic-border);
-  background: rgba(0, 0, 0, 0.02);
-  padding: 0.75rem 1.25rem !important;
-}
-
-[data-theme="dark"] div[class*="codeBlockTitle"] {
-  border-bottom: 1px solid rgba(37, 194, 160, 0.08);
-  background: rgba(37, 194, 160, 0.03);
-  color: var(--pic-accent);
-}
-
-/* Inline code */
+/* ── Inline code ─────────────────────────────────────────────── */
 .markdown code {
   font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace;
   font-size: 0.875em;
-  padding: 3px 8px;
-  border-radius: 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
   border: 1px solid var(--pic-border);
   background: rgba(37, 194, 160, 0.05);
 }
@@ -183,23 +143,10 @@ div[class*="codeBlockTitle"] {
   color: #4fddbf;
 }
 
-/* ── Math/formula code blocks ────────────────────────────────── */
-.math,
-.katex-display,
-.markdown pre {
-  overflow-x: auto;
-  padding: 1rem 1.25rem;
-}
-
-/* Prevent content from overflowing container */
+/* ── Overflow protection ─────────────────────────────────────── */
 .markdown {
   overflow-wrap: break-word;
   word-wrap: break-word;
-}
-
-.markdown pre {
-  overflow-x: auto;
-  max-width: 100%;
 }
 
 .markdown img {
@@ -207,7 +154,7 @@ div[class*="codeBlockTitle"] {
   height: auto;
 }
 
-/* ── Admonitions / callouts ──────────────────────────────────── */
+/* ── Admonitions ─────────────────────────────────────────────── */
 .admonition {
   border-radius: 12px !important;
   border-left: 3px solid !important;
@@ -215,8 +162,6 @@ div[class*="codeBlockTitle"] {
   border-right: none !important;
   border-bottom: none !important;
   backdrop-filter: blur(8px);
-  padding: 1.25rem 1.5rem !important;
-  margin: 1.25rem 0 !important;
 }
 
 [data-theme="dark"] .admonition {
@@ -290,7 +235,7 @@ div[class*="codeBlockTitle"] {
   background: rgba(37, 194, 160, 0.05);
 }
 
-/* ── Links in docs ───────────────────────────────────────────── */
+/* ── Links ───────────────────────────────────────────────────── */
 .markdown a {
   color: var(--pic-accent);
   text-decoration: none;
@@ -302,7 +247,7 @@ div[class*="codeBlockTitle"] {
   border-bottom-color: var(--pic-accent);
 }
 
-/* ── Pagination (Previous / Next) ────────────────────────────── */
+/* ── Pagination ──────────────────────────────────────────────── */
 .pagination-nav__link {
   border: 1px solid var(--pic-border) !important;
   border-radius: 12px !important;
@@ -356,12 +301,10 @@ div[class*="codeBlockTitle"] {
   border-color: var(--pic-accent-glow);
 }
 
-/* Blog post header */
 header h1 {
   font-family: "Clash Grotesk", "Inter", sans-serif;
 }
 
-/* Blog post tags */
 .tag_node_modules,
 [class*="tagRegular"] {
   border-radius: 9999px !important;
@@ -379,7 +322,7 @@ header h1 {
   background: var(--pic-accent-glow) !important;
 }
 
-/* ── Scrollbar styling (dark mode) ───────────────────────────── */
+/* ── Scrollbar ───────────────────────────────────────────────── */
 [data-theme="dark"] ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -398,7 +341,7 @@ header h1 {
   background: rgba(37, 194, 160, 0.3);
 }
 
-/* ── DocSearch button styling ────────────────────────────────── */
+/* ── DocSearch ───────────────────────────────────────────────── */
 [data-theme="dark"] .DocSearch-Button {
   border: 1px solid rgba(37, 194, 160, 0.12) !important;
   border-radius: 8px !important;
@@ -421,7 +364,7 @@ header h1 {
   color: var(--pic-accent);
 }
 
-/* ── Version badge in docs ───────────────────────────────────── */
+/* ── Badge ───────────────────────────────────────────────────── */
 .badge {
   border-radius: 9999px;
   font-family: "SF Mono", monospace;
@@ -431,7 +374,7 @@ header h1 {
   text-transform: uppercase;
 }
 
-/* ── Smooth selections ───────────────────────────────────────── */
+/* ── Selections ──────────────────────────────────────────────── */
 ::selection {
   background: rgba(37, 194, 160, 0.2);
   color: inherit;
@@ -454,68 +397,10 @@ header h1 {
   margin: 2rem 0;
 }
 
-/* ── Doc item container — ensure content is above dot grid ───── */
+/* ── Z-index layering ────────────────────────────────────────── */
 article[class*="docItemContainer"],
-.markdown {
-  position: relative;
-  z-index: 1;
-}
-
-/* ── Content padding — breathing room between container and text ── */
-[class*="docItemContainer"] {
-  padding-left: 1.5rem !important;
-  padding-right: 1.5rem !important;
-}
-
-@media (min-width: 997px) {
-  [class*="docItemContainer"] {
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
-  }
-}
-
-/* Sidebar spacing */
-.theme-doc-sidebar-container nav.menu {
-  padding: 1rem 0.75rem !important;
-}
-
-/* ── Global main-wrapper padding for all pages ───────────────── */
+.markdown,
 .main-wrapper {
   position: relative;
   z-index: 1;
-}
-
-.main-wrapper > .container {
-  padding-left: 1.5rem !important;
-  padding-right: 1.5rem !important;
-}
-
-@media (min-width: 997px) {
-  .main-wrapper > .container {
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
-  }
-}
-
-/* Blog page content padding */
-[class*="blogListPage"],
-[class*="blogPostPage"] {
-  padding-left: 1.5rem !important;
-  padding-right: 1.5rem !important;
-}
-
-@media (min-width: 997px) {
-  [class*="blogListPage"],
-  [class*="blogPostPage"] {
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
-  }
-}
-
-/* Blog container max-width constraint */
-main[class*="docMainContainer"] > .container,
-.main-wrapper > .container,
-[class*="blogPostPage"] > .container {
-  max-width: 1200px;
-  margin: 0 auto;
 }
