@@ -152,6 +152,11 @@ html.is-homepage nav.navbar--fixed-top {
   background: rgba(26, 26, 28, 0.98) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  z-index: 1000;
+}
+
+.navbar-sidebar__backdrop {
+  z-index: 999;
 }
 
 [data-theme="light"] .navbar-sidebar {
