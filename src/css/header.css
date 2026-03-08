@@ -49,14 +49,20 @@
   margin-left: -92px;
 }
 
-.navbar--fixed-top {
+nav.navbar--fixed-top {
   position: sticky;
   top: 3px;
+  z-index: 999;
+  background-color: #1a1a1c !important;
+  background: #1a1a1c !important;
+}
+
+[data-theme="light"] nav.navbar--fixed-top {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
 }
 
 .navbar {
-  background-color: transparent !important;
-  background: transparent !important;
   box-shadow: none !important;
   border: none !important;
 }
