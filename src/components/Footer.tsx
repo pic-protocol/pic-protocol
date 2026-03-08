@@ -55,7 +55,7 @@ export const Footer = () => {
   return (
     <footer
       id="tw-scope"
-      className="bg-[#FAFAFA] dark:bg-[#1A1A1C] flex items-center justify-center w-full px-6 xl:px-30"
+      className="bg-[#FAFAFA] dark:bg-[#1A1A1C] flex items-center justify-center w-full px-6 xl:px-30 relative"
     >
       <div className="py-12 sm:py-16 max-w-7xl w-full flex flex-col">
         {/* Navigation grid */}
@@ -63,14 +63,15 @@ export const Footer = () => {
           <ul className="w-full grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-6">
             {NAV_SECTIONS.map((section) => (
               <li key={section.title} className="flex flex-col gap-y-4">
-                <h3 className="text-[#25c2a0] text-xs sm:text-sm font-bold uppercase tracking-widest leading-none m-0">
+                <h3 className="text-[#25c2a0] text-xs sm:text-sm font-bold uppercase tracking-widest leading-none m-0 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#25c2a0]/30 inline-block" />
                   {section.title}
                 </h3>
                 <ul className="flex flex-col gap-y-3 list-none p-0 m-0">
                   {section.links.map((link) => (
                     <li key={link.title} className="leading-none">
                       <a
-                        className="text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white text-sm sm:text-[15px] font-normal leading-[1.4] no-underline transition-colors"
+                        className="text-black/70 dark:text-white/70 hover:text-[#25c2a0] dark:hover:text-[#25c2a0] text-sm sm:text-[15px] font-normal leading-[1.4] no-underline transition-colors duration-200"
                         href={link.href}
                       >
                         {link.title}
@@ -83,8 +84,8 @@ export const Footer = () => {
           </ul>
         </nav>
 
-        {/* Separator */}
-        <div className="w-full h-px bg-black/10 dark:bg-white/10 mb-8 sm:mb-10" />
+        {/* Glow separator */}
+        <div className="glow-separator w-full mb-8 sm:mb-10" />
 
         {/* Bottom section */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-y-6 mb-6">
@@ -104,7 +105,7 @@ export const Footer = () => {
             href="https://github.com/pic-protocol"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-x-2 px-4 py-2 rounded-full border border-black/20 dark:border-white/20 text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white hover:border-black/40 dark:hover:border-white/40 text-sm font-medium no-underline transition-all"
+            className="inline-flex items-center gap-x-2 px-4 py-2 rounded-full border border-black/15 dark:border-[#25c2a0]/20 text-black/70 dark:text-white/70 hover:text-[#25c2a0] dark:hover:text-[#25c2a0] hover:border-[#25c2a0]/40 dark:hover:border-[#25c2a0]/40 text-sm font-medium no-underline transition-all duration-300 hover:shadow-[0_0_16px_rgba(37,194,160,0.1)]"
           >
             <GithubStarIcon />
             Star on GitHub

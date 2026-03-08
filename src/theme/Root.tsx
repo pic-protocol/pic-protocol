@@ -23,7 +23,7 @@ export default function Root({ children }: { children: ReactNode }): ReactNode {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // initial
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
@@ -39,7 +39,7 @@ export default function Root({ children }: { children: ReactNode }): ReactNode {
 
   return (
     <>
-      {/* ── Scroll progress track (background behind the bar) ── */}
+      {/* ── Scroll progress track (matches header bg) ── */}
       <div
         aria-hidden
         className="scroll-progress-track"
@@ -48,12 +48,12 @@ export default function Root({ children }: { children: ReactNode }): ReactNode {
           top: 0,
           left: 0,
           width: "100%",
-          height: "3px",
+          height: "2px",
           zIndex: 9998,
           pointerEvents: "none",
-          background: "rgba(26, 26, 28, 0.75)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
+          background: "rgba(26, 26, 28, 0.97)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
         }}
       />
 
@@ -65,13 +65,13 @@ export default function Root({ children }: { children: ReactNode }): ReactNode {
           top: 0,
           left: 0,
           width: `${scrollPct}%`,
-          height: "3px",
+          height: "2px",
           zIndex: 9999,
           pointerEvents: "none",
           background:
-            "linear-gradient(90deg, #00543D 0%, #25c2a0 50%, #4fddbf 100%)",
+            "linear-gradient(90deg, #00543D 0%, #25c2a0 50%, #06b6d4 100%)",
           transition: "width 80ms linear",
-          boxShadow: "0 0 8px rgba(37,194,160,0.5)",
+          boxShadow: "0 0 12px rgba(37,194,160,0.6), 0 0 4px rgba(6,182,212,0.4)",
         }}
       />
 
@@ -88,28 +88,28 @@ export default function Root({ children }: { children: ReactNode }): ReactNode {
           bottom: "2rem",
           right: "2rem",
           zIndex: 9998,
-          width: "48px",
-          height: "48px",
-          borderRadius: "50%",
-          border: "1px solid rgba(237,237,237,0.6)",
+          width: "44px",
+          height: "44px",
+          borderRadius: "12px",
+          border: "1px solid rgba(37,194,160,0.2)",
           background: "rgba(0,84,61,0.9)",
           color: "#fff",
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 4px 24px rgba(0,84,61,0.35)",
+          boxShadow: "0 4px 24px rgba(0,84,61,0.35), 0 0 16px rgba(37,194,160,0.15)",
           backdropFilter: "blur(8px)",
           opacity: showTop ? 1 : 0,
           transform: showTop ? "translateY(0) scale(1)" : "translateY(16px) scale(0.8)",
-          transition: "opacity 300ms ease, transform 300ms ease",
+          transition: "opacity 300ms ease, transform 300ms ease, box-shadow 300ms ease",
           pointerEvents: showTop ? "auto" : "none",
         }}
       >
         {/* Chevron-up icon */}
         <svg
-          width="20"
-          height="20"
+          width="18"
+          height="18"
           viewBox="0 0 20 20"
           fill="none"
           stroke="currentColor"

@@ -1,0 +1,487 @@
+/* ═══════════════════════════════════════════════════════════════
+   DOCS — techy styling for documentation & blog inner pages
+   Sidebars, code blocks, headings, tables, admonitions, TOC
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Docs page background with subtle dot pattern ────────────── */
+.docs-wrapper,
+.docMainContainer_node_modules,
+[class*="docPage"],
+[class*="docMainContainer"] {
+  position: relative;
+}
+
+/* Add dot grid to doc pages via main container */
+main[class*="docMainContainer"]::before,
+.main-wrapper .container::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, var(--pic-grid-dot) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.5;
+  mask-image: radial-gradient(ellipse 100% 80% at 50% 20%, black 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 20%, black 20%, transparent 80%);
+}
+
+/* ── Sidebar styling ─────────────────────────────────────────── */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--pic-border) !important;
+}
+
+[data-theme="dark"] .theme-doc-sidebar-container {
+  border-right: 1px solid rgba(37, 194, 160, 0.08) !important;
+}
+
+/* Sidebar nav items */
+.theme-doc-sidebar-menu .menu__link {
+  font-size: 14px;
+  border-radius: 8px;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.theme-doc-sidebar-menu .menu__link:hover {
+  background: var(--pic-accent-dim);
+  color: var(--pic-accent);
+}
+
+/* Active sidebar link with left accent */
+.theme-doc-sidebar-menu .menu__link--active:not(.menu__link--sublist) {
+  background: var(--pic-accent-dim) !important;
+  color: var(--pic-accent) !important;
+  font-weight: 600;
+  border-left: 2px solid var(--pic-accent);
+  padding-left: 10px;
+}
+
+/* Sidebar category headers */
+.theme-doc-sidebar-menu .menu__link--sublist {
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--pic-text-muted);
+}
+
+[data-theme="dark"] .theme-doc-sidebar-menu .menu__link--sublist {
+  color: rgba(37, 194, 160, 0.6);
+}
+
+/* ── Table of Contents (right sidebar) ───────────────────────── */
+.table-of-contents {
+  border-left: 1px solid var(--pic-border) !important;
+}
+
+[data-theme="dark"] .table-of-contents {
+  border-left: 1px solid rgba(37, 194, 160, 0.08) !important;
+}
+
+.table-of-contents__link {
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.table-of-contents__link:hover {
+  color: var(--pic-accent) !important;
+}
+
+.table-of-contents__link--active {
+  color: var(--pic-accent) !important;
+  font-weight: 600;
+}
+
+/* ── Doc content headings ────────────────────────────────────── */
+.markdown h1 {
+  font-family: "Clash Grotesk", "Inter", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 1.5rem;
+}
+
+.markdown h2 {
+  font-family: "Clash Grotesk", "Inter", sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  border-bottom: none;
+  padding-bottom: 0.5rem;
+  margin-top: 2.5rem;
+  position: relative;
+}
+
+/* Subtle accent line under h2 in dark mode */
+[data-theme="dark"] .markdown h2::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pic-accent), transparent);
+  margin-top: 8px;
+  border-radius: 1px;
+}
+
+.markdown h3 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 2rem;
+}
+
+/* ── Code blocks — terminal/techy feel ───────────────────────── */
+.prism-code {
+  border-radius: 12px !important;
+  border: 1px solid var(--pic-border) !important;
+  font-size: 13.5px !important;
+}
+
+[data-theme="dark"] .prism-code {
+  border: 1px solid rgba(37, 194, 160, 0.1) !important;
+  background: #0d0d0f !important;
+}
+
+/* Code block title bar */
+div[class*="codeBlockTitle"] {
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace !important;
+  font-size: 12px !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--pic-border);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="dark"] div[class*="codeBlockTitle"] {
+  border-bottom: 1px solid rgba(37, 194, 160, 0.08);
+  background: rgba(37, 194, 160, 0.03);
+  color: var(--pic-accent);
+}
+
+/* Inline code */
+.markdown code {
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace;
+  font-size: 0.875em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--pic-border);
+  background: rgba(37, 194, 160, 0.05);
+}
+
+[data-theme="dark"] .markdown code {
+  border: 1px solid rgba(37, 194, 160, 0.12);
+  background: rgba(37, 194, 160, 0.06);
+  color: #4fddbf;
+}
+
+/* ── Admonitions / callouts ──────────────────────────────────── */
+.admonition {
+  border-radius: 12px !important;
+  border-left: 3px solid !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] .admonition {
+  background: rgba(30, 30, 34, 0.8) !important;
+}
+
+.admonition-heading h5 {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Tables ──────────────────────────────────────────────────── */
+.markdown table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--pic-border);
+}
+
+[data-theme="dark"] .markdown table {
+  border: 1px solid rgba(37, 194, 160, 0.1);
+}
+
+.markdown table thead tr {
+  background: rgba(37, 194, 160, 0.05);
+}
+
+[data-theme="dark"] .markdown table thead tr {
+  background: rgba(37, 194, 160, 0.08);
+}
+
+.markdown table thead th {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--pic-accent);
+  border-bottom: 1px solid var(--pic-border);
+}
+
+.markdown table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.markdown table tbody tr:hover {
+  background: var(--pic-accent-dim);
+}
+
+.markdown table td,
+.markdown table th {
+  border: none;
+  border-bottom: 1px solid var(--pic-border);
+  padding: 10px 16px;
+}
+
+/* ── Blockquotes ─────────────────────────────────────────────── */
+.markdown blockquote {
+  border-left: 3px solid var(--pic-accent);
+  background: var(--pic-accent-dim);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 20px;
+  font-style: normal;
+}
+
+[data-theme="dark"] .markdown blockquote {
+  background: rgba(37, 194, 160, 0.05);
+}
+
+/* ── Links in docs ───────────────────────────────────────────── */
+.markdown a {
+  color: var(--pic-accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.markdown a:hover {
+  border-bottom-color: var(--pic-accent);
+}
+
+/* ── Pagination (Previous / Next) ────────────────────────────── */
+.pagination-nav__link {
+  border: 1px solid var(--pic-border) !important;
+  border-radius: 12px !important;
+  transition: all 0.2s ease !important;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--pic-accent-glow) !important;
+  box-shadow: 0 0 0 1px var(--pic-accent-dim), 0 4px 16px rgba(37, 194, 160, 0.06) !important;
+}
+
+[data-theme="dark"] .pagination-nav__link:hover {
+  box-shadow: 0 0 0 1px var(--pic-accent-dim), 0 4px 20px rgba(37, 194, 160, 0.1) !important;
+}
+
+.pagination-nav__sublabel {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--pic-accent);
+  opacity: 0.7;
+}
+
+/* ── Breadcrumbs ─────────────────────────────────────────────── */
+.breadcrumbs__link {
+  font-size: 13px;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbs__link:hover {
+  color: var(--pic-accent);
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--pic-accent);
+}
+
+/* ── Blog pages ──────────────────────────────────────────────── */
+.blog-wrapper article {
+  border-radius: 16px;
+  border: 1px solid var(--pic-border);
+  transition: border-color 0.3s ease;
+}
+
+[data-theme="dark"] .blog-wrapper article {
+  border: 1px solid rgba(37, 194, 160, 0.06);
+}
+
+.blog-wrapper article:hover {
+  border-color: var(--pic-accent-glow);
+}
+
+/* Blog post header */
+header h1 {
+  font-family: "Clash Grotesk", "Inter", sans-serif;
+}
+
+/* Blog post tags */
+.tag_node_modules,
+[class*="tagRegular"] {
+  border-radius: 9999px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid var(--pic-accent-dim) !important;
+  color: var(--pic-accent) !important;
+  background: var(--pic-accent-dim) !important;
+  transition: all 0.2s ease !important;
+}
+
+[class*="tagRegular"]:hover {
+  background: var(--pic-accent-glow) !important;
+}
+
+/* ── Scrollbar styling (dark mode) ───────────────────────────── */
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(37, 194, 160, 0.15);
+  border-radius: 3px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(37, 194, 160, 0.3);
+}
+
+/* ── DocSearch button styling ────────────────────────────────── */
+[data-theme="dark"] .DocSearch-Button {
+  border: 1px solid rgba(37, 194, 160, 0.12) !important;
+  border-radius: 8px !important;
+  background: rgba(37, 194, 160, 0.04) !important;
+}
+
+[data-theme="dark"] .DocSearch-Button:hover {
+  border-color: var(--pic-accent-glow) !important;
+  box-shadow: 0 0 12px rgba(37, 194, 160, 0.1) !important;
+}
+
+/* ── Edit page link ──────────────────────────────────────────── */
+.theme-edit-this-page {
+  font-size: 13px;
+  color: var(--pic-text-muted);
+  transition: color 0.2s ease;
+}
+
+.theme-edit-this-page:hover {
+  color: var(--pic-accent);
+}
+
+/* ── Version badge in docs ───────────────────────────────────── */
+.badge {
+  border-radius: 9999px;
+  font-family: "SF Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Smooth selections ───────────────────────────────────────── */
+::selection {
+  background: rgba(37, 194, 160, 0.2);
+  color: inherit;
+}
+
+[data-theme="dark"] ::selection {
+  background: rgba(37, 194, 160, 0.3);
+}
+
+/* ── Horizontal rules ────────────────────────────────────────── */
+.markdown hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--pic-accent-glow) 50%,
+    transparent 100%
+  );
+  margin: 2rem 0;
+}
+
+/* ── Doc item container — ensure content is above dot grid ───── */
+article[class*="docItemContainer"],
+.markdown {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Content padding — breathing room between container and text ── */
+[class*="docItemContainer"] {
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+@media (min-width: 997px) {
+  [class*="docItemContainer"] {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+  }
+}
+
+/* Sidebar spacing */
+.theme-doc-sidebar-container nav.menu {
+  padding: 1rem 0.75rem !important;
+}
+
+/* ── Global main-wrapper padding for all pages ───────────────── */
+.main-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.main-wrapper > .container {
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+@media (min-width: 997px) {
+  .main-wrapper > .container {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+  }
+}
+
+/* Blog page content padding */
+[class*="blogListPage"],
+[class*="blogPostPage"] {
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+@media (min-width: 997px) {
+  [class*="blogListPage"],
+  [class*="blogPostPage"] {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+  }
+}
+
+/* Blog container max-width constraint */
+main[class*="docMainContainer"] > .container,
+.main-wrapper > .container,
+[class*="blogPostPage"] > .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}

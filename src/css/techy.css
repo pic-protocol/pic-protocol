@@ -1,0 +1,236 @@
+/* ═══════════════════════════════════════════════════════════════
+   TECHY — dot-grid pattern, glow effects, animations
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Hide Docusaurus built-in back-to-top (we use our own in Root.tsx) */
+.theme-back-to-top-button,
+[class*="backToTopButton"],
+[class*="BackToTopButton"] {
+  display: none !important;
+}
+
+/* ── Dot-grid background pattern ─────────────────────────────── */
+.techy-grid {
+  position: relative;
+}
+
+.techy-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, var(--pic-grid-dot) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 100%);
+}
+
+/* Variant: full page grid (no radial fade) */
+.techy-grid-full::before {
+  mask-image: none;
+  -webkit-mask-image: none;
+  opacity: 0.6;
+}
+
+/* ── Glow card effect ────────────────────────────────────────── */
+.glow-card {
+  position: relative;
+  border: 1px solid var(--pic-border);
+  background: var(--pic-surface);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glow-card:hover {
+  border-color: var(--pic-accent-glow);
+  box-shadow:
+    0 0 0 1px var(--pic-accent-dim),
+    0 8px 32px rgba(37, 194, 160, 0.08);
+}
+
+[data-theme="dark"] .glow-card:hover {
+  box-shadow:
+    0 0 0 1px var(--pic-accent-dim),
+    0 8px 40px rgba(37, 194, 160, 0.12);
+}
+
+/* ── Glassmorphism card ──────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .glass-card {
+  background: rgba(30, 30, 34, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Monospace accent ────────────────────────────────────────── */
+.mono {
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace;
+  font-variant-ligatures: none;
+}
+
+/* ── Badge / tag ─────────────────────────────────────────────── */
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--pic-accent-dim);
+  color: var(--pic-accent);
+  background: var(--pic-accent-dim);
+}
+
+.tech-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pic-accent);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* ── Separator with glow ─────────────────────────────────────── */
+.glow-separator {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--pic-accent-glow) 50%,
+    transparent 100%
+  );
+}
+
+/* ── Animated gradient border ────────────────────────────────── */
+.gradient-border {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    var(--pic-accent-glow) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(6, 182, 212, 0.2) 100%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+/* ── Terminal-style accent line ───────────────────────────────── */
+.terminal-prompt::before {
+  content: "▸ ";
+  color: var(--pic-accent);
+  font-family: "SF Mono", "Fira Code", monospace;
+}
+
+/* ── Keyframes ───────────────────────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px var(--pic-accent-dim); }
+  50% { box-shadow: 0 0 40px var(--pic-accent-glow); }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* ── Utility: stagger entrance ───────────────────────────────── */
+.animate-in {
+  animation: fade-in-up 0.6s ease-out both;
+}
+
+.animate-in-delay-1 {
+  animation: fade-in-up 0.6s ease-out 0.1s both;
+}
+
+.animate-in-delay-2 {
+  animation: fade-in-up 0.6s ease-out 0.2s both;
+}
+
+.animate-in-delay-3 {
+  animation: fade-in-up 0.6s ease-out 0.3s both;
+}
+
+/* ── Subtle scanline overlay (dark mode only) ────────────────── */
+.scanline-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(37, 194, 160, 0.015) 2px,
+    rgba(37, 194, 160, 0.015) 4px
+  );
+  opacity: 0;
+}
+
+[data-theme="dark"] .scanline-overlay::after {
+  opacity: 1;
+}
+
+/* ── Crosshair decoration ────────────────────────────────────── */
+.crosshair {
+  position: relative;
+}
+
+.crosshair::before,
+.crosshair::after {
+  content: "+";
+  position: absolute;
+  font-family: "SF Mono", monospace;
+  font-size: 14px;
+  color: var(--pic-accent);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.crosshair::before {
+  top: -8px;
+  left: -8px;
+}
+
+.crosshair::after {
+  bottom: -8px;
+  right: -8px;
+}
