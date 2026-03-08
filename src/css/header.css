@@ -50,7 +50,8 @@
 }
 
 .navbar--fixed-top {
-  position: relative;
+  position: sticky;
+  top: 3px;
 }
 
 .navbar {
