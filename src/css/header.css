@@ -52,7 +52,7 @@
 }
 
 nav.navbar--fixed-top {
-  position: fixed;  /* ← ripristina fixed */
+  position: sticky;  /* ← ripristina fixed */
   top: 0;
   left: 0;
   right: 0;
