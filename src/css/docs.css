@@ -147,11 +147,175 @@ main[class*="docMainContainer"]::before,
 .markdown {
   overflow-wrap: break-word;
   word-wrap: break-word;
+  counter-reset: figure-counter;
 }
 
 .markdown img {
   max-width: 100%;
   height: auto;
+}
+
+/* ── Zoomable figures ────────────────────────────────────────── */
+.zoomable-figure {
+  counter-increment: figure-counter;
+  margin: 2rem 0;
+  padding: 0;
+  text-align: center;
+}
+
+.zoomable-image-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--pic-border);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.zoomable-image-wrapper:hover {
+  border-color: var(--pic-accent-glow);
+  box-shadow:
+    0 0 0 1px var(--pic-accent-dim),
+    0 8px 32px rgba(37, 194, 160, 0.08);
+}
+
+[data-theme="dark"] .zoomable-image-wrapper:hover {
+  box-shadow:
+    0 0 0 1px var(--pic-accent-dim),
+    0 8px 40px rgba(37, 194, 160, 0.12);
+}
+
+.zoomable-image-wrapper img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  transition: transform 0.3s ease;
+}
+
+.zoomable-image-wrapper:hover img {
+  transform: scale(1.01);
+}
+
+/* Zoom hint icon (magnifier) */
+.zoom-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+[data-theme="dark"] .zoom-hint {
+  background: rgba(37, 194, 160, 0.15);
+  color: var(--pic-accent);
+}
+
+.zoomable-image-wrapper:hover .zoom-hint {
+  opacity: 1;
+}
+
+/* Figure caption with auto-numbering */
+.zoomable-caption {
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--pic-text-muted);
+  margin-top: 0.75rem;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.zoomable-caption::before {
+  content: "Fig. " counter(figure-counter) " — ";
+  color: var(--pic-accent);
+  font-weight: 600;
+}
+
+/* ── Lightbox overlay ────────────────────────────────────────── */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: lightbox-fade-in 0.25s ease-out;
+  cursor: zoom-out;
+  padding: 2rem;
+}
+
+[data-theme="dark"] .lightbox-overlay {
+  background: rgba(10, 10, 12, 0.92);
+}
+
+.lightbox-image {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 1px rgba(37, 194, 160, 0.15),
+    0 24px 80px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.lightbox-caption {
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 1;
+}
+
+.lightbox-close:hover {
+  border-color: var(--pic-accent-glow);
+  color: var(--pic-accent);
+  background: rgba(37, 194, 160, 0.1);
+}
+
+@keyframes lightbox-fade-in {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(12px);
+  }
 }
 
 /* ── Admonitions ─────────────────────────────────────────────── */

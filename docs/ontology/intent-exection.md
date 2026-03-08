@@ -1,11 +1,11 @@
 ---
 sidebar_position: 2
 ---
-# Intenet and Execution
+# Intents and Execution
 
 Every authorization flow begins with an identity — either acting directly, or acting as a **delegator** that delegates authority to a **delegate**.
 
-![Intent and Execution](/img/ontology/intent-execution.png)
+![Intent and Execution](/img/ontology/intents-execution.png)
 
 When the authorization flow originates directly from an identity, that identity is both the subject and the origin of authority. When delegation is involved, the roles are formally separated:
 
