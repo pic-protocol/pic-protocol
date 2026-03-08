@@ -54,7 +54,7 @@ export const Footer = () => {
   return (
     <footer
       id="tw-scope"
-      className="bg-[#FAFAFA] dark:bg-[#1A1A1C] flex items-center justify-center w-full px-6 xl:px-30 relative"
+      className="bg-[#FAFAFA] dark:bg-[#1A1A1C] flex items-center justify-center w-full px-6 md:px-12 lg:px-20 xl:px-30 relative"
     >
       <div className="py-12 sm:py-16 max-w-7xl w-full flex flex-col">
         {/* Navigation grid */}

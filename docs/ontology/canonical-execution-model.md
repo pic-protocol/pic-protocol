@@ -1,13 +1,13 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
-# The Canonical Execution Model
+# Canonical Execution Model
 
 Distributed execution is not a sequence of positions. It is a sequence of **causal steps across time**.
 
 A workload does not exist because it is next in a list. It exists because it was provisioned at a specific moment, in response to a specific event, as a continuation of a specific execution chain.
 
-![Canonical Execution Model](/img/canonical-execution/model.png)
+![Canonical Execution Model](/img/ontology/canonical-execution-model.png)
 
 When Workload n receives a message at time *x*, Workload n+1 is provisioned at time *x + y*, where *y* is a positive offset. The gap is real. The downstream executor does not exist yet when the upstream executor acts.
 
