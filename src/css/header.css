@@ -53,13 +53,20 @@ nav.navbar--fixed-top {
   position: sticky;
   top: 3px;
   z-index: 999;
-  background-color: #1a1a1c !important;
-  background: #1a1a1c !important;
+  background-color: rgba(26, 26, 28, 0.75) !important;
+  background: rgba(26, 26, 28, 0.75) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(37, 194, 160, 0.4) !important;
+}
+
+html.is-homepage nav.navbar--fixed-top {
+  border-bottom: none !important;
 }
 
 [data-theme="light"] nav.navbar--fixed-top {
-  background-color: #ffffff !important;
-  background: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.75) !important;
+  background: rgba(255, 255, 255, 0.75) !important;
 }
 
 .navbar {
