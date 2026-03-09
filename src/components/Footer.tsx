@@ -115,10 +115,6 @@ export const Footer = () => {
           <p className="text-black/40 dark:text-white/40 text-xs sm:text-sm leading-relaxed m-0">
             © 2026 Provenance Identity Continuity
           </p>
-          <p className="text-black/30 dark:text-white/30 text-[11px] sm:text-xs leading-relaxed mt-1 m-0">
-            ✧ Language &amp; AI · written in English by the authors, polished
-            with AI ✧
-          </p>
         </div>
       </div>
     </footer>
