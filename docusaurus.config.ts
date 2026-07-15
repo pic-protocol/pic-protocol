@@ -58,7 +58,7 @@ const config: Config = {
         { position: "left", label: "Ontology", to: "/ontology" },
         { position: "left", label: "Specification", to: "/specification" },
         { position: "left", label: "Protocol", to: "/protocol" },
-        { position: "left", label: "Code", to: "/code" },
+        { position: "left", label: "Implementations", to: "/code" },
       ],
     },
     prism: {

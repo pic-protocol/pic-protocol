@@ -5,10 +5,10 @@ sidebar_position: 2
 # PIC Specification
 
 The **PIC Specification** defines the generic, implementation-independent
-rules and invariants that underlie all PIC Protocols. It is **not a protocol
-itself**: it states what every conforming system must guarantee, leaving wire
-formats, transports, cryptographic suites, and deployment choices to the
-protocols built on top of it.
+rules and invariants that underlie every **PIC-compliant protocol**. It is
+**not a protocol itself**: it states what every conforming system must
+guarantee, leaving wire formats, transports, cryptographic suites, and
+deployment choices to the protocols built on top of it.
 
 Since version 0.2 the specification is published as a **document set**: an
 entry point whose **Documents table** indexes every subordinate
@@ -25,4 +25,4 @@ incorporated by reference into every document.
 
 All releases are **drafts**: expect clarifications, additional normative
 text, and structural adjustments driven by community feedback and
-implementation experience from emerging PIC Protocol families.
+implementation experience from emerging **PIC-compliant protocols**.

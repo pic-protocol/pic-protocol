@@ -2,11 +2,16 @@
 sidebar_position: 4
 ---
 
-# Libraries and Code
+# Implementations
 
 PIC is defined solely by its **formal model** and **specification documents**.
-The code listed here does not define PIC and does not replace the
+The implementations listed here do not define PIC and do not replace the
 specification.
+
+An implementation is **PIC-compliant** only if it correctly implements a
+**PIC-compliant protocol** — or, where no protocol technical specification is
+published, if it directly implements the PIC Specification and preserves the
+invariants of the PIC formal model.
 
 ## Libraries
 

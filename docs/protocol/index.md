@@ -8,15 +8,21 @@ The PIC ecosystem is layered: the **PIC Model** defines the formal semantics
 of authority continuity; the **PIC Specification** defines the generic
 requirements every conforming system MUST satisfy.
 
-A **PIC Protocol** is an implementation of the PIC Specification with its own
-**technical specification** — wire formats, types and encodings, transport,
-cryptographic suite. Defining and implementing protocols is **delegated to
-products and providers** of PIC-compliant solutions.
+A **PIC Protocol** is a concrete **technical specification** — wire formats,
+types and encodings, transport, cryptographic suite — that implements the
+PIC Specification. Defining protocols and building the products that
+implement them is **delegated to providers** of PIC-compliant solutions.
 
 ## Conformance
 
-A protocol is **PIC-compliant** if and only if it implements a declared
+A **PIC Protocol** is PIC-compliant if and only if it implements a declared
 version of the **PIC Specification** and preserves the invariants of the
+**PIC formal model**.
+
+An **implementation** is PIC-compliant if and only if it correctly implements
+a PIC-compliant protocol — or, where no protocol technical specification is
+published, if it directly implements a declared version of the
+**PIC Specification** and preserves the invariants of the
 **PIC formal model**.
 
 ## Protocol Specifications
