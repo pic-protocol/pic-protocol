@@ -1,9 +1,25 @@
 ---
 sidebar_position: 2
 ---
-# Permissions, Intent, Authority and Execution
+# Authority Propagation
 
-**Authority propagation** begins with a **permissioned entity**: an entity
+In distributed systems and AI agents, execution does not stay in one place:
+a request crosses services, workloads, tools, and downstream calls. The
+authority created at the origin must travel with it.
+
+This is the **authority propagation problem**: at every step, how do we know
+that the authority being exercised is a valid continuation of what the origin
+created — and not authority reconstructed, expanded, or borrowed from an
+unrelated context? Possession of a token or credential proves *who holds an
+artifact*, not *which execution caused its use*. Left unsolved, this gap
+produces the confused deputy, privilege escalation, and ambient authority.
+
+**PIC solves it**: authority is created once at the origin and propagated as
+a verifiable, non-expansive continuation across the entire execution chain.
+
+## Permissions, Intent, Authority and Execution
+
+Authority propagation begins with a **permissioned entity**: an entity
 that holds a set of permissions. It may be a **human identity**, a
 **non-human identity** — a workload, a service, an AI agent — a **role**, a
 service account, or any other authenticated entity with permissions.
