@@ -6,7 +6,6 @@ sidebar_position: 5
 
 The PIC model is defined by a set of formal results.
 
-| Work                                     | Author        | Description                                                       | Reference                                   |
-|------------------------------------------|---------------|-------------------------------------------------------------------|---------------------------------------------|
-| Authority Propagation Models: PoP vs PoC | Nicola Gallo  | Formal proof of confused deputy elimination under PIC             | https://zenodo.org/records/17860199         |
-| Authority is a Continuous System         | Nicola Gallo  | Formalization of authority as a continuity property of execution  | https://zenodo.org/records/17833000         |
+| Work                                                                                                 | Author       | Description                                                                                                | Reference                                                    |
+|------------------------------------------------------------------------------------------------------|--------------|------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
+| Proof-of-Continuity: A Temporal Model for Authority Propagation in Distributed Systems and AI Agents | Nicola Gallo | Formal foundation of the PIC Model: temporal model of authority propagation and confused deputy resolution | [arxiv.org/abs/2607.08906](https://arxiv.org/abs/2607.08906) |

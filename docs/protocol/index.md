@@ -83,12 +83,32 @@ A protocol or implementation is considered **PIC-compliant** if and only if:
 Different protocols MAY differ operationally,
 but they are **semantically equivalent with respect to authority continuity**.
 
+## How Protocol Specifications Are Published
+
+Each protocol family is specified in its **own specification document**,
+developed as a **subordinate specification** of the PIC Specification —
+one spec file per protocol domain (network, embedded, in-process,
+ledger-based, and so on).
+
+The entry point of the specification set,
+[`pic-spec.md`](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md),
+maintains a **Documents table** that indexes every published subordinate
+specification, with its status and date.
+
+Each subordinate protocol specification:
+
+- MUST declare which version of the PIC Specification it implements,
+- MUST NOT redefine, extend, or alter the invariants of the PIC Model,
+- incorporates the shared
+  [PIC Legal Appendices](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-legal.md)
+  by reference,
+- is canonical only in the version designated by the Specification Steward.
+
 ## Status
 
 The generic PIC Specification is stable at the model level.
 
-Specific PIC Protocols are developed and released independently.
-Some protocol families may be experimental or domain-specific.
-
-This section will reference available protocol specifications
-as they are published.
+**No domain-specific protocol specification has been published yet.**
+Protocol families will be developed incrementally across future versions of
+the specification set; each one will appear in the Documents table of the
+entry point as it is released.
