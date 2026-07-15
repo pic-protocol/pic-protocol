@@ -19,9 +19,9 @@ The section is intentionally divided into:
 Libraries provide reusable building blocks for experimenting with
 or implementing PIC concepts.
 
-| Language | Project   | Description                                               | Repository                                      |
-|----------|-----------|-----------------------------------------------------------|-------------------------------------------------|
-| Rust     | pic-rust  | Experimental Rust library for PIC concepts and structures | https://github.com/pic-protocol/pic-rust        |
+| Language | Project  | Description                                               | Spec version | Repository                               |
+|----------|----------|-----------------------------------------------------------|--------------|------------------------------------------|
+| Rust     | pic-rust | Experimental Rust library for PIC concepts and structures | 0.1          | https://github.com/pic-protocol/pic-rust |
 
 Libraries may be incomplete, experimental, or evolving.
 
@@ -53,7 +53,7 @@ it **may be removed** from this list.
 
 PIC remains defined exclusively by its formal model and specification, not by third-party code.
 
-| Name                  | Type    | Maintainer         | Description                                             | Repository                                           |
-|-----------------------|---------|--------------------|---------------------------------------------------------|------------------------------------------------------|
-| Permguard Trust Plane | Project | Nitro Agility Srl  | Trust Plane implementation claiming PIC alignment        | https://github.com/permguard/permguard-trustplane     |
-| Provenance            | Demo    | Clay Good          | Demonstration project inspired by PIC concepts           | https://github.com/clay-good/provenance               |
+| Name                  | Type    | Maintainer        | Description                                       | Spec version | Repository                                        |
+|-----------------------|---------|-------------------|---------------------------------------------------|--------------|---------------------------------------------------|
+| Permguard Trust Plane | Project | Nitro Agility Srl | Trust Plane implementation claiming PIC alignment | 0.1          | https://github.com/permguard/permguard-trustplane |
+| Provenance            | Demo    | Clay Good         | Demonstration project inspired by PIC concepts    | 0.1          | https://github.com/clay-good/provenance           |
