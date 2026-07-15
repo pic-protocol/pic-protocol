@@ -33,7 +33,7 @@ execution and bounds everything that follows. The entity may act directly or
 through delegation; in both cases, the origin is the entity whose permissions
 bound the execution.
 
-![Intent and Execution](/img/ontology/authority-propagation.png)
+![Authority Propagation](/img/why-pic/authority-propagation.png)
 
 ## Execution Chain
 

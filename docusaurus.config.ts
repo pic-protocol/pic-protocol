@@ -55,11 +55,11 @@ const config: Config = {
         src: "img/logo.svg",
       },
       items: [
-        { position: "left", label: "Why PIC", to: "/ontology" },
+        { position: "left", label: "Why PIC", to: "/why-pic" },
         { position: "left", label: "Formal Model", to: "/formal-model" },
         { position: "left", label: "Specification", to: "/specification" },
         { position: "left", label: "Protocols", to: "/protocol" },
-        { position: "left", label: "Implementations", to: "/code" },
+        { position: "left", label: "Implementations", to: "/implementations" },
       ],
     },
     prism: {
@@ -72,10 +72,10 @@ const config: Config = {
     [
       "@docusaurus/plugin-content-docs",
       {
-        id: "ontology",
-        path: "docs/ontology",
-        routeBasePath: "ontology",
-        sidebarPath: "./sidebars-ontology.ts",
+        id: "why-pic",
+        path: "docs/why-pic",
+        routeBasePath: "why-pic",
+        sidebarPath: "./sidebars-why-pic.ts",
         remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeKatex],
       },
@@ -116,10 +116,10 @@ const config: Config = {
     [
       "@docusaurus/plugin-content-docs",
       {
-        id: "code",
-        path: "docs/code",
-        routeBasePath: "code",
-        sidebarPath: "./sidebars-code.ts",
+        id: "implementations",
+        path: "docs/implementations",
+        routeBasePath: "implementations",
+        sidebarPath: "./sidebars-implementations.ts",
         remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeKatex],
       },

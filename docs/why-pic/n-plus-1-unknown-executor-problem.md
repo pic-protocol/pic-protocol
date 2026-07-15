@@ -7,7 +7,7 @@ Distributed execution is not a sequence of positions. It is a sequence of **caus
 
 A workload does not exist because it is next in a list. It exists because it was provisioned at a specific moment, in response to a specific event. It becomes an **executor** in an authority propagation only if it can **securely carry that authority forward** as a valid continuation of the execution chain.
 
-![Canonical Execution Model](/img/ontology/canonical-execution-model.png)
+![Canonical Execution Model](/img/why-pic/canonical-execution-model.png)
 
 When Workload *n* receives a message at time *x*, Workload *n+1* is provisioned at time *x + y*, where *y* is a positive offset. The gap is real: **the downstream executor does not exist yet when the upstream executor acts**.
 

@@ -4,7 +4,7 @@ const NAV_SECTIONS = [
   {
     title: "Principles",
     links: [
-      { title: "Ontology", href: "/ontology" },
+      { title: "Why PIC", href: "/why-pic" },
       { title: "Formal Model", href: "/formal-model" },
     ],
   },
@@ -18,7 +18,7 @@ const NAV_SECTIONS = [
   {
     title: "Implementation",
     links: [
-      { title: "Code", href: "/code" },
+      { title: "Implementations", href: "/implementations" },
       {
         title: "Prototyping",
         href: "https://github.com/pic-protocol/pic-prototyping",
