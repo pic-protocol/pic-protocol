@@ -13,14 +13,34 @@ mixed.
 The problems to solve have been classified as:
 
 - **[The Authority Propagation Problem](./authority-propagation.md)** — how
-  authority is created by a permissioned entity and propagated, only
-  narrowing, through a causal chain of executors.
+  authority is created by a permissioned entity at a **specific origin** and
+  propagated, only narrowing, through a causal chain of executors.
 - **[The N+1 Unknown Executor Problem](./n-plus-1-unknown-executor-problem.md)**
-  — authority must reach a successor that does not exist yet when its
-  predecessor acts.
+  — the temporal dimension spans **past, present, and future**: delegation is
+  not made to a known identity. Authority is emitted toward a successor that
+  does not exist yet when its predecessor acts; the successor proves it is a
+  continuation of the past, and carries the authority forward.
 - **[The Authority Mixing Problem](./authority-mixing.md)** — authority
   belonging to one lineage is drawn into another: selected, borrowed, or
-  composed into a valid security state that violates authority.
+  composed into a valid security state that violates authority. A bug can
+  create a state **indistinguishable from a valid one** for the *n+1*
+  executor — addressed today with posture, when it requires elimination in
+  the model itself.
+
+## What a Security Model Can Guarantee
+
+If an executor ignores the model and physically does something else, no
+security model can stop it — that is the nature of code and execution
+control. An executor that receives a token saying `READ` and performs
+`DELETE` is not a failure of the security model; it is a failure of the
+implementation, and no model can prevent it.
+
+What a security model does guarantee is that the **next step validates
+within the model** — and it must be correct in exactly that. This is where
+the temporal dimension matters: it makes the class of problems caused by
+bugs that forge valid-looking security states — indistinguishable to the
+*n+1* executor — **unable to exist**. Not behavioral mitigation, which only
+limits behavior: **total elimination in the model itself**.
 
 ## The Ontology
 
