@@ -19,13 +19,13 @@ of the PIC Specification.
 
 A **PIC Protocol** is PIC-compliant if and only if it implements a declared
 version of the **PIC Specification** and preserves the invariants of the
-**PIC formal model**.
+**PIC Formal Model**.
 
 An **implementation** is PIC-compliant if and only if it correctly implements
 a PIC-compliant protocol — or, where no protocol technical specification is
 published, if it directly implements a declared version of the
 **PIC Specification** and preserves the invariants of the
-**PIC formal model**.
+**PIC Formal Model**.
 
 ## Protocol Specifications
 
