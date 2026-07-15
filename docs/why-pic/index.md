@@ -12,6 +12,9 @@ created at an origin must travel across execution steps without being
 expanded, reconstructed, or mixed. PIC focuses on exactly this — and on this
 ground, the two are the same.
 
+**Authority propagation is a necessary element for AI agents and distributed
+systems to work: a low-level building block on which governance sits.**
+
 The problems to solve have been classified as:
 
 - **[The Authority Propagation Problem](./authority-propagation.md)** — how
@@ -38,11 +41,15 @@ control. An executor that receives a token saying `READ` and performs
 implementation, and no model can prevent it.
 
 What a security model does guarantee is that the **next step validates
-within the model** — and it must be correct in exactly that. This is where
-the temporal dimension matters: it makes the class of problems caused by
-bugs that forge valid-looking security states — indistinguishable to the
-*n+1* executor — **unable to exist**. Not behavioral mitigation, which only
-limits behavior: **total elimination in the model itself**.
+within the model** — and it must be correct in exactly that. Validating is
+not enough on its own: each step must also **prove to its successor a
+security state that is valid within the lineage that carries the
+authority** — so that what the next executor continues is, provably, a state
+of that lineage and not of another. This is where the temporal dimension
+matters: it makes the class of problems caused by bugs that forge
+valid-looking security states — indistinguishable to the *n+1* executor —
+**unable to exist**. Not behavioral mitigation, which only limits behavior:
+**total elimination in the model itself**.
 
 ## The Ontology
 

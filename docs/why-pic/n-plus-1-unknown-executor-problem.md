@@ -15,11 +15,11 @@ This is the **N+1 unknown executor problem**: authority must reach a successor t
 
 This has three consequences:
 
-- **Authority flows from origin — never re-created**: there is no moment where a new workload can bootstrap its own authority. Authority must arrive causally from what came before.
+- **Authority flows from origin — never re-created**: within a chain, there is no moment where a new workload can bootstrap its own authority. Authority must arrive causally from what came before.
 - **Every hop must prove continuity, not possession**: holding a token is not enough. The workload must demonstrate it is a valid continuation of the execution chain.
 - **Execution is temporal and causal, not positional**: the chain is defined by what happened and when — not by topology or configuration.
 
-This is why possession-based models fail in distributed execution. They assume the chain is synchronous and positional. It is not.
+This is why possession-based models are incomplete for distributed execution. They assume the chain is synchronous and positional. It is not.
 
 ## The Canonical Execution Model
 
