@@ -18,9 +18,9 @@ The problems to solve have been classified as:
 - **[The N+1 Unknown Executor Problem](./n-plus-1-unknown-executor-problem.md)**
   — authority must reach a successor that does not exist yet when its
   predecessor acts.
-- **[The Cross-Lineage Composition Problem](./cross-lineage-composition.md)**
-  — a bug can compose individually valid artifacts from concurrent lineages
-  into a valid security state that violates authority.
+- **[The Authority Mixing Problem](./authority-mixing.md)** — authority
+  belonging to one lineage is drawn into another: selected, borrowed, or
+  composed into a valid security state that violates authority.
 
 ## The Ontology
 
