@@ -4,11 +4,13 @@ sidebar_position: 1
 
 # Why PIC
 
-Distributed systems execute across services, workloads, and tools — and AI
-agents are nothing more than distributed systems. For all of them,
-**authority propagation** must be solved: authority created at an origin has
-to travel across execution steps without being expanded, reconstructed, or
-mixed.
+Distributed systems execute across services, workloads, and tools. AI agents
+raise trust problems of their own — how to govern them, how much autonomy to
+grant — but those belong to a different layer. **With respect to authority
+propagation and authorization, AI agents are distributed systems**: authority
+created at an origin must travel across execution steps without being
+expanded, reconstructed, or mixed. PIC focuses on exactly this — and on this
+ground, the two are the same.
 
 The problems to solve have been classified as:
 
