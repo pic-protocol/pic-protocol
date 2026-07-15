@@ -5,8 +5,7 @@ const NAV_SECTIONS = [
     title: "Principles",
     links: [
       { title: "Ontology", href: "/ontology" },
-      { title: "Manifesto", href: "/ontology/manifesto" },
-      { title: "Formal Model", href: "/ontology/formal-model" },
+      { title: "Formal Model", href: "/formal-model" },
     ],
   },
   {

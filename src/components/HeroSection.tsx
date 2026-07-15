@@ -30,10 +30,10 @@ export const HeroSection = () => {
 
                 <div className="flex flex-col justify-center md:flex-row gap-4 mt-8 max-w-full w-full">
                   <Link
-                    href="/ontology/manifesto"
+                    href="/ontology"
                     className="pt-3.5 pb-3 text-center md:text-start leading-normal tracking-[-0.48px] cursor-pointer px-6 hover:bg-[#004130] bg-[#00543D] rounded-full text-white hover:text-white/90 text-base font-semibold"
                   >
-                    Manifesto
+                    Why PIC
                   </Link>
                   <Link
                     href="/specification"

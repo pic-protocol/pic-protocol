@@ -55,7 +55,8 @@ const config: Config = {
         src: "img/logo.svg",
       },
       items: [
-        { position: "left", label: "Ontology", to: "/ontology" },
+        { position: "left", label: "Why PIC", to: "/ontology" },
+        { position: "left", label: "Formal Model", to: "/formal-model" },
         { position: "left", label: "Specification", to: "/specification" },
         { position: "left", label: "Protocols", to: "/protocol" },
         { position: "left", label: "Implementations", to: "/code" },
@@ -75,6 +76,17 @@ const config: Config = {
         path: "docs/ontology",
         routeBasePath: "ontology",
         sidebarPath: "./sidebars-ontology.ts",
+        remarkPlugins: [remarkMath],
+        rehypePlugins: [rehypeKatex],
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "formal-model",
+        path: "docs/formal-model",
+        routeBasePath: "formal-model",
+        sidebarPath: "./sidebars-formal-model.ts",
         remarkPlugins: [remarkMath],
         rehypePlugins: [rehypeKatex],
       },

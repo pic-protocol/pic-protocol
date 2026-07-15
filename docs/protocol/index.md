@@ -10,8 +10,10 @@ requirements every conforming system MUST satisfy.
 
 A **PIC Protocol** is a concrete **technical specification** — wire formats,
 types and encodings, transport, cryptographic suite — that implements the
-PIC Specification. Defining protocols and building the products that
-implement them is **delegated to providers** of PIC-compliant solutions.
+PIC Specification. Protocols may be defined by **PIC itself**, by
+**providers** of PIC-compliant solutions, or through an open
+**working group**; official ones are published as subordinate specifications
+of the PIC Specification.
 
 ## Conformance
 

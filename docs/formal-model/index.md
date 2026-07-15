@@ -1,10 +1,10 @@
 ---
-sidebar_position: 5
+sidebar_position: 1
 ---
 
-# The Formal Model
+# PIC Formal Model
 
-The PIC model is defined by a set of formal results.
+The PIC Formal Model is defined by a set of formal results.
 
 | Work                                                                                                 | Author       | Description                                                                                                | Reference                                                    |
 |------------------------------------------------------------------------------------------------------|--------------|------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
