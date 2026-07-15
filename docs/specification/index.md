@@ -12,7 +12,7 @@ model obligations from wire formats, transports, cryptographic suites, and
 deployment choices, which belong to the protocol families built on top of it.
 
 Architectural components — such as the **Trust Plane**, the
-**Causal Authority Transition (CAT)**, and the **PIC Verifier** — are defined
+**Causal Authority Transition (CAT)**, and the **PIC Prover and Verifier** — are defined
 normatively in the specification documents, not on this site.
 
 Since version 0.2 the specification is published as a **document set**: an
@@ -23,10 +23,10 @@ incorporated by reference into every document.
 
 ## Releases
 
-| Version | Status               | Description                                                                                              | Reference                                                                                |
-|---------|----------------------|----------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| 0.2     | *Draft — current*    | Specification set: entry point with Documents table, PIC Verifier Specification, shared Legal Appendices | [pic-spec 0.2](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md) |
-| 0.1     | *Draft — superseded* | Initial generic specification draft (single document)                                                    | [pic-spec 0.1](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.1/pic-spec.md) |
+| Version | Status               | Description                                                                                                         | Reference                                                                                |
+|---------|----------------------|---------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| 0.2     | *Draft — current*    | Specification set: entry point with Documents table, PIC Prover and Verifier Specification, shared Legal Appendices | [pic-spec 0.2](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md) |
+| 0.1     | *Draft — superseded* | Initial generic specification draft (single document)                                                               | [pic-spec 0.1](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.1/pic-spec.md) |
 
 All releases are **drafts**: expect clarifications, additional normative
 text, and structural adjustments driven by community feedback and
