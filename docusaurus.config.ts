@@ -57,7 +57,7 @@ const config: Config = {
       items: [
         { position: "left", label: "Ontology", to: "/ontology" },
         { position: "left", label: "Specification", to: "/specification" },
-        { position: "left", label: "Protocol", to: "/protocol" },
+        { position: "left", label: "Protocols", to: "/protocol" },
         { position: "left", label: "Implementations", to: "/code" },
       ],
     },
