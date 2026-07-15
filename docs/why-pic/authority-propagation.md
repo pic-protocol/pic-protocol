@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 ---
-# Authority Propagation
+# The Authority Propagation Problem
 
 In distributed systems and AI agents, execution does not stay in one place:
 a request crosses services, workloads, tools, and downstream calls. The
