@@ -53,16 +53,44 @@ valid-looking security states — indistinguishable to the *n+1* executor —
 
 ## The Ontology
 
-**Authority** defines what an execution is entitled to cause. **Identity**
-anchors that authority at its origin. **Authorization** decides, in context,
-whether a specific action is a valid continuation of that authority — it
-reads lineage, not identity. **Governance** constitutes, constrains, and
-audits both: how authority is established, restricted, revoked, and evolved,
-and how authorization decisions are made accountable.
+**Authority** defines the effects that a particular execution is entitled to
+cause. It is derived from the origin authority context and remains bounded
+by the causal continuity of the execution, rather than by the identity or
+credentials of the current executor alone.
 
-Identity remains essential for attribution — but **continuity, not
-possession, carries authority**. Governance is a separate layer that sits on
-top: it may restrict what authority permits, never expand it.
+**Identity** anchors authority at its origin by establishing the immutable
+provenance principal. **Authorization** then determines whether a requested
+action is a valid continuation of that origin authority within the current
+execution, evaluating the propagated authority context, its monotonic
+restrictions, and the execution lineage rather than relying on endpoint
+identity or credential possession alone.
+
+**Governance** defines the policies under which authority may continue. It
+establishes, constrains, and revokes permissions, while PIC guarantees that
+any execution which is allowed to continue preserves provenance, origin
+identity, and monotonic authority propagation. Governance therefore
+constrains continuation; it does not create authority or reconstruct
+continuity.
+
+:::note On the name PIC
+
+In Provenance Identity Continuity, the term **Identity** refers to the
+security identity or execution identity of the permissioned entity from
+which authority is created or anchored at the origin. It does not mean that
+identity is propagated as the authorization primitive at every hop. The
+model instead shifts the authorization burden from repeatedly interpreting
+identity to verifying execution continuity: a causal lineage carrying a
+non-expansive authority context.
+
+**Provenance** denotes the causal origin and lineage of the execution,
+**Identity** denotes the authenticated permissioned origin, and
+**Continuity** denotes the preservation of authority across later hops
+without expansion. Identity and identifiers therefore remain essential for
+authentication, credential presentation, audit, accountability, and origin
+bootstrap; **Proof of Continuity** concerns the authorization continuity
+that must hold after that origin has been established.
+
+:::
 
 ## Authority Continuity
 

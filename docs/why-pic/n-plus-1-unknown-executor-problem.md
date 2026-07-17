@@ -27,12 +27,11 @@ This problem is categorized by the **Canonical Execution Model**: execution as a
 
 ## Authority Continuity
 
-`PIC` defines three invariants that must hold at every execution hop:
+In `PIC`, a transition between execution steps is valid only if two conditions hold at that hop:
 
-- **Provenance**: the causal chain is always traceable from origin to current state, unbroken.
-- **Identity**: the origin principal `p₀` is immutable throughout the chain.
-- **Continuity**: authority can only decrease at each hop. It never expands.
+- **Causal relationship**: the step is a valid causal continuation of its immediate predecessor within the same execution lineage, witnessed by a **Proof of Relationship (PoR)** — single-hop evidence binding the executor to the step that came before it.
+- **Monotonic authority restriction**: the authority carried forward is a restriction of the authority held at the previous hop — it may remain identical or decrease, but it never expands.
 
-To uphold these invariants, every executor must prove — through a **Proof of Relationship (PoR)** — that its step is part of the temporal execution of that authority propagation: single-hop evidence binding it to its immediate predecessor. Composed transitively, these relationships form a **Proof of Continuity (PoC)**, which preserves the formal model's monotonicity over both the operations and the execution characteristics. Relationship is local; continuity is global.
+Composed transitively along the chain, these valid transitions form a **Proof of Continuity (PoC)**: the proof that the entire lineage, from origin to current state, is unbroken and monotonic. Relationship is local; continuity is global.
 
-Under these invariants, authority cannot be re-created mid-chain, cannot escape its origin, and cannot expand across any dimension. The confused deputy problem becomes structurally inexpressible — not mitigated, but impossible by construction.
+From these two conditions the guarantees follow: provenance remains traceable from origin to current state, the origin principal `p₀` is preserved throughout the chain, and authority cannot be re-created mid-chain, cannot escape its origin, and cannot expand across any dimension. The confused deputy problem becomes structurally inexpressible — not mitigated, but impossible by construction.
