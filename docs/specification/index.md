@@ -26,3 +26,10 @@ incorporated by reference into every document.
 All releases are **drafts**: expect clarifications, additional normative
 text, and structural adjustments driven by community feedback and
 implementation experience from emerging **PIC-compliant protocols**.
+
+## Documents in the 0.2 set
+
+- [PIC Specification (entry point)](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md)
+- [PIC Prover and Verifier Specification](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-prover-verifier-spec.md)
+- [PIC Revocation Specification](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-revocation-spec.md)
+- [PIC Legal Appendices](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-legal.md)
