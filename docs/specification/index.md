@@ -18,10 +18,10 @@ incorporated by reference into every document.
 
 ## Releases
 
-| Version | Status               | Description                                                                                                         | Reference                                                                                |
-|---------|----------------------|---------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| 0.2     | *Draft — current*    | Specification set: entry point with Documents table, PIC Prover and Verifier Specification, shared Legal Appendices | [pic-spec 0.2](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md) |
-| 0.1     | *Draft — superseded* | Initial generic specification draft (single document)                                                               | [pic-spec 0.1](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.1/pic-spec.md) |
+| Version | Status | Description | Reference |
+| --- | --- | --- | --- |
+| 0.2 | *Draft — current* | Specification set: entry point with Documents table, PIC Prover and Verifier Specification, PIC Revocation Specification, shared Legal Appendices | [pic-spec 0.2](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md) |
+| 0.1 | *Draft — superseded* | Initial generic specification draft (single document) | [pic-spec 0.1](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.1/pic-spec.md) |
 
 All releases are **drafts**: expect clarifications, additional normative
 text, and structural adjustments driven by community feedback and
