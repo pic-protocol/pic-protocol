@@ -4,48 +4,57 @@ sidebar_position: 1
 
 # Why PIC
 
-Think of a post office.
+Think of a *post office*.
 
-A user can enter in two ways. With a normal login, OIDC authenticates the
-user and OAuth issues an access token. With a wallet, the user presents
-Verifiable Credentials through OID4VP; after verification, the Authorization
-Server issues an OAuth access token.
+You step up to the *counter* and identify yourself — digitally, in one of two
+ways. With a **normal login**, **OIDC** authenticates you and the **OAuth 2.0 Framework** issues
+an *access token*. With a **digital wallet**, you present **Verifiable
+Credentials** through **OID4VP**; once they are verified, the *Authorization
+Server* issues an OAuth 2.0 *access token*.
 
-In both cases, the OAuth access token represents the initial authority
+In both cases, the OAuth 2.0 access token represents the **initial authority**
 derived from granted permissions, policy, consent, and context.
 
-OAuth works well at the first counter, but it does not define a verifiable
-authorization chain for every handoff as the parcel moves through multiple
-sorting centers.
+OAuth 2.0 Framework works well at the *first counter*, but it does not define a
+*verifiable authorization chain* for every handoff as the *parcel* moves
+through multiple *sorting centers*.
 
-Object capabilities solve this differently. Bob receives a key that directly
-represents authority over a locker. He can delegate that authority by passing
-the key—or a more restricted key—to someone else.
+**Object capabilities** solve this differently. Bob receives a *key* that
+directly represents authority over a *locker*. He can delegate that authority
+by passing the key—or a *more restricted key*—to someone else.
 
 But suppose Bob leaves the company. In a large distributed environment,
 revoking every delegated copy may require additional indirection, registries,
-or online checks, reducing the simplicity of the capability model.
+or online checks, **reducing the simplicity of the capability model**.
 
-PIC combines the simplicity of OAuth with capability-style propagation. Using
-the OAuth 2.0 Token Exchange profile, the access token is exchanged for a PIC
-token—a PCA.
+PIC combines the **simplicity of OAuth** with **capability-style propagation**.
+Using the **OAuth 2.0 Token Exchange** profile, the access token is exchanged
+for a PIC token—a **PCA**.
 
-The PCA does not merely carry permissions. It encodes the execution into the
-protocol and introduces two new primitives:
+The PCA does not merely carry permissions. It
+**encodes the execution into the protocol** and introduces two new primitives:
+
+:::tip The two PIC primitives
 
 - **Proof of Relationship**, proving that the current state is
-  cryptographically linked to its specific predecessor.
-- **Proof of Continuity**, proving that the new state is a valid continuation
-  of the same execution.
+  *cryptographically linked* to its **specific predecessor**.
+- **Proof of Continuity**, proving that the new state is a
+  *valid continuation* of the **same execution**.
 
-Every hop must validate both proofs. Authority may only be preserved or
-attenuated, never expanded. If either proof fails, or if policy revokes the
-authority, the chain cannot continue.
+:::
 
-OIDC or OID4VP provides identity and evidence. OAuth establishes the initial
-authority. PIC adds Proof of Relationship and Proof of Continuity, carrying
-that authority safely across multiple hops by encoding execution into the
-protocol itself.
+Every hop must validate **both** proofs. Authority may only be *preserved* or
+*attenuated*, **never expanded**. If either proof fails, or if policy revokes
+the authority, the chain **cannot continue**.
+
+:::info How the layers fit together
+
+**OIDC** or **OID4VP** provides *identity and evidence*. **OAuth 2.0 access token** establishes
+the *initial authority*. **PIC** adds **Proof of Relationship** and
+**Proof of Continuity**, carrying that authority safely across *multiple hops*
+by encoding execution into the protocol itself.
+
+:::
 
 Distributed systems execute across services, workloads, and tools. AI agents
 raise trust problems of their own — how to govern them, how much autonomy to
