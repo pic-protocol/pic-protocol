@@ -16,11 +16,14 @@ specification, plus shared
 [Legal Appendices](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.html)
 incorporated by reference into every document.
 
-:::warning Public drafts — not a standard
+:::info Public drafts
 
-These are **independently developed public drafts**, not standards — no IETF / RFC / ISO / W3C or any standards-body status,
-and the RFC-style rendering is formatting only. **Use at your own risk.** Read the full
-[status and legal notice](#status-and-legal-notice) below before implementing.
+These specifications are **open, actively developed public drafts**. They are independently developed and are not standards, so
+they carry no IETF, RFC, ISO, W3C, or other standards-body status — the RFC-style rendering is simply a familiar, readable
+format, and details may still change between versions. As with an open-source license, they are published under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) and provided **"as is", without warranties or conditions of any
+kind**; implementers and users assume all risks of their use. For the complete picture, see the
+[status and legal notice](#status-and-legal-notice) below.
 
 :::
 
