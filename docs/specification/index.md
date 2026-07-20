@@ -13,8 +13,29 @@ deployment choices to the protocols built on top of it.
 Since version 0.2 the specification is published as a **document set**: an
 entry point whose **Documents table** indexes every subordinate
 specification, plus shared
-[Legal Appendices](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-legal.md)
+[Legal Appendices](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.html)
 incorporated by reference into every document.
+
+:::warning Public Draft — Not a Standard
+
+Every PIC document published here is an **independently developed draft**, not a standard.
+
+- It has **not** been adopted, endorsed, approved, or published by the IETF, IRTF, IAB, RFC Editor, ISO, IEC, W3C, CNCF,
+  OpenID Foundation, or any other standards-development organization.
+- It is **not** an RFC, an Internet Standard, or an official work item of any working group or standards body. The RFC-style
+  HTML / text / XML rendering is a formatting choice only and implies no such status.
+- It is published solely for public review, research, experimentation, and implementation feedback, and **may be revised,
+  replaced, or withdrawn at any time**.
+- Publication does **not** constitute certification, endorsement, security approval, interoperability assurance, or regulatory
+  recognition.
+- **Implementers use these drafts entirely at their own risk.** Any implementation, interoperability statement, or conformance
+  claim applies only to the exact document version referenced.
+
+PIC documents are published and maintained by **Nitro Agility S.r.l.** as **Specification Steward**. The full legal terms —
+disclaimer, limitation of liability, licensing, and attribution — are in the
+[Legal Appendices](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.html).
+
+:::
 
 ## Current specification (0.2 draft)
 
@@ -27,7 +48,7 @@ Each document is available as rendered **HTML**, plain **text**, and RFC
 | PIC Revocation | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-revocation-spec.md) |
 | PIC Sandboxed Execution | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-lineage-guardrail-spec.md) |
 | PIC Architecture and Deployment | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-architecture-deployment-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-architecture-deployment-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-architecture-deployment-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-architecture-deployment-spec.md) |
-| PIC Legal Appendices | — | — | — | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-legal.md) |
+| PIC Legal Appendices | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-legal.md) |
 
 ## Releases
 
