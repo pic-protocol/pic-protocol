@@ -16,20 +16,29 @@ specification, plus shared
 [Legal Appendices](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-legal.md)
 incorporated by reference into every document.
 
+## Current specification (0.2 draft)
+
+Each document is available as rendered **HTML**, plain **text**, and RFC
+**XML**. The HTML links open through `htmlpreview` so they render directly in
+the browser; text and XML open as raw files. The **Source** column links to
+the authoritative Markdown.
+
+| Document | HTML | Text | XML | Source |
+| --- | --- | --- | --- | --- |
+| PIC Specification (entry point) | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md) |
+| PIC Prover and Verifier Specification | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-prover-verifier-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-prover-verifier-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-prover-verifier-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-prover-verifier-spec.md) |
+| PIC Revocation Specification | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-revocation-spec.md) |
+| PIC Sandboxed Execution Specification | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-lineage-guardrail-spec.md) |
+| PIC Architecture and Deployment Specification | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-architecture-deployment-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-architecture-deployment-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-architecture-deployment-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-architecture-deployment-spec.md) |
+| PIC Legal Appendices | — | — | — | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-legal.md) |
+
 ## Releases
 
 | Version | Status | Description | Reference |
 | --- | --- | --- | --- |
-| 0.2 | *Draft — current* | Specification set: entry point with Documents table, PIC Prover and Verifier Specification, PIC Revocation Specification, shared Legal Appendices | [pic-spec 0.2](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md) |
+| 0.2 | *Draft — current* | Specification set: entry point with Documents table, Prover and Verifier, Revocation, Sandboxed Execution, Architecture and Deployment, and shared Legal Appendices | [pic-spec 0.2](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md) |
 | 0.1 | *Draft — superseded* | Initial generic specification draft (single document) | [pic-spec 0.1](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.1/pic-spec.md) |
 
 All releases are **drafts**: expect clarifications, additional normative
 text, and structural adjustments driven by community feedback and
 implementation experience from emerging **PIC-compliant protocols**.
-
-## Documents in the 0.2 set
-
-- [PIC Specification (entry point)](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md)
-- [PIC Prover and Verifier Specification](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-prover-verifier-spec.md)
-- [PIC Revocation Specification](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-revocation-spec.md)
-- [PIC Legal Appendices](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-legal.md)
