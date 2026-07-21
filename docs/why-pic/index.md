@@ -2,6 +2,9 @@
 sidebar_position: 1
 ---
 
+import ThemedImage from '@theme/ThemedImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 # Why PIC
 
 Think of a *post office*.
@@ -12,7 +15,7 @@ an *access token*. With a **digital wallet**, you present **Verifiable
 Credentials** through **OID4VP**; once they are verified, the *Authorization
 Server* issues an OAuth 2.0 *access token*.
 
-In both cases, the OAuth 2.0 access token represents the **initial authority**
+In both cases, the OAuth access token represents the **initial authority**
 derived from granted permissions, policy, consent, and context.
 
 OAuth 2.0 Framework works well at the *first counter*, but it does not define a
@@ -47,9 +50,18 @@ Every hop must validate **both** proofs. Authority may only be *preserved* or
 *attenuated*, **never expanded**. If either proof fails, or if policy revokes
 the authority, the chain **cannot continue**.
 
+<ThemedImage
+  alt="How OIDC/OID4VP, OAuth 2.0 and PIC stack up, and how PIC carries authority across every hop"
+  style={{width: '100%', maxWidth: '820px', display: 'block', margin: '1.75rem auto'}}
+  sources={{
+    light: useBaseUrl('/img/why-pic/pic-layers-light.svg'),
+    dark: useBaseUrl('/img/why-pic/pic-layers-dark.svg'),
+  }}
+/>
+
 :::info How the layers fit together
 
-**OIDC** or **OID4VP** provides *identity and evidence*. **OAuth 2.0 access token** establishes
+**OIDC** or **OID4VP** provides *identity and evidence*. **OAuth access token** establishes
 the *initial authority*. **PIC** adds **Proof of Relationship** and
 **Proof of Continuity**, carrying that authority safely across *multiple hops*
 by encoding execution into the protocol itself.
