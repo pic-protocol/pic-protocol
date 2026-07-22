@@ -126,7 +126,15 @@
   .insp .hd .t small{color:var(--muted);font-weight:400}
   .badge{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:999px;background:var(--chip);color:var(--chip-ink)}
   .badge.origin{background:transparent;border:1px solid var(--line);color:var(--muted)}
-  pre{margin:0;max-height:62vh;overflow:auto;padding:14px 15px;font-family:var(--mono);font-size:12px;line-height:1.6;background:var(--panel)}
+  pre{margin:0;max-height:62vh;overflow:auto;padding:14px 15px;font-family:var(--mono);font-size:12px;line-height:1.6;background:var(--panel);transition:opacity .12s}
+  pre.swap{opacity:0}
+  .views{padding:12px 15px 2px}
+  .seg2{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .seg2 button{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:transparent;border:0;border-right:1px solid var(--line);padding:7px 13px;cursor:pointer;transition:background .15s,color .15s}
+  .seg2 button:last-child{border-right:0}
+  .seg2 button:hover{color:var(--ink)}
+  .seg2 button[aria-pressed="true"]{background:var(--glow);color:var(--ink)}
+  .seg2 button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
   .j-key{color:var(--accent-2)} .j-str{color:var(--ink)} .j-num{color:var(--amber)} .j-punc{color:var(--muted)}
   .j-hl{background:var(--glow);border-radius:4px;padding:0 3px;margin:0 -3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
   .j-bad{background:rgba(207,47,86,.18);border-radius:4px;padding:0 3px}
@@ -176,6 +184,7 @@
 
     <aside class="insp">
       <div class="hd"><div class="t" id="inspTitle">PCA0 <small>— origin</small></div><span class="badge origin" id="inspBadge">signed document</span></div>
+      <div class="views" id="views" style="display:none"></div>
       <pre id="json"></pre>
       <div class="ft" id="inspFoot">Click any node to inspect its signed PCA.</div>
     </aside>
@@ -185,6 +194,10 @@
     <p>Data structures follow the <b>PIC Prover &amp; Verifier</b> and <b>Lineage Guardrail</b> reference profiles (v0.2). A
       <code>PCA</code> carries <code>invariants.operations</code>, a <code>proofOfRelationship</code> binding it to exactly one
       predecessor, a fresh <code>continuation</code> challenge, and one executor <code>proof</code>. Monotonicity: <code>Cₖ ⊆ C₀</code>.</p>
+    <p>Operations are <b>application-defined scope strings</b>, like OAuth scopes — PIC assigns them no universal meaning. The
+      resource and audience are carried separately, in the <code>executionContract</code> and the <code>request</code>, not baked
+      into the label. Select any executor to explore its associated metadata — its <b>Executor Attestation</b> and its
+      <b>Executor DID</b>, the identity and key it signs its PCA with.</p>
     <p>Composition never merges lineages: a governed parent carries them in <code>multiLineage.carriedLineages</code> under operation
       <code>ENFORCE</code> — PIC of PIC. Each carried lineage keeps its own origin, PoR, and authority context.</p>
   </div>
@@ -198,7 +211,7 @@ const $ = s => document.querySelector(s);
 const byId = id => document.getElementById(id);
 
 /* ============ faithful PCA data (v0.2 reference profiles) ============ */
-const attest = (sub,role) => ({ subject:sub, attributes:{ role, region:"eu-1", compliance:["GDPR"], executionModel:"deterministic" }, issuedAt:"2026-07-17T10:00:00Z", expiresAt:"2026-08-17T10:00:00Z", issuer:"did:example:org-authority" });
+const attest = (sub,service) => ({ subject:sub, attributes:{ role:"backoffice", service, region:"eu-1", compliance:["GDPR"], executionModel:"deterministic" }, issuedAt:"2026-07-17T10:00:00Z", expiresAt:"2026-08-17T10:00:00Z", issuer:"did:example:org-authority" });
 const sig = (vm) => ({ type:"Ed25519Signature2020", verificationMethod:vm, signature:"z…"+vm.slice(-6) });
 
 /* ---- Scenario A: a real pipeline. Alice → API gateway → Kafka worker → S3 writer ---- */
@@ -206,38 +219,38 @@ const A = {
   title:"An execution pipeline",
   sub:"Alice authorizes an order write. The infrastructure — not Alice — chooses the path: an API gateway, a Kafka worker, an S3 writer. PIC is transport-agnostic; authority attenuates at every hop and stays bound to the origin.",
   nodes:[
-    { id:"pca0", tag:"PCA0", who:"Alice · client", role:"did:example:users:alice", kind:"origin", transport:"", ops:["READ","WRITE","DELETE"], drop:[], digest:"sha256:4f6c…a1",
+    { id:"pca0", tag:"PCA0", who:"Alice · client", role:"did:example:users:alice", kind:"origin", transport:"", ops:["orders.read","orders.write","orders.delete"], drop:[], digest:"sha256:4f6c…a1",
       pca:{ issuer:"did:example:users:alice",
-        invariants:{ operations:["READ","WRITE","DELETE"], executionContract:{ audience:"orders", region:"eu-1", compliance:["GDPR"] } },
+        invariants:{ operations:["orders.read","orders.write","orders.delete"], executionContract:{ role:"backoffice", audience:"orders", region:"eu-1", compliance:["GDPR"] } },
         continuation:{ challenge:"9f2a…c701", mode:"single-use", expiresAt:"2026-07-17T10:05:00Z" },
         issuedAt:"2026-07-17T10:00:00Z", expiresAt:"2026-07-18T10:00:00Z" } },
-    { id:"pca1", tag:"PCA1", who:"API gateway", role:"did:example:workloads:eu:api-gateway", kind:"hop", transport:"HTTP", ops:["READ","WRITE"], drop:["DELETE"], digest:"sha256:c1a8…5e",
+    { id:"pca1", tag:"PCA1", who:"API gateway", role:"did:example:workloads:eu:api-gateway", kind:"hop", transport:"HTTP", ops:["orders.read","orders.write"], drop:["orders.delete"], digest:"sha256:c1a8…5e",
       pca:{ proofOfRelationship:{ type:"PIC-PoR-v0", previousPcaHash:"sha256:4f6c…a1",
           continuationResponse:{ predecessorChallenge:"9f2a…c701", executorNonce:"b13d…88a2" },
           executor:"did:example:workloads:eu:api-gateway",
           request:{ operation:"enqueue", target:"orders/order-4821", securityDomain:"tenant-42", requestDigest:"sha256:aa71…" },
           executorAttestation: attest("did:example:workloads:eu:api-gateway","api-gateway") },
-        invariants:{ operations:["READ","WRITE"], executionContract:{ audience:"orders", region:"eu-1", compliance:["GDPR"] } },
+        invariants:{ operations:["orders.read","orders.write"], executionContract:{ role:"backoffice", audience:"orders", region:"eu-1", compliance:["GDPR"] } },
         continuation:{ challenge:"77e0…12bd", mode:"single-use", expiresAt:"2026-07-17T10:06:00Z" },
         issuedAt:"2026-07-17T10:01:00Z", expiresAt:"2026-07-18T10:00:00Z",
         proof: sig("did:example:workloads:eu:api-gateway#key-1") } },
-    { id:"pca2", tag:"PCA2", who:"Kafka worker", role:"did:example:workloads:eu:order-worker", kind:"hop", transport:"Kafka", ops:["WRITE"], drop:["READ"], digest:"sha256:d40f…9c",
+    { id:"pca2", tag:"PCA2", who:"Kafka worker", role:"did:example:workloads:eu:order-worker", kind:"hop", transport:"Kafka", ops:["orders.write"], drop:["orders.read"], digest:"sha256:d40f…9c",
       pca:{ proofOfRelationship:{ type:"PIC-PoR-v0", previousPcaHash:"sha256:c1a8…5e",
           continuationResponse:{ predecessorChallenge:"77e0…12bd", executorNonce:"5aa3…9b04" },
           executor:"did:example:workloads:eu:order-worker",
           request:{ operation:"process", target:"orders/order-4821", securityDomain:"tenant-42", requestDigest:"sha256:d40f…" },
           executorAttestation: attest("did:example:workloads:eu:order-worker","order-worker") },
-        invariants:{ operations:["WRITE"], executionContract:{ audience:"orders", region:"eu-1", compliance:["GDPR"] } },
+        invariants:{ operations:["orders.write"], executionContract:{ role:"backoffice", audience:"orders", region:"eu-1", compliance:["GDPR"] } },
         continuation:{ challenge:"e5b1…44af", mode:"single-use", expiresAt:"2026-07-17T10:07:00Z" },
         issuedAt:"2026-07-17T10:02:00Z", expiresAt:"2026-07-18T10:00:00Z",
         proof: sig("did:example:workloads:eu:order-worker#key-1") } },
-    { id:"pca3", tag:"PCA3", who:"S3 writer", role:"did:example:workloads:eu:s3-proxy", kind:"hop", transport:"HTTP", ops:["WRITE"], drop:[], digest:"sha256:71c2…33",
+    { id:"pca3", tag:"PCA3", who:"S3 writer", role:"did:example:workloads:eu:s3-proxy", kind:"hop", transport:"HTTP", ops:["orders.write"], drop:[], digest:"sha256:71c2…33",
       pca:{ proofOfRelationship:{ type:"PIC-PoR-v0", previousPcaHash:"sha256:d40f…9c",
           continuationResponse:{ predecessorChallenge:"e5b1…44af", executorNonce:"c07a…41de" },
           executor:"did:example:workloads:eu:s3-proxy",
           request:{ operation:"PutObject", target:"s3://orders-eu/owner=nicola/4821.json", securityDomain:"tenant-42", requestDigest:"sha256:71c2…" },
           executorAttestation: attest("did:example:workloads:eu:s3-proxy","s3-proxy") },
-        invariants:{ operations:["WRITE"], executionContract:{ audience:"orders", region:"eu-1", compliance:["GDPR"] } },
+        invariants:{ operations:["orders.write"], executionContract:{ role:"backoffice", audience:"orders", region:"eu-1", compliance:["GDPR"] } },
         continuation:{ challenge:"aa90…7f02", mode:"single-use", expiresAt:"2026-07-17T10:08:00Z" },
         issuedAt:"2026-07-17T10:03:00Z", expiresAt:"2026-07-18T10:00:00Z",
         proof: sig("did:example:workloads:eu:s3-proxy#key-1") } }
@@ -248,22 +261,22 @@ const A = {
 const B = {
   title:"Two executions, one bug",
   sub:"Alice makes two separate requests. Both pass through the same agent, which validly holds a capability from each. A bug tries to merge them into one PCA — an authority Alice never granted in a single execution.",
-  e1:{ id:"e1", tag:"execution 1", who:"share(X)", origin:["read(X)","share(X)"], carried:["share(X)"], digest:"sha256:1aa2…b0", challenge:"3c7d…e1",
+  e1:{ id:"e1", tag:"execution 1", who:"files.share", origin:["files.read","files.share"], carried:["files.share"], digest:"sha256:1aa2…b0", challenge:"3c7d…e1",
     pca:{ issuer:"did:example:users:alice", execution:"exec-1 · 00:00",
-      invariants:{ operations:["share(X)"], executionContract:{ audience:"drive", executionModel:"agentic" } },
+      invariants:{ operations:["files.share"], executionContract:{ audience:"drive", executionModel:"agentic" } },
       continuation:{ challenge:"3c7d…e1", mode:"single-use", expiresAt:"2026-07-17T10:06:00Z" },
       issuedAt:"2026-07-17T10:00:00Z", expiresAt:"2026-07-18T10:00:00Z", proof: sig("did:example:workloads:agent#key-1") } },
-  e2:{ id:"e2", tag:"execution 2", who:"read(X)", origin:["read(X)","store(X)"], carried:["read(X)"], digest:"sha256:9bd0…7a", challenge:"77e0…12bd",
+  e2:{ id:"e2", tag:"execution 2", who:"files.read", origin:["files.read","files.store"], carried:["files.read"], digest:"sha256:9bd0…7a", challenge:"77e0…12bd",
     pca:{ issuer:"did:example:users:alice", execution:"exec-2 · 00:01",
-      invariants:{ operations:["read(X)"], executionContract:{ audience:"drive", executionModel:"agentic" } },
+      invariants:{ operations:["files.read"], executionContract:{ audience:"drive", executionModel:"agentic" } },
       continuation:{ challenge:"77e0…12bd", mode:"single-use", expiresAt:"2026-07-17T10:06:00Z" },
       issuedAt:"2026-07-17T10:01:00Z", expiresAt:"2026-07-18T10:00:00Z", proof: sig("did:example:workloads:agent#key-1") } },
-  x:{ ops:["read(X)","share(X)"], boundTo:"e1", boundOps:["share(X)"], smuggled:"read(X)",
+  x:{ ops:["files.read","files.share"], boundTo:"e1", boundOps:["files.share"], smuggled:"files.read",
     pca:{ proofOfRelationship:{ type:"PIC-PoR-v0", previousPcaHash:"sha256:1aa2…b0",
         continuationResponse:{ predecessorChallenge:"3c7d…e1", executorNonce:"ee90…7712" },
         executor:"did:example:workloads:agent",
         request:{ operation:"share", target:"drive/X", securityDomain:"tenant-42", requestDigest:"sha256:beef…" } },
-      invariants:{ operations:["read(X)","share(X)"], executionContract:{ audience:"drive", executionModel:"agentic" } },
+      invariants:{ operations:["files.read","files.share"], executionContract:{ audience:"drive", executionModel:"agentic" } },
       continuation:{ challenge:"aa00…ff11", mode:"single-use", expiresAt:"2026-07-17T10:12:00Z" },
       issuedAt:"2026-07-17T10:02:00Z", expiresAt:"2026-07-18T10:00:00Z", proof: sig("did:example:workloads:agent#key-1") } }
 };
@@ -271,24 +284,25 @@ const B = {
 /* ---- Scenario C: composition done right — PIC of PIC through the lineage guardrail ---- */
 const C = {
   title:"Composition, without merging",
-  sub:"An executor holds two valid capabilities from two separate lineages — foo.read from Alice, bar.write from David — and needs both for one job. It does NOT merge them. It originates an outer ENFORCE lineage that carries both, unchanged, and runs them through the guardrail.",
-  l1:{ id:"c1", tag:"carried lineage 1", who:"foo.read", from:"Alice", digest:"sha256:1aa2…b0",
-    pca:{ issuer:"did:example:users:alice", invariants:{ operations:["foo.read"], executionContract:{ audience:"foo-svc" } },
+  sub:"An executor holds two valid capabilities from two separate lineages — documents.read from Alice, storage.write from David — and needs both for one job. It does NOT merge them. It originates an outer ENFORCE lineage that carries both, unchanged, and runs them through the guardrail.",
+  l1:{ id:"c1", tag:"carried lineage 1", who:"documents.read", from:"Alice", digest:"sha256:1aa2…b0",
+    pca:{ issuer:"did:example:users:alice", invariants:{ operations:["documents.read"], executionContract:{ audience:"documents-svc" } },
       continuation:{ challenge:"3c7d…e1", mode:"single-use", expiresAt:"2026-07-17T10:06:00Z" },
       issuedAt:"2026-07-17T10:00:00Z", expiresAt:"2026-07-18T10:00:00Z", proof: sig("did:example:workloads:worker#key-1") } },
-  l2:{ id:"c2", tag:"carried lineage 2", who:"bar.write", from:"David", digest:"sha256:8ce4…2f",
-    pca:{ issuer:"did:example:users:david", invariants:{ operations:["bar.write"], executionContract:{ audience:"bar-svc" } },
+  l2:{ id:"c2", tag:"carried lineage 2", who:"storage.write", from:"David", digest:"sha256:8ce4…2f",
+    pca:{ issuer:"did:example:users:david", invariants:{ operations:["storage.write"], executionContract:{ audience:"storage-svc" } },
       continuation:{ challenge:"5f1a…9d", mode:"single-use", expiresAt:"2026-07-17T10:06:00Z" },
       issuedAt:"2026-07-17T10:00:30Z", expiresAt:"2026-07-18T10:00:00Z", proof: sig("did:example:workloads:worker#key-2") } },
   outer:{ id:"enf", tag:"PCA · outer", who:"worker · guardrail", role:"did:example:workloads:eu:worker", digest:"sha256:e0a1…77",
     pca:{ proofOfRelationship:{ type:"PIC-PoR-v0", previousPcaHash:"sha256:origin-enforce…",
         continuationResponse:{ predecessorChallenge:"b0…ff", executorNonce:"11…ac" },
         executor:"did:example:workloads:eu:worker",
-        request:{ operation:"ENFORCE", target:"compose:foo.read+bar.write", securityDomain:"tenant-42", multiLineageDigest:"sha256:mL…9021", policyCommitment:"sha256:pol…", enforcementResult:"ACCEPT" } },
+        request:{ operation:"ENFORCE", target:"compose:documents.read+storage.write", securityDomain:"tenant-42", multiLineageDigest:"sha256:mL…9021", policyCommitment:"sha256:pol…", enforcementResult:"ACCEPT" },
+        executorAttestation: attest("did:example:workloads:eu:worker","guardrail") },
       invariants:{ operations:["ENFORCE"], executionContract:{ role:"guardrail", region:"eu-1" } },
       multiLineage:{ carriedLineages:[
-          { pca:{ "…":"carried lineage 1 — foo.read (Alice), signed, unchanged" }, role:"foo-reader" },
-          { pca:{ "…":"carried lineage 2 — bar.write (David), signed, unchanged" }, role:"bar-writer" } ],
+          { pca:{ "…":"carried lineage 1 — documents.read (Alice), signed, unchanged" }, role:"foo-reader" },
+          { pca:{ "…":"carried lineage 2 — storage.write (David), signed, unchanged" }, role:"bar-writer" } ],
         context:{ destination:"carol.copy", requestSetDigest:"sha256:rs…", freshness:"single-use" } },
       continuation:{ challenge:"cc…01", mode:"single-use", expiresAt:"2026-07-17T10:10:00Z" },
       issuedAt:"2026-07-17T10:04:00Z", expiresAt:"2026-07-18T10:00:00Z", proof: sig("did:example:workloads:eu:worker#key-1") } }
@@ -314,11 +328,45 @@ function renderJSON(obj, highlight){
   });
   return tok.replace(/([{}\[\],])/g,'<span class="j-punc">$1</span>');
 }
+function execDidDoc(did){ return {
+  "@context":"https://www.w3.org/ns/did/v1",
+  id:did,
+  verificationMethod:[{ id:did+"#key-1", type:"Ed25519VerificationKey2020", controller:did, publicKeyMultibase:"z6Mk"+did.replace(/[^A-Za-z0-9]/g,"").slice(-12) }],
+  authentication:[did+"#key-1"],
+  assertionMethod:[did+"#key-1"],
+  service:[{ id:did+"#pic", type:"PICExecutor", serviceEndpoint:"https://mesh.example.com/executors" }]
+}; }
+let _obj=null,_hl=null,_att=null,_did=null,_footBase="";
 function inspect(obj,title,badge,highlight,foot){
-  byId("inspTitle").innerHTML = title.replace(/ — (.*)$/,' <small>— $1</small>');
-  const b=byId("inspBadge"); b.textContent=badge; b.className="badge"+(/origin|no predecessor/.test(badge)?" origin":"");
-  byId("json").innerHTML=renderJSON(obj,highlight);
-  byId("inspFoot").textContent = foot || "Click any node to inspect its signed PCA.";
+  _obj=obj; _hl=highlight||null; _footBase=foot||"Click any node to inspect its signed PCA.";
+  _att=(obj&&obj.proofOfRelationship&&obj.proofOfRelationship.executorAttestation)?obj.proofOfRelationship.executorAttestation:null;
+  const ex=(obj&&obj.proofOfRelationship&&obj.proofOfRelationship.executor)?obj.proofOfRelationship.executor:null;
+  _did=ex?execDidDoc(ex):null;
+  byId("inspTitle").innerHTML=title.replace(/ — (.*)$/,' <small>— $1</small>');
+  const b=byId("inspBadge"); b.textContent=badge; b.className="badge"+(/origin|no predecessor|carried/.test(badge)?" origin":"");
+  renderViews(); showView("pca",true);
+}
+function renderViews(){
+  const v=byId("views");
+  if(!_att){ v.style.display="none"; v.innerHTML=""; return; }
+  v.style.display="flex";
+  v.innerHTML='<div class="seg2"><button data-v="pca" aria-pressed="true">PCA</button>'+
+    '<button data-v="att" aria-pressed="false">Executor Attestation</button>'+
+    (_did?'<button data-v="did" aria-pressed="false">Executor DID</button>':'')+'</div>';
+  v.querySelectorAll("button").forEach(btn=>btn.onclick=()=>showView(btn.dataset.v));
+}
+function showView(which,instant){
+  const v=byId("views"); v.querySelectorAll("button").forEach(btn=>btn.setAttribute("aria-pressed",btn.dataset.v===which));
+  let obj,hl,foot;
+  if(which==="att"&&_att){ obj=_att; hl=[{text:'"'+_att.subject+'"'},{text:'"'+_att.issuer+'"'}];
+    foot="Signed conformance evidence for this executor (its subject). It vouches that the executor satisfies the execution contract — role = backoffice — and is issued and signed by the authority in issuer."; }
+  else if(which==="did"&&_did){ obj=_did; hl=[{text:'"'+_did.verificationMethod[0].id+'"'}];
+    foot="The executor's own DID document — the identity and public key it signs its PCA with. The PCA's proof.verificationMethod points at this key, and the Verifier checks the signature against it."; }
+  else { obj=_obj; hl=_hl; foot=_footBase; }
+  const pre=byId("json");
+  if(instant||PRM){ pre.innerHTML=renderJSON(obj,hl); }
+  else { pre.classList.add("swap"); setTimeout(()=>{ pre.innerHTML=renderJSON(obj,hl); pre.classList.remove("swap"); },120); }
+  byId("inspFoot").textContent=foot;
 }
 function syncSel(){ document.querySelectorAll(".node").forEach(el=>el.classList.remove("sel")); const s=byId("node-"+selected); if(s)s.classList.add("sel"); }
 function opsChips(list,drop,cls){ let h=list.map(o=>'<span class="chip '+(cls||'')+'">'+o+'</span>').join(""); if(drop&&drop.length) h+=drop.map(o=>'<span class="chip drop">'+o+'</span>').join(""); return h; }
@@ -366,7 +414,7 @@ async function runA(){
   }
   const v=byId("verdict"); v.className="verdict show ok";
   v.innerHTML='<b>Proof of Continuity established.</b> Over HTTP, Kafka, then HTTP again, every hop is a valid non-expansive continuation of exactly one predecessor. '+
-    'The Proofs of Relationship compose into a PoC from PCA0 to PCA3 — authority stays bounded by the origin <b>C₀ = {READ, WRITE, DELETE}</b>, and DELETE, once dropped, never returns.';
+    'The Proofs of Relationship compose into a PoC from PCA0 to PCA3 — authority stays bounded by the origin <b>C₀ = {orders.read, orders.write, orders.delete}</b>, and orders.delete, once dropped, never returns.';
   byId("run").disabled=false; running=false;
 }
 
@@ -378,35 +426,35 @@ function renderB(){
   const a=document.createElement("div"); a.className="conn"; a.id="connX"; a.style.flex="0 0 62px";
   a.innerHTML='<div class="lab">merge<br>(bug)</div><div class="line"></div><div class="pulse"></div>'; t.appendChild(a);
   const x=document.createElement("button"); x.className="node"; x.id="node-x"; x.style.flex="1 0 200px";
-  x.innerHTML='<div class="tag">PCA* · merged</div><div class="who">buggy agent<small>'+B.x.pca.proofOfRelationship.executor+'</small></div><div class="chips"><span class="chip">share(X)</span><span class="chip add">read(X) ⟵ exec 2</span></div>';
+  x.innerHTML='<div class="tag">PCA* · merged</div><div class="who">buggy agent<small>'+B.x.pca.proofOfRelationship.executor+'</small></div><div class="chips"><span class="chip">files.share</span><span class="chip add">files.read ⟵ exec 2</span></div>';
   x.onclick=()=>{ selected="x"; inspectBx(); syncSel(); }; t.appendChild(x);
   byId("controls").innerHTML='<span class="seg" role="group" aria-label="model"><button id="mPoss" aria-pressed="'+(model==="possession")+'">Possession model</button><button id="mPic" aria-pressed="'+(model==="pic")+'">PIC · continuity</button></span><button class="btn" id="runB">▶ Run the guard</button><button class="btn ghost" id="resetB">Reset</button>';
   byId("mPoss").onclick=()=>{model="possession";renderB();}; byId("mPic").onclick=()=>{model="pic";renderB();};
   byId("runB").onclick=runB; byId("resetB").onclick=renderB;
   byId("checksTitle").textContent = model==="pic" ? "PIC Verifier · guard on PCA*" : "Possession check · guard on PCA*"; resetChecks();
-  selected==="e1"?inspect(B.e1.pca,B.e1.tag,"execution origin",[{text:'"share(X)"'}],null): selected==="e2"?inspect(B.e2.pca,B.e2.tag,"execution origin",[{text:'"read(X)"'}],null):inspectBx();
+  selected==="e1"?inspect(B.e1.pca,B.e1.tag,"execution origin",[{text:'"files.share"'}],null): selected==="e2"?inspect(B.e2.pca,B.e2.tag,"execution origin",[{text:'"files.read"'}],null):inspectBx();
 }
 function exNode(e){ const d=document.createElement("button"); d.className="node"; d.id="node-"+e.id; d.style.flex="1 0 172px";
   if(selected===e.id)d.classList.add("sel");
   d.innerHTML='<div class="tag">'+e.tag+'</div><div class="who">carries '+e.who+'<small>C₀ = {'+e.origin.join(", ")+'}</small></div><div class="chips"><span class="chip">'+e.carried[0]+'</span></div>';
   d.onclick=()=>{ selected=e.id; inspect(e.pca,e.tag,"execution origin",[{text:'"'+e.carried[0]+'"'}],null); syncSel(); }; return d; }
-function inspectBx(){ inspect(B.x.pca,"PCA* — merged","binds 1 predecessor (exec 1)",[{text:'"sha256:1aa2…b0"'},{text:'"read(X)"',bad:true}],"Red = the smuggled authority; teal = the single predecessor the PoR binds."); }
+function inspectBx(){ inspect(B.x.pca,"PCA* — merged","binds 1 predecessor (exec 1)",[{text:'"sha256:1aa2…b0"'},{text:'"files.read"',bad:true}],"Red = the smuggled authority; teal = the single predecessor the PoR binds."); }
 async function runB(){
   if(running)return; running=true; document.querySelectorAll("#track .node").forEach(n=>n.classList.remove("pass","fail","active"));
   byId("connX").classList.add("lit","flow"); byId("checks").hidden=false; byId("checkList").innerHTML=""; byId("runB").disabled=true; selected="x"; inspectBx(); syncSel(); await sleep(740);
   if(model==="possession"){
-    for(const r of [["share(X) individually valid","correctly attenuated & signed in execution 1"],["read(X) individually valid","correctly attenuated & signed in execution 2"],["Every artifact signed","no forged signature, no altered bytes"]]){ addRow(true,r[0],r[1]); await sleep(200); }
+    for(const r of [["files.share individually valid","correctly attenuated & signed in execution 1"],["files.read individually valid","correctly attenuated & signed in execution 2"],["Every artifact signed","no forged signature, no altered bytes"]]){ addRow(true,r[0],r[1]); await sleep(200); }
     byId("node-x").classList.add("active","fail");
     const v=byId("verdict"); v.className="verdict show warn";
-    v.innerHTML='<b>Accepted — and that is the problem.</b> Possession only asks whether each capability is individually valid. Both are, so the merged state passes: <b>the bug created a valid security state</b>. The next executor cannot tell it derives from a bug — valid is valid — so <b>read(X) + share(X) propagates</b>, an authority Alice never granted in one execution.';
+    v.innerHTML='<b>Accepted — and that is the problem.</b> Possession only asks whether each capability is individually valid. Both are, so the merged state passes: <b>the bug created a valid security state</b>. The next executor cannot tell it derives from a bug — valid is valid — so <b>files.read + files.share propagates</b>, an authority Alice never granted in one execution.';
   } else {
     const p=B.x.pca.proofOfRelationship, pred=B.e1.carried;
     const res={ sig:true, link:p.previousPcaHash===B.e1.digest, chal:p.continuationResponse.predecessorChallenge===B.e1.challenge, mono:B.x.pca.invariants.operations.every(o=>pred.includes(o)), time:true };
-    for(const [k,lbl,d] of [["sig","Signature","executor signature over the whole PCA"],["link","Predecessor link","previousPcaHash = digest(execution 1)"],["chal","Challenge response","answers execution 1's single-use challenge"],["mono","Non-expansion  C ⊆ predecessor","operations ⊆ { share(X) }"],["time","Temporal containment","within predecessor's window"]]){
-      addRow(res[k], lbl, res[k]?d:"read(X) ∉ { share(X) } — no predecessor grants it"); await sleep(200); }
+    for(const [k,lbl,d] of [["sig","Signature","executor signature over the whole PCA"],["link","Predecessor link","previousPcaHash = digest(execution 1)"],["chal","Challenge response","answers execution 1's single-use challenge"],["mono","Non-expansion  C ⊆ predecessor","operations ⊆ { files.share }"],["time","Temporal containment","within predecessor's window"]]){
+      addRow(res[k], lbl, res[k]?d:"files.read ∉ { files.share } — no predecessor grants it"); await sleep(200); }
     byId("node-x").classList.add("active","fail"); byId("node-e1").classList.add("pass");
     const v=byId("verdict"); v.className="verdict show bad";
-    v.innerHTML='<b>Rejected — the state is unrepresentable.</b> A Proof of Relationship binds <b>exactly one</b> predecessor. Bound to execution 1, read(X) is not in its operations, so <b>non-expansion fails</b>. Bind it to execution 2 instead and share(X) fails the same way — <b>no single predecessor grants both</b>. The bug can assemble the bytes; they can never validate as a conforming continuation.';
+    v.innerHTML='<b>Rejected — the state is unrepresentable.</b> A Proof of Relationship binds <b>exactly one</b> predecessor. Bound to execution 1, files.read is not in its operations, so <b>non-expansion fails</b>. Bind it to execution 2 instead and files.share fails the same way — <b>no single predecessor grants both</b>. The bug can assemble the bytes; they can never validate as a conforming continuation.';
   }
   byId("runB").disabled=false; running=false;
 }
@@ -416,11 +464,11 @@ function renderC(){
   byId("stageTitle").textContent=C.title; byId("stageSub").textContent=C.sub;
   const b=byId("stageBody");
   b.innerHTML=
-    '<div class="strip"><p class="sl"><span>carried lineage 1 · Alice</span><span>foo.read</span></p><div class="row" id="row1"></div></div>'+
-    '<div class="strip"><p class="sl"><span>carried lineage 2 · David</span><span>bar.write</span></p><div class="row" id="row2"></div></div>'+
+    '<div class="strip"><p class="sl"><span>carried lineage 1 · Alice</span><span>documents.read</span></p><div class="row" id="row1"></div></div>'+
+    '<div class="strip"><p class="sl"><span>carried lineage 2 · David</span><span>storage.write</span></p><div class="row" id="row2"></div></div>'+
     '<div class="track" id="track" style="flex-wrap:wrap"></div>';
-  byId("row1").appendChild(childNode(C.l1,["foo.read"]));
-  byId("row2").appendChild(childNode(C.l2,["bar.write"]));
+  byId("row1").appendChild(childNode(C.l1,["documents.read"]));
+  byId("row2").appendChild(childNode(C.l2,["storage.write"]));
   const t=byId("track");
   const a=document.createElement("div"); a.className="conn"; a.id="connE"; a.style.flex="0 0 62px";
   a.innerHTML='<div class="lab">carry<br>(not merge)</div><div class="line"></div><div class="pulse"></div>'; t.appendChild(a);
@@ -432,7 +480,7 @@ function renderC(){
   byId("controls").innerHTML='<button class="btn" id="runC">▶ Run the guardrail</button><button class="btn ghost" id="resetC">Reset</button>';
   byId("runC").onclick=runC; byId("resetC").onclick=renderC;
   byId("checksTitle").textContent="Guardrail · outer ENFORCE checks"; resetChecks();
-  selected==="c1"?inspect(C.l1.pca,C.l1.tag,"carried · lineage origin",[{text:'"foo.read"'}],null): selected==="c2"?inspect(C.l2.pca,C.l2.tag,"carried · lineage origin",[{text:'"bar.write"'}],null):inspectC();
+  selected==="c1"?inspect(C.l1.pca,C.l1.tag,"carried · lineage origin",[{text:'"documents.read"'}],null): selected==="c2"?inspect(C.l2.pca,C.l2.tag,"carried · lineage origin",[{text:'"storage.write"'}],null):inspectC();
 }
 function childNode(l,ops){ const d=document.createElement("button"); d.className="node"; d.id="node-"+l.id; d.style.flex="1 0 190px";
   if(selected===l.id)d.classList.add("sel");
@@ -444,8 +492,8 @@ async function runC(){
   byId("connE").classList.add("lit","flow"); byId("checks").hidden=false; byId("checkList").innerHTML=""; byId("runC").disabled=true; selected="enf"; inspectC(); syncSel(); await sleep(740);
   byId("node-c1").classList.add("pass"); await sleep(120); byId("node-c2").classList.add("pass"); await sleep(120);
   const checks=[
-    [true,"Carried lineage 1 valid","foo.read verified independently — own origin & PoR"],
-    [true,"Carried lineage 2 valid","bar.write verified independently — own origin & PoR"],
+    [true,"Carried lineage 1 valid","documents.read verified independently — own origin & PoR"],
+    [true,"Carried lineage 2 valid","storage.write verified independently — own origin & PoR"],
     [true,"No authority imported","operations = [ENFORCE]; multiLineage adds none"],
     [true,"Lineages not merged","each keeps its own origin, PoR, authority context"],
     [true,"Request commits multiLineage","ENFORCE pinned to multiLineageDigest (executed = signed)"]
@@ -453,7 +501,7 @@ async function runC(){
   for(const [ok,lbl,d] of checks){ addRow(ok,lbl,d); await sleep(200); }
   byId("node-enf").classList.add("active","pass");
   const v=byId("verdict"); v.className="verdict show ok";
-  v.innerHTML='<b>Accepted — composed, not merged.</b> The worker never fused foo.read and bar.write into one PCA (that would be Scenario 2, and unrepresentable). It originated a <b>separate outer lineage</b> under operation <b>ENFORCE</b> that carries both in <b>multiLineage.carriedLineages</b>, each still bound to its own origin. Like a process holding two threads: used together, kept distinct. If the composition must be governed, the guardrail is exactly where policy runs.';
+  v.innerHTML='<b>Accepted — composed, not merged.</b> The worker never fused documents.read and storage.write into one PCA (that would be Scenario 2, and unrepresentable). It originated a <b>separate outer lineage</b> under operation <b>ENFORCE</b> that carries both in <b>multiLineage.carriedLineages</b>, each still bound to its own origin. Like a process holding two threads: used together, kept distinct. If the composition must be governed, the guardrail is exactly where policy runs.';
   byId("runC").disabled=false; running=false;
 }
 
