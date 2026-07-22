@@ -89,11 +89,12 @@ The problems to solve have been classified as:
   not made to a known identity. Authority is emitted toward a successor that
   does not exist yet when its predecessor acts; the successor proves it is a
   continuation of the past, and carries the authority forward.
-- **[The Authority Mixing Problem](./authority-mixing.md)** — authority
-  belonging to one lineage is drawn into another: selected, borrowed, or
-  composed into a valid security state that violates authority. A bug can
-  create a state **indistinguishable from a valid one** for the *n+1*
-  executor — addressed today with posture, when it requires elimination in
+- **[The N+1 Invalid State Problem](./authority-mixing.md)** — executor *n+1*
+  can judge only the state it receives. No protocol can prevent a bug inside
+  executor *n*, so it must guarantee the one thing within its reach: that *n*
+  can never hand *n+1* an **invalid state that validates** — e.g. authority
+  belonging to one lineage drawn into another. Valid is valid: the chain
+  continues — addressed today with posture, when it requires elimination in
   the model itself.
 
 ## What a Security Model Can Guarantee
