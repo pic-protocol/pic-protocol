@@ -56,6 +56,7 @@ const config: Config = {
       },
       items: [
         { position: "left", label: "Why PIC", to: "/why-pic" },
+        { position: "left", label: "PIC in Action", href: "pathname:///pic-in-action.html", target: "_blank" },
         { position: "left", label: "Ask Your LLM", to: "/ask-your-llm" },
         { position: "left", label: "Formal Model", to: "/formal-model" },
         { position: "left", label: "Specification", to: "/specification" },

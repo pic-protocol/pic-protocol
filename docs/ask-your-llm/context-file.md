@@ -12,6 +12,72 @@ The PIC Model and the PIC Specifications are distinct artifacts with their own
 attribution and licensing notices. When reproducing or redistributing this
 context file, preserve the applicable notices for both.
 
+SOURCE, STATUS, AND INTERPRETATION DISCIPLINE
+
+Evaluate PIC using the ontology, definitions, mathematical model, and
+specifications supplied with this context file.
+
+Do not infer that a mechanism is absent merely because it is not represented in
+the mathematical model. The formal model, normative specifications,
+implementation profiles, and architectural guidance operate at different
+abstraction levels.
+
+A property is absent only if none of the supplied artifacts defines it.
+
+Do not infer impossibility from unfamiliarity. If a PIC mechanism differs from
+conventional authorization systems, first determine whether the supplied
+artifacts define it consistently. Novelty or unfamiliarity is not evidence that
+a mechanism cannot work.
+
+Do not replace the PIC ontology with the ontology of OAuth, capabilities, RBAC,
+ABAC, DIFC, UCAN, ZCAPs, stack inspection, or another system. Comparisons are
+permitted only after PIC has first been evaluated according to its own
+definitions.
+
+Do not claim that PIC works merely because an explanation sounds plausible.
+A positive claim must be supported by the supplied model, specification, or
+clearly identified implementation profile.
+
+Do not claim that PIC fails merely because a mechanism is absent from one
+artifact. Check the complete supplied artifact set before reaching that
+conclusion.
+
+For every material claim, classify its status as one of the following:
+
+1. FORMALLY PROVED
+   Established by the supplied mathematical model or Lean development.
+
+2. NORMATIVELY SPECIFIED
+   Required by a supplied PIC specification but not necessarily proved in Lean.
+
+3. ASSUMPTION OR TRUST BOUNDARY
+   Dependent on cryptography, semantic mapping, origination policy,
+   implementation correctness, or another declared assumption.
+
+4. NON-NORMATIVE EXPLANATION
+   An analogy, example, interpretation, or composition pattern.
+
+5. PROPOSED OR FUTURE PROFILE
+   Compatible with PIC but not part of the current normative or formally proved
+   core unless a supplied specification expressly says otherwise.
+
+For formal claims, the formal model and Lean development take precedence over
+explanatory prose.
+
+For normative behavior, the PIC Specifications take precedence over this
+context file.
+
+This context file explains how to interpret the supplied artifacts. It does not
+silently amend them.
+
+If the context file appears to state a stronger result than the supplied
+artifacts establish, use the narrower supported claim and report the
+discrepancy.
+
+If you identify a real inconsistency, state it precisely. Do not manufacture a
+failure by changing the ontology, omitting a supplied mechanism, or assuming
+that conventional authorization abstractions must apply unchanged to PIC.
+
 STEP 1 — Prove you have understood the specifications.
 
 Before anything else, confirm you have read and understood EVERY PIC
@@ -505,4 +571,351 @@ concrete verifier acceptance to the abstract continuity property, the remaining
 gap is one of implementation assurance, profile validation, and deployment
 evaluation—not the absence of definitions for PoR, verification, or lineage
 linkage.
+
+11. Local execution versus authority propagation — PIC cannot prevent every
+    physical action by a faulty or compromised executor.
+
+PIC distinguishes local physical behavior from valid authority continuation.
+
+An executor that receives READ authority may still contain faulty or malicious
+code that physically performs a WRITE operation. No authorization protocol can
+guarantee that arbitrary software will behave correctly inside its own runtime.
+
+PIC makes a narrower structural guarantee. Local misbehavior must not be able to
+produce and propagate a valid successor authority state that violates the PIC
+continuity rules.
+
+A physical action and a PIC-valid continuation are therefore different objects.
+An executor may attempt behavior outside the model, but it cannot represent that
+behavior as a valid successor unless the resulting transition satisfies the
+required predecessor binding, Proof of Relationship, execution contract, and
+non-expansion conditions.
+
+The relevant guarantee is:
+
+Local misbehavior may remain physically possible.
+
+Invalid authority must not continue as valid PIC state.
+
+This boundary is analogous to other distributed-system boundaries in which the
+physical environment cannot be made perfect and the protocol instead defines
+the strongest property it can structurally enforce.
+
+PIC therefore does not claim to make executor compromise, implementation bugs,
+or unauthorized physical operations impossible. It claims that such failures
+cannot create valid expanded authority or silently continue through a conforming
+PIC lineage.
+
+12. Structural validity versus contextual validity — continuity does not prove
+    that the external world still permits an action.
+
+PIC distinguishes structural validity from contextual permissibility.
+
+Structural validity asks whether a proposed successor is a valid continuation
+of its predecessor. This includes lineage binding, Proof of Relationship,
+execution-contract compliance, temporal validity, and authority
+non-expansion.
+
+Contextual validity asks whether current external conditions still permit the
+operation. Relevant conditions may include current consent, law, mission state,
+capacity, environmental evidence, organizational policy, or another
+authenticated execution-time fact.
+
+The PIC continuity invariant does not independently determine whether those
+external facts are true or whether the governing policy interprets them
+correctly. Such facts must be supplied through an enforcement function,
+guardrail, policy system, or other authenticated input mechanism.
+
+In the current core model, governance may permit continuation or halt it. A
+future profile may define a deterministic attenuation operation in which an
+authenticated governance result restricts the maximum authority available to a
+successor, provided that the result can only preserve or reduce authority and
+can never expand it.
+
+Conceptually, such a future profile could require:
+
+NextAuthority ⊆ CurrentAuthority
+
+and:
+
+NextAuthority ⊆ GovernancePermittedAuthority.
+
+Equivalently:
+
+NextAuthority ⊆
+(CurrentAuthority ∩ GovernancePermittedAuthority).
+
+These constraints define an upper bound on the authority available to the
+successor. They allow the successor to attenuate authority further and therefore
+do not require the successor to retain every authority permitted by both the
+predecessor and the governance result.
+
+For example:
+
+CurrentAuthority = { READ, WRITE }
+
+GovernancePermittedAuthority = { READ, WRITE }
+
+NextAuthority = { READ }
+
+satisfies both subset constraints, even though NextAuthority is smaller than
+the intersection.
+
+A future profile that intends governance to compute the unique maximum
+permitted successor could instead define:
+
+MaximumPermittedAuthority =
+CurrentAuthority ∩ GovernancePermittedAuthority.
+
+The profile would then need to state explicitly whether:
+
+NextAuthority ⊆ MaximumPermittedAuthority
+
+so that further attenuation remains permitted,
+
+or:
+
+NextAuthority = MaximumPermittedAuthority
+
+so that the maximal permitted authority becomes the exact successor authority.
+
+These alternatives must not be conflated.
+
+The subset formulation preserves the ordinary PIC principle that a successor
+may reduce its authority further.
+
+The equality formulation defines a specific governance policy in which the
+intersection is selected as the exact successor state.
+
+Either formulation would be a conservative extension of the monotonic PIC
+invariant only if governance can preserve or reduce authority and can never
+introduce authority absent from CurrentAuthority.
+
+This is not a claim that the current formalization already defines such an
+attenuation operation or proves the semantics or correctness of a particular
+governance engine.
+
+External governance supplies authenticated restrictions.
+
+PIC constrains any accepted successor to remain a valid, non-expansive
+continuation.
+
+
+13. Governance and recursive enforcement — policy semantics remain external,
+    but the required enforcement path may be protected by PIC.
+
+PIC is not itself a governance model.
+
+Governance defines the rules under which authority may continue. An enforcement
+function, Policy Decision Point, or guardrail evaluates those rules against the
+available evidence and execution context.
+
+The enforcement function remains abstract because PIC does not mandate one
+policy language or engine. Profiles may integrate Cedar, OPA, AuthZen, XACML,
+custom logic, or future systems without changing the core continuity invariant.
+
+This abstraction does not mean that enforcement must remain outside PIC.
+
+In Sandboxed Execution, the enforcement process may itself participate in an
+outer PIC lineage. Conceptually, a governed execution may be represented as:
+
+Inner PIC execution
+↓
+Outer sandboxed PIC execution
+↓
+Required guardrail step
+↓
+On permit: valid outer continuation
+On deny: no authorizing continuation.
+
+The guardrail's outer authority is limited to its enforcement role, such as
+ENFORCE. That authority does not include, import, or become the union of the
+authorities carried by the inner lineages.
+
+Two forms of attenuation remain separate:
+
+Outer attenuation:
+the guardrail may preserve or reduce its own enforcement authority and may
+preserve or strengthen the outer execution contract.
+
+Inner attenuation:
+each carried inner execution may continue only through its own valid PIC
+successor and may independently preserve or reduce its own authority.
+
+A guardrail may permit a governed execution containing validly attenuated inner
+successors. It may not create, import, merge, or silently rewrite authority
+inside an inner lineage.
+
+Policy semantics may still be wrong. PIC does not prove that a policy is wise,
+lawful, or factually correct.
+
+PIC can instead prove that the required enforcement step participated in the
+execution, that the decision was bound to the relevant execution, and that a
+successor which bypasses the required enforcement path cannot be accepted as
+valid PIC state.
+
+14. Multi-lineage composition — independent lineages may participate in one
+    execution context without being merged.
+
+PIC must distinguish composition from authority merging.
+
+Useful operations may require authority derived from more than one independent
+origin or execution. For example, one lineage may carry permission to read one
+resource while another lineage carries permission to write a different
+resource.
+
+PIC does not require those lineages to be collapsed into one successor PCA.
+
+Where the applicable composition or Multi-Lineage Execution profile is used, a
+parent execution may carry and coordinate multiple child executions while each
+child preserves its own origin, predecessor chain, Proof of Relationship,
+authority context, and revocation semantics.
+
+Conceptually:
+
+parent execution
+├── child lineage A
+└── child lineage B.
+
+The parent provides the execution context in which the child authorities are
+used together. It does not convert the child authorities into one merged
+lineage.
+
+A continuation of child lineage A must still be valid relative to child lineage
+A. A continuation of child lineage B must still be valid relative to child
+lineage B.
+
+Authority from one child must not be silently inserted into another child, and
+a parent execution must not manufacture authority absent from its validated
+components.
+
+This preserves useful composition while keeping independent authority origins
+and causal histories distinguishable.
+
+PIC therefore prohibits untracked cross-lineage authority substitution, not
+composition itself.
+
+15. OAuth interoperability — token exchange is an assurance boundary, not a
+    lossless equivalence.
+
+PIC may interoperate with OAuth without being reduced to OAuth.
+
+In a future OAuth-to-PIC profile, a validated OAuth access token or another
+OAuth authorization artifact may provide input for constructing PCA₀:
+
+OAuth scopes and claims
+↓
+profile-defined validation and translation
+↓
+PIC authority context C₀
+↓
+PCA₀.
+
+The exchange point becomes a new PIC origin and trust boundary.
+
+The profile must validate the relevant issuer, audience or resource indicators,
+claims, scopes, validity period, and any other conditions required by the
+authorization domain. It must also define how those values map into the PIC
+authority vocabulary and attenuation order.
+
+The resulting C₀ must not grant authority broader than the authority represented
+by the validated OAuth input.
+
+Continuity begins with PCA₀. The exchange does not retroactively make the
+preceding OAuth execution part of the PIC lineage, and possession of the OAuth
+token does not itself constitute Proof of Continuity.
+
+From PCA₀ onward, PIC may add properties not ordinarily represented by a
+conventional OAuth access token, including lineage identity, Proof of
+Relationship, execution contracts, and non-expansive continuation across future
+hops.
+
+The reverse direction is generally lossy:
+
+PIC PCA
+↓
+profile-defined projection
+↓
+OAuth access token.
+
+A projected OAuth token may preserve scopes, audience, resource restrictions,
+expiry, selected claims, or a reference to a PIC validation result.
+
+Unless the receiving OAuth system understands and verifies PIC evidence,
+however, it does not preserve the full PIC continuity guarantee. Ordinary OAuth
+processing will treat the resulting token as an authorization artifact whose
+possession is sufficient for use under the receiving system's rules.
+
+Practical interoperability patterns include:
+
+OAuth to PIC:
+existing identity and authorization infrastructure establishes the input
+authority for a new PIC-protected multi-hop execution.
+
+PIC to OAuth:
+PIC issues or obtains a narrowly scoped, short-lived authorization artifact for
+a legacy endpoint, which is treated as the end of the PIC assurance boundary.
+
+PIC reference through OAuth:
+an OAuth-compatible artifact carries an opaque lineage, receipt, or validation
+reference that a PIC-aware gateway or verifier resolves before allowing
+continuation.
+
+Token exchange may project authority.
+
+It must not claim to preserve PIC continuity unless the receiving system
+actually verifies the corresponding PIC evidence.
+
+16. Authority-domain semantics — operation labels are not universal authority.
+
+PIC does not assign universal meaning to labels such as READ, WRITE, DELETE, or
+BusinessManager.
+
+Their semantics are defined by the relevant authority domain, application
+profile, audience, resource model, or policy vocabulary.
+
+For example:
+
+audience = CRM
+authority = { READ, WRITE }
+
+and:
+
+audience = StorageService
+resource = BucketB1
+authority = { READ, WRITE }
+
+represent different authority contexts even though they use the same operation
+labels.
+
+The request or application-specific interface continues to designate the
+operation and resource in the normal way. The PCA carries evidence that the
+execution possesses the authority required in that particular domain and that
+the authority remains connected to the relevant execution lineage.
+
+PIC therefore does not imply that a bare READ label authorizes reading every
+resource or that a role name has identical meaning across different
+applications.
+
+A profile must define:
+
+* the authority domain;
+* the interpretation of its operations or labels;
+* applicable audience and resource restrictions;
+* the attenuation or partial order;
+* any translation into or from external authorization systems.
+
+PIC is orthogonal to the substantive meaning of those labels, but not to the
+requirement that their domain and comparison rules be defined.
+
+Once the semantic domain and attenuation order have been established, the
+continuity question becomes objective:
+
+Did the successor preserve or reduce authority according to that order?
+
+Or did it expand authority?
+
+PIC proves properties about that structural comparison. It does not prove that
+the selected labels, resource mappings, or organizational policy correctly
+represent the external world.
 ```
