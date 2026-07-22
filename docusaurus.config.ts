@@ -56,6 +56,7 @@ const config: Config = {
       },
       items: [
         { position: "left", label: "Why PIC", to: "/why-pic" },
+        { position: "left", label: "Ask Your LLM", to: "/ask-your-llm" },
         { position: "left", label: "Formal Model", to: "/formal-model" },
         { position: "left", label: "Specification", to: "/specification" },
         { position: "left", label: "Protocols", to: "/protocol" },
@@ -69,6 +70,17 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   plugins: [
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "ask-your-llm",
+        path: "docs/ask-your-llm",
+        routeBasePath: "ask-your-llm",
+        sidebarPath: "./sidebars-ask-your-llm.ts",
+        remarkPlugins: [remarkMath],
+        rehypePlugins: [rehypeKatex],
+      },
+    ],
     [
       "@docusaurus/plugin-content-docs",
       {
