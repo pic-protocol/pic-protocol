@@ -14,23 +14,15 @@ specification is published, if it directly implements the
 **PIC Specification** and preserves the invariants of the
 **PIC Formal Model**.
 
-## Libraries
+## Coming soon
 
-Reusable building blocks for experimenting with or implementing PIC concepts.
-Libraries may be incomplete, experimental, or evolving.
+Implementations aligned with the current specification (**Specification
+v0.2**) are in progress and will be listed here as they arrive — libraries,
+projects, and demos.
 
-| Language | Project  | Description                                               | Spec version | Repository                                                        |
-|----------|----------|-----------------------------------------------------------|--------------|-------------------------------------------------------------------|
-| Rust     | pic-rust | Experimental Rust library for PIC concepts and structures | 0.1          | [pic-protocol/pic-rust](https://github.com/pic-protocol/pic-rust) |
+## Submit your implementation
 
-## Projects & Demos (External Claims)
-
-Entries appear **solely on their own claims**: PIC does not sponsor, certify,
-or verify them, and listing implies neither correctness nor conformance —
-responsibility rests with the maintainers. Entries that misrepresent PIC may
-be removed.
-
-| Name                  | Type    | Maintainer        | Description                                       | Spec version | Repository                                                                          |
-|-----------------------|---------|-------------------|---------------------------------------------------|--------------|-------------------------------------------------------------------------------------|
-| Permguard Trust Plane | Project | Nitro Agility Srl | Trust Plane implementation claiming PIC alignment | 0.1          | [permguard/permguard-trustplane](https://github.com/permguard/permguard-trustplane) |
-| Provenance            | Demo    | Clay Good         | Demonstration project inspired by PIC concepts    | 0.1          | [clay-good/provenance](https://github.com/clay-good/provenance)                     |
+Have a PIC-compliant implementation? Open a pull request on
+[pic-protocol/pic-protocol.github.io](https://github.com/pic-protocol/pic-protocol.github.io)
+adding it to this page, with a short description, the targeted spec version,
+and the repository link.
