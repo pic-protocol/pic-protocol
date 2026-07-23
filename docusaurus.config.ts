@@ -61,6 +61,19 @@ const config: Config = {
         { position: "left", label: "Specification", to: "/specification" },
         { position: "left", label: "Protocols", to: "/protocol" },
         { position: "left", label: "Implementations", to: "/implementations" },
+        {
+          position: "right",
+          href: "https://github.com/pic-protocol/pic-spec",
+          className: "header-github-link",
+          "aria-label": "Star PIC on GitHub",
+        },
+        {
+          position: "right",
+          href: "https://join.slack.com/t/picprotocol/shared_invite/zt-3wpt1lro7-poD6BSrcoVbVnyzqX1oxYQ",
+          label: "Join Slack",
+          className: "header-slack-link",
+          "aria-label": "Join the PIC Slack community",
+        },
       ],
     },
     prism: {
