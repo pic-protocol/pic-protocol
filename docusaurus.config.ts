@@ -64,8 +64,14 @@ const config: Config = {
         {
           position: "right",
           href: "https://github.com/pic-protocol/pic-spec",
+          className: "header-star-link",
+          "aria-label": "Star pic-spec on GitHub",
+        },
+        {
+          position: "right",
+          href: "https://github.com/pic-protocol",
           className: "header-github-link",
-          "aria-label": "Star PIC on GitHub",
+          "aria-label": "PIC on GitHub",
         },
         {
           position: "right",

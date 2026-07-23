@@ -242,7 +242,8 @@ html.is-homepage nav.navbar--fixed-top {
 
 /* Mobile drawer: keep the items readable as plain menu entries */
 @media (max-width: 996px) {
-  .menu__link.header-slack-link {
+  .menu__link.header-slack-link,
+  .menu__link.header-star-link {
     display: flex;
     width: fit-content;
   }
@@ -250,4 +251,29 @@ html.is-homepage nav.navbar--fixed-top {
     content: "GitHub";
     margin-left: 0.5rem;
   }
+  .menu__link.header-star-link::after {
+    content: "Star on GitHub";
+    margin-left: 0.5rem;
+  }
+}
+
+/* Star button (repo star CTA) */
+.header-star-link {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.35rem;
+}
+
+.header-star-link:hover {
+  opacity: 0.7;
+}
+
+.header-star-link::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex-shrink: 0;
+  background-color: currentColor;
+  mask: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"%3E%3Cpath d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25z"/%3E%3C/svg%3E') no-repeat center / contain;
 }
