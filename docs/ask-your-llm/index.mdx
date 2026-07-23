@@ -1,0 +1,34 @@
+---
+sidebar_position: 1
+title: Ask Your LLM
+description: One copyable context pack that primes an LLM to understand PIC without mapping it onto models it already knows.
+---
+
+import LlmContextPack from '@site/src/components/LlmContextPack';
+
+# Ask Your LLM
+
+PIC defines a **new ontology**: authority is *continuity*, not possession. An LLM — like a human — tends to map a new
+model onto ones it already knows (OAuth, object-capabilities, RBAC/ABAC) and gets PIC subtly, confidently wrong. This
+is **comprehension bias**, and it is not only a machine problem: it applies to human readers too.
+
+The box below assembles everything an LLM needs into **one copyable text**: the specifications, the formal model, the
+machine-checked proof summary, and the interpretation rules (the *LLM context file*) that keep the model from filling
+gaps with assumptions. The sources are fetched **live from the repositories** at page load, so the pack always
+reflects the current `main` — nothing here is a maintained copy.
+
+<LlmContextPack />
+
+## How to use it
+
+1. Press **Copy context pack** and paste the whole text into a fresh LLM conversation (or attach the downloaded
+   `.txt` file).
+2. The pack includes the **LLM context file**, which instructs the model to first prove it has understood every
+   specification, then work through PIC's known points of scrutiny before answering.
+3. Ask your questions.
+
+:::tip Prefer the raw repositories?
+Everything in the pack comes straight from the public repos — you can always pull them yourself:
+[`pic-spec`](https://github.com/pic-protocol/pic-spec) ([zip](https://github.com/pic-protocol/pic-spec/archive/refs/heads/main.zip)) ·
+[`pic-model`](https://github.com/ngallo/pic-model) ([zip](https://github.com/ngallo/pic-model/archive/refs/heads/main.zip))
+:::
