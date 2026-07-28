@@ -41,6 +41,18 @@
 
 .navbar__brand {
   margin-right: auto;
+  flex-shrink: 0;
+}
+
+/* Never let a nav label break onto a second line */
+.navbar__item,
+.navbar__link,
+.navbar__title {
+  white-space: nowrap;
+}
+
+.navbar__link {
+  flex-shrink: 0;
 }
 
 .theme-layout-navbar-left > .navbar__link:last-child {
@@ -215,25 +227,17 @@ html.is-homepage nav.navbar--fixed-top {
 .header-slack-link {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  margin-left: 0.25rem;
-  padding: 0.38rem 1rem;
-  border-radius: 999px;
-  background: var(--ifm-color-primary);
-  color: #fff !important;
-  font-weight: 600;
-  line-height: 1;
-  transition: background var(--ifm-transition-fast);
+  padding: 0.25rem 0.35rem;
 }
 
 .header-slack-link:hover {
-  background: var(--ifm-color-primary-dark);
+  opacity: 0.7;
 }
 
 .header-slack-link::before {
   content: "";
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   display: block;
   flex-shrink: 0;
   background-color: currentColor;
@@ -253,6 +257,10 @@ html.is-homepage nav.navbar--fixed-top {
   }
   .menu__link.header-star-link::after {
     content: "Star on GitHub";
+    margin-left: 0.5rem;
+  }
+  .menu__link.header-slack-link::after {
+    content: "Join Slack";
     margin-left: 0.5rem;
   }
 }

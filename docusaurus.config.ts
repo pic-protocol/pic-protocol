@@ -76,7 +76,6 @@ const config: Config = {
         {
           position: "right",
           href: "https://join.slack.com/t/picprotocol/shared_invite/zt-3wpt1lro7-poD6BSrcoVbVnyzqX1oxYQ",
-          label: "Join Slack",
           className: "header-slack-link",
           "aria-label": "Join the PIC Slack community",
         },
