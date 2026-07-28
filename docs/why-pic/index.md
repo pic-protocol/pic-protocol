@@ -7,166 +7,149 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Why PIC
 
-Think of a *post office*.
+**Provenance Identity Continuity (PIC) has its roots in distributed systems.** Its core idea is simple: under a threat model in which execution cannot
+be trusted to select authority correctly, propagated authority should be accepted only through a **verifiable
+execution relationship** — not merely because a credential is valid and possessed.
 
-You step up to the *counter* and identify yourself — digitally, in one of two
-ways. With a **normal login**, **OIDC** authenticates you and the **OAuth 2.0 Framework** issues
-an *access token*. With a **digital wallet**, you present **Verifiable
-Credentials** through **OID4VP**; once they are verified, the *Authorization
-Server* issues an OAuth 2.0 *access token*.
+## The practical problem
 
-In both cases, the OAuth access token represents the **initial authority**
-derived from granted permissions, policy, consent, and context.
+The problem that led to PIC first appeared in stream processing. In an **Apache Kafka** pipeline, authority had to be
+propagated to a *consumer that was not yet known*. Passing a bearer access token through the stream looked natural,
+but the consumer might not yet exist, might receive the message after the token had expired, or might not hold the
+key required to decrypt it.
 
-OAuth 2.0 Framework works well at the *first counter*, but it does not define a
-*verifiable authorization chain* for every handoff as the *parcel* moves
-through multiple *sorting centers*.
+In that architecture the practical workaround was to give the consumer **its own credentials**. That solved the
+delivery problem, but introduced a different risk: a consumer serving many requests could hold *broader authority
+than any single request required*, leaving application code to choose which authority to use. A defect, a
+compromise, or an incorrect association could then cause **valid authority to be used in the wrong execution
+context**.
 
-**Object capabilities** solve this differently. Bob receives a *key* that
-directly represents authority over a *locker*. He can delegate that authority
-by passing the key—or a *more restricted key*—to someone else.
+## What the problem revealed
 
-But suppose Bob leaves the company. In a large distributed environment,
-revoking every delegated copy may require additional indirection, registries,
-or online checks, **reducing the simplicity of the capability model**.
+The first conclusion — that the conventional bearer access token was itself the problem — was too broad.
+**Bearer-token protocols work correctly within their stated scope and threat model.** What that architecture
+required was an *additional property* which the flow in use did not establish: a **receiver-verifiable relationship**
+between propagated authority and the execution for which it was granted.
 
-PIC combines the **simplicity of OAuth** with **capability-style propagation**.
-Using the **OAuth 2.0 Token Exchange** profile, the access token is exchanged
-for a PIC token—a **PCA**.
+### The missing property at a glance
 
-The PCA does not merely carry permissions. It
-**encodes the execution into the protocol** and introduces two new primitives:
+| Question | Why it matters |
+| --- | --- |
+| Is the credential valid? | Necessary, but **not sufficient**. |
+| Who possesses it? | Possession does not establish *which execution* it belongs to. |
+| Which execution may continue? | This is the **Authority Continuity** question. |
+| What should the receiver verify? | A specific, **request-bound**, **non-expansive** continuation under the applicable verification rules. |
 
-:::tip The two PIC primitives
+## Why this matters for AI agents
 
-- **Proof of Relationship**, proving that the current state is
-  *cryptographically linked* to its **specific predecessor**.
-- **Proof of Continuity**, proving that the new state is a
-  *valid continuation* of the **same execution**.
+An AI agent may hold several valid permissions at the same time. The security question is not only whether those
+permissions are *authentic*, but whether the authority selected for the next action is **validly attributable to the
+execution being continued**.
+
+Under this threat model, **delegation alone reaches its limit at the moment of choice**. Delegation transfers
+permissions and constraints, but it does not prove that an untrusted executor selected the *correct* authority for
+the current task.
+
+:::tip The question a receiving boundary must be able to answer
+
+> *"Can this execution prove that it is a valid continuation of the authority and request it received?"*
+
+A receiving boundary should accept **only a verifiable continuation**. That is **Authority Continuity**, and PIC is
+one proposed construction for it.
 
 :::
 
-Every hop must validate **both** proofs. Authority may only be *preserved* or
-*attenuated*, **never expanded**. If either proof fails, or if policy revokes
-the authority, the chain **cannot continue**.
+## The governance of choice
+
+Distributed systems teach that unavoidable trade-offs should be made *explicit*. In agentic authorization, three
+concerns interact: **authorization protocol**, **freedom of choice**, and **supervised choice**.
 
 <ThemedImage
-  alt="How OIDC/OID4VP, OAuth 2.0 and PIC stack up, and how PIC carries authority across every hop"
-  style={{width: '100%', maxWidth: '820px', display: 'block', margin: '1.75rem auto'}}
+  alt="The governance of choice: a non-negotiable authorization protocol, freedom of choice maximized safely, and supervised choice used when needed"
+  style={{width: '100%', maxWidth: '860px', display: 'block', margin: '1.75rem auto'}}
   sources={{
-    light: useBaseUrl('/img/why-pic/pic-layers-light.svg'),
-    dark: useBaseUrl('/img/why-pic/pic-layers-dark.svg'),
+    light: useBaseUrl('/img/why-pic/governance-of-choice-light.svg'),
+    dark: useBaseUrl('/img/why-pic/governance-of-choice-dark.svg'),
   }}
 />
 
-:::info How the layers fit together
+PIC addresses the **authorization-protocol** part of this trade-off by *removing authority selection at that layer*
+and converting it into a **verifiable proposal** that the receiving boundary can accept and use to permit the
+continuation.
 
-**OIDC** or **OID4VP** provides *identity and evidence*. **OAuth access token** establishes
-the *initial authority*. **PIC** adds **Proof of Relationship** and
-**Proof of Continuity**, carrying that authority safely across *multiple hops*
-by encoding execution into the protocol itself.
+Product and user-experience design must govern the remaining choice between **safe autonomy** and **human
+supervision**. The goal is to preserve as much freedom as can be *verified*, escalating to the user only when a safe
+continuation cannot be established.
 
-:::
+## An ontological shift
 
-Distributed systems execute across services, workloads, and tools. AI agents
-raise trust problems of their own — how to govern them, how much autonomy to
-grant — but those belong to a different layer. **With respect to authority
-propagation and authorization, AI agents are distributed systems**: authority
-created at an origin must travel across execution steps without being
-expanded, reconstructed, or mixed. PIC focuses on exactly this — and on this
-ground, the two are the same.
+PIC changes the role of delegation. Instead of delegating the authority to make an *unconstrained choice*, it allows
+the executor to **propose a continuation**. The receiving boundary then verifies whether that proposal is among the
+permitted options, and whether it preserves the required relationship with the authority and execution being
+continued.
 
-**Authority propagation is a necessary element for AI agents and distributed
-systems to work: a low-level building block on which governance sits.**
+| | Delegation alone | With PIC |
+| --- | --- | --- |
+| **The executor's act** | *"Choose which authority to use."* | *"Propose a continuation that the next boundary can verify."* |
+| **Who decides** | The executor, internally | The **receiving boundary** |
+| **What is trusted** | That selection was performed correctly | Nothing — the proposal is **verified** |
+| **What is checked** | The credential is valid and possessed | The continuation is *admissible*, *request-bound*, and *non-expansive* |
 
-The problems to solve have been classified as:
+:::info The executor may propose — the boundary decides
 
-- **[The Authority Propagation Problem](./authority-propagation.md)** — how
-  authority is created by a permissioned entity at a **specific origin** and
-  propagated, only narrowing, through a causal chain of executors.
-- **[The N+1 Unknown Executor Problem](./n-plus-1-unknown-executor-problem.md)**
-  — the temporal dimension spans **past, present, and future**: delegation is
-  not made to a known identity. Authority is emitted toward a successor that
-  does not exist yet when its predecessor acts; the successor proves it is a
-  continuation of the past, and carries the authority forward.
-- **[The N+1 Invalid State Problem](./authority-mixing.md)** — executor *n+1*
-  can judge only the state it receives. No protocol can prevent a bug inside
-  executor *n*, so it must guarantee the one thing within its reach: that *n*
-  can never hand *n+1* an **invalid state that validates** — e.g. authority
-  belonging to one lineage drawn into another. Valid is valid: the chain
-  continues — addressed today with posture, when it requires elimination in
-  the model itself.
-
-## What a Security Model Can Guarantee
-
-If an executor ignores the model and physically does something else, no
-security model can stop it — that is the nature of code and execution
-control. An executor that receives a token saying `READ` and performs
-`DELETE` is not a failure of the security model; it is a failure of the
-implementation, and no model can prevent it.
-
-What a security model does guarantee is that the **next step validates
-within the model** — and it must be correct in exactly that. Validating is
-not enough on its own: each step must also **prove to its successor a
-security state that is valid within the lineage that carries the
-authority** — so that what the next executor continues is, provably, a state
-of that lineage and not of another. This is where the temporal dimension
-matters: it makes the class of problems caused by bugs that forge
-valid-looking security states — indistinguishable to the *n+1* executor —
-**unable to exist**. Not behavioral mitigation, which only limits behavior:
-**total elimination in the model itself**.
-
-## The Ontology
-
-**Authority** defines the effects that a particular execution is entitled to
-cause. It is derived from the origin authority context and remains bounded
-by the causal continuity of the execution, rather than by the identity or
-credentials of the current executor alone.
-
-**Identity** anchors authority at its origin by establishing the immutable
-provenance principal. **Authorization** then determines whether a requested
-action is a valid continuation of that origin authority within the current
-execution, evaluating the propagated authority context, its monotonic
-restrictions, and the execution lineage rather than relying on endpoint
-identity or credential possession alone.
-
-**Governance** defines the policies under which authority may continue. It
-establishes, constrains, and revokes permissions, while PIC guarantees that
-any execution which is allowed to continue preserves provenance, origin
-identity, and monotonic authority propagation. Governance therefore
-constrains continuation; it does not create authority or reconstruct
-continuity.
-
-:::note On the name PIC
-
-In Provenance Identity Continuity, the term **Identity** refers to the
-security identity or execution identity of the permissioned entity from
-which authority is created or anchored at the origin. It does not mean that
-identity is propagated as the authorization primitive at every hop. The
-model instead shifts the authorization burden from repeatedly interpreting
-identity to verifying execution continuity: a causal lineage carrying a
-non-expansive authority context.
-
-**Provenance** denotes the causal origin and lineage of the execution,
-**Identity** denotes the authenticated permissioned origin, and
-**Continuity** denotes the preservation of authority across later hops
-without expansion. Identity and identifiers therefore remain essential for
-authentication, credential presentation, audit, accountability, and origin
-bootstrap; **Proof of Continuity** concerns the authorization continuity
-that must hold after that origin has been established.
+The receiving boundary decides whether the proposal is admissible under the applicable **policy**, **authority
+constraints**, and **verification rules**. Authority may only be *preserved* or *attenuated*, **never expanded**.
 
 :::
 
-## Authority Continuity
+## A practical illustration
 
-PIC solves the three problems with one principle: **authority is
-continuity**. Authority is created once, at the origin, by a permissioned
-entity — and exists afterwards only as the ongoing, non-expansive
-continuation of that origin. Every hop proves its causal relationship to its
-predecessor (**Proof of Relationship**); composed transitively, these
-relationships form a **Proof of Continuity** across the whole chain.
+AI agents can hold and use multiple credentials across different tasks and execution contexts. The security question
+is not only whether a credential is valid, but whether **its use is validly attributable to the execution currently
+being continued**.
 
-Under this ontology, authority cannot be re-created mid-chain, cannot expand,
-cannot be pre-bound to executors that do not exist yet, and cannot cross
-lineages. Whatever violates continuity is not blocked at runtime — it is
-simply **not a valid state of the model**.
+An agent holding credentials for two tenants, two customers, or two workflows is one incorrect association away from
+acting with authority that is entirely valid — and entirely unrelated to the request it is serving. No credential
+check detects that: both credentials are authentic, and both are legitimately held. Only a **continuation check** —
+one that binds the authority to the execution it came from — can distinguish them.
+
+## The threat model
+
+None of the above is an absolute claim. It holds under a stated perimeter: **transport is untrusted**, **execution is
+untrusted and has no required global mediator**, **executions may overlap or retain state**, the **successor may not
+exist yet**, and a receiver must be able to **reject a state that validates but does not belong to the execution being
+continued**.
+
+That perimeter — and the receiving requirement it produces, *execution-context non-mixing* — is stated in full on its
+own page.
+
+> **[Read the threat model →](./threat-model.md)**
+
+## Where the problem is classified
+
+The concerns above are treated separately in this section:
+
+- **[The Threat Model](./threat-model.md)** — the perimeter every other claim in this section is relative to: what
+  the security argument is *not* permitted to assume.
+- **[The Authority Propagation Problem](./authority-propagation.md)** — how authority is created by a permissioned
+  entity at a **specific origin** and propagated, only narrowing, through a causal chain of executors.
+- **[The N+1 Unknown Executor Problem](./n-plus-1-unknown-executor-problem.md)** — the temporal dimension: authority
+  is emitted toward a successor that *does not exist yet* when its predecessor acts.
+- **[The N+1 Invalid State Problem](./authority-mixing.md)** — executor *n+1* can judge only the state it receives,
+  so the protocol must guarantee that *n* can never hand it an **invalid state that validates**.
+
+## Conclusion
+
+PIC addresses the **authorization protocol** by requiring a *verifiable continuation* instead of relying only on the
+executor's internal authority selection. It does not claim to prove subjective intent, correct internal behavior, or
+the security of every implementation or deployment.
+
+The user experience should **maximize safe autonomy** and request human supervision only when the system cannot
+establish the correct continuation with sufficient precision.
+
+:::note Define the threat model first — then evaluate the complete system against it
+
+Whether a given architecture satisfies **Authority Continuity** is for its designers to assess. PIC makes that
+property **explicit**, and establishes it under its stated model, assumptions, and verification rules.
+
+:::
