@@ -125,9 +125,27 @@ own page.
 
 > **[Read the threat model →](./threat-model.md)**
 
-## Where the problem is classified
+## The scope, stated
 
-The concerns above are treated separately in this section:
+PIC addresses the **authorization protocol** by requiring a *verifiable continuation* instead of relying on the
+executor's internal authority selection. The boundary of that claim is part of the model, not a caveat added to it.
+
+| PIC establishes | PIC does not claim |
+| --- | --- |
+| Propagated authority is accepted only as a **verifiable continuation** of the execution it came from | That an executor's **subjective intent** can be proven |
+| Authority is **preserved or attenuated** across a hop, never expanded | That an executor's **internal behavior** is correct |
+| The **receiving boundary** decides admissibility, not the executor | That any given **implementation or deployment** is secure |
+
+:::tip Define the threat model first — then evaluate the complete system against it
+
+Whether a given architecture satisfies **Authority Continuity** is for its designers to assess. PIC makes that
+property **explicit**, and establishes it under its stated model, assumptions, and verification rules.
+
+:::
+
+## Keep reading
+
+The problems behind all of this are treated separately, in order:
 
 - **[The Threat Model](./threat-model.md)** — the perimeter every other claim in this section is relative to: what
   the security argument is *not* permitted to assume.
@@ -137,19 +155,3 @@ The concerns above are treated separately in this section:
   is emitted toward a successor that *does not exist yet* when its predecessor acts.
 - **[The N+1 Invalid State Problem](./authority-mixing.md)** — executor *n+1* can judge only the state it receives,
   so the protocol must guarantee that *n* can never hand it an **invalid state that validates**.
-
-## Conclusion
-
-PIC addresses the **authorization protocol** by requiring a *verifiable continuation* instead of relying only on the
-executor's internal authority selection. It does not claim to prove subjective intent, correct internal behavior, or
-the security of every implementation or deployment.
-
-The user experience should **maximize safe autonomy** and request human supervision only when the system cannot
-establish the correct continuation with sufficient precision.
-
-:::note Define the threat model first — then evaluate the complete system against it
-
-Whether a given architecture satisfies **Authority Continuity** is for its designers to assess. PIC makes that
-property **explicit**, and establishes it under its stated model, assumptions, and verification rules.
-
-:::

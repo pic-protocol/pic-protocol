@@ -1,6 +1,10 @@
 ---
 sidebar_position: 4
 ---
+
+import ThemedImage from '@theme/ThemedImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 # The N+1 Invalid State Problem
 
 ## Executor *n+1* Sees Only the State
@@ -55,7 +59,14 @@ wrong source*, satisfying a request with an authority the requester never had. T
 **Composition** is the sharpest instance — a bug merges two individually valid authorities into a state no origin
 ever granted:
 
-![Bug Creates a Valid Security State](/img/why-pic/bug-valid-security-state.png)
+<ThemedImage
+  alt="Two independently valid lineages are attenuated correctly, then a bug composes authority from both into one state presented to executor n+1 as a single continuation"
+  style={{width: '100%', maxWidth: '880px', display: 'block', margin: '1.75rem auto'}}
+  sources={{
+    light: useBaseUrl('/img/why-pic/bug-valid-security-state-light.svg'),
+    dark: useBaseUrl('/img/why-pic/bug-valid-security-state-dark.svg'),
+  }}
+/>
 
 Consider two concurrent lineages flowing through the same executors:
 

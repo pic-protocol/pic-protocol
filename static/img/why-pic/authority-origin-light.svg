@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 232" role="img" aria-label="A user authenticates with an identity provider, receives an OAuth access token representing the initial authority, and exchanges it for the origin PIC Context of Authority" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <marker id="aoA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9bb3aa"/>
+    </marker>
+    <marker id="aoB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#00543d"/>
+    </marker>
+  </defs>
+
+  <!-- band: already established -->
+  <rect x="16" y="56" width="584" height="116" rx="12" fill="#f7faf9" stroke="#d5e2dc" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="36" y="44" font-size="10" font-weight="700" letter-spacing="1" fill="#5b6b64">AUTHENTICATION &amp; INITIAL AUTHORITY</text>
+
+  <!-- band: PIC origin -->
+  <rect x="642" y="56" width="214" height="116" rx="12" fill="#eaf3ef" stroke="#b9d2c8" stroke-width="1.5"/>
+  <text x="662" y="44" font-size="10" font-weight="700" letter-spacing="1" fill="#00543d">PIC ORIGIN</text>
+
+  <!-- 1. user -->
+  <rect x="36" y="76" width="150" height="76" rx="10" fill="#ffffff" stroke="#d5e2dc" stroke-width="1.5"/>
+  <text x="111" y="108" text-anchor="middle" font-size="13.5" font-weight="600" fill="#16211d">User</text>
+  <text x="111" y="128" text-anchor="middle" font-size="10.5" fill="#5b6b64">or permissioned entity</text>
+
+  <line x1="192" y1="114" x2="232" y2="114" stroke="#9bb3aa" stroke-width="1.5" marker-end="url(#aoA)"/>
+  <text x="212" y="106" text-anchor="middle" font-size="10" font-style="italic" fill="#5b6b64">signs in</text>
+
+  <!-- 2. identity provider -->
+  <rect x="238" y="76" width="158" height="76" rx="10" fill="#ffffff" stroke="#d5e2dc" stroke-width="1.5"/>
+  <text x="317" y="108" text-anchor="middle" font-size="13.5" font-weight="600" fill="#16211d">Identity Provider</text>
+  <text x="317" y="128" text-anchor="middle" font-size="10.5" fill="#5b6b64">OIDC / OID4VP</text>
+
+  <line x1="402" y1="114" x2="438" y2="114" stroke="#9bb3aa" stroke-width="1.5" marker-end="url(#aoA)"/>
+  <text x="420" y="106" text-anchor="middle" font-size="10" font-style="italic" fill="#5b6b64">issues</text>
+
+  <!-- 3. access token -->
+  <rect x="444" y="76" width="134" height="76" rx="10" fill="#ffffff" stroke="#d5e2dc" stroke-width="1.5"/>
+  <text x="511" y="108" text-anchor="middle" font-size="13.5" font-weight="600" fill="#16211d">Access token</text>
+  <text x="511" y="128" text-anchor="middle" font-size="10.5" fill="#5b6b64">initial authority</text>
+
+  <line x1="584" y1="114" x2="656" y2="114" stroke="#00543d" stroke-width="2" marker-end="url(#aoB)"/>
+  <text x="620" y="106" text-anchor="middle" font-size="10" font-style="italic" fill="#00543d">exchange</text>
+
+  <!-- 4. PCA -->
+  <rect x="662" y="76" width="174" height="76" rx="10" fill="#ffffff" stroke="#00543d" stroke-width="2"/>
+  <text x="749" y="108" text-anchor="middle" font-size="13.5" font-weight="700" fill="#00543d">PCA&#8320;</text>
+  <text x="749" y="128" text-anchor="middle" font-size="10.5" fill="#5b6b64">origin Context of Authority</text>
+
+  <!-- footer -->
+  <line x1="24" y1="196" x2="856" y2="196" stroke="#d5e2dc" stroke-width="1"/>
+  <text x="440" y="216" text-anchor="middle" font-size="12.5" fill="#5b6b64">Authority propagation starts at <tspan font-weight="700" fill="#00543d">PCA&#8320;</tspan> &#8212; from here it may only narrow, never expand.</text>
+</svg>

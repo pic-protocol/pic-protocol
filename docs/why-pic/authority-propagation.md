@@ -1,7 +1,35 @@
 ---
 sidebar_position: 2
 ---
+
+import ThemedImage from '@theme/ThemedImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 # The Authority Propagation Problem
+
+## Where this starts
+
+Authentication and initial authorization have already happened. A user signs in with an **Identity Provider** through
+**OIDC** — or presents Verifiable Credentials through **OID4VP** — and receives an **OAuth access token**. That token
+represents the **initial authority**: what the permissioned entity is entitled to, derived from permissions, policy,
+consent, and context.
+
+PIC does not replace any of that. It begins at the point where the access token is exchanged, through the **OAuth 2.0
+Token Exchange** profile, for a **PCA** — the origin PIC Context of Authority.
+
+<ThemedImage
+  alt="A user signs in with an identity provider, receives an OAuth access token carrying the initial authority, and exchanges it for the origin PIC Context of Authority"
+  style={{width: '100%', maxWidth: '880px', display: 'block', margin: '1.75rem auto'}}
+  sources={{
+    light: useBaseUrl('/img/why-pic/authority-origin-light.svg'),
+    dark: useBaseUrl('/img/why-pic/authority-origin-dark.svg'),
+  }}
+/>
+
+Everything on this page happens **after** that point. The question is no longer how authority is established — it is
+how the authority already established travels.
+
+## The problem
 
 In distributed systems and AI agents, execution does not stay in one place:
 a request crosses services, workloads, tools, and downstream calls. The
@@ -33,7 +61,14 @@ execution and bounds everything that follows. The entity may act directly or
 through delegation; in both cases, the origin is the entity whose permissions
 bound the execution.
 
-![Authority Propagation](/img/why-pic/authority-propagation.png)
+<ThemedImage
+  alt="A permissioned entity forms an intent that creates the origin authority context, carried as a PCA across the executor chain and narrowing at every step"
+  style={{width: '100%', maxWidth: '880px', display: 'block', margin: '1.75rem auto'}}
+  sources={{
+    light: useBaseUrl('/img/why-pic/authority-propagation-light.svg'),
+    dark: useBaseUrl('/img/why-pic/authority-propagation-dark.svg'),
+  }}
+/>
 
 ## Execution Chain
 
