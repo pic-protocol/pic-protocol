@@ -29,11 +29,16 @@ kind**; implementers and users assume all risks of their use. For the complete p
 
 ## Current specification (0.2 draft)
 
+The current profile identifier is
+[`https://pic-protocol.org/profiles/0.2`](/profiles/0.2). It redirects to the
+rendered PIC 0.2 specification entry point.
+
 Each document is available as rendered **HTML**, plain **text**, and RFC
 **XML**; the **Source** column links to the authoritative Markdown.
 
 | Document | HTML | Text | XML | Source |
 | --- | --- | --- | --- | --- |
+| PIC Specification Set | [HTML](/profiles/0.2) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md) |
 | PIC Prover and Verifier | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-prover-verifier-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-prover-verifier-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-prover-verifier-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-prover-verifier-spec.md) |
 | PIC Revocation | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-revocation-spec.md) |
 | PIC Sandboxed Execution | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-lineage-guardrail-spec.md) |
@@ -44,7 +49,7 @@ Each document is available as rendered **HTML**, plain **text**, and RFC
 
 | Version | Status | Description | Reference |
 | --- | --- | --- | --- |
-| 0.2 | *Draft — current* | Specification set: entry point with Documents table, Prover and Verifier, Revocation, Sandboxed Execution, Architecture and Deployment, and shared Legal Appendices | [pic-spec 0.2](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md) |
+| 0.2 | *Draft — current* | Specification set: entry point with Documents table, Prover and Verifier, Revocation, Sandboxed Execution, Architecture and Deployment, and shared Legal Appendices | [pic-spec 0.2](/profiles/0.2) |
 | 0.1 | *Draft — superseded* | Initial generic specification draft (single document) | [pic-spec 0.1](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.1/pic-spec.md) |
 
 All releases are **drafts**: expect clarifications, additional normative
