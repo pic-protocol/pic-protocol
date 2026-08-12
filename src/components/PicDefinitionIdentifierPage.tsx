@@ -36,7 +36,7 @@ export function PicDefinitionIdentifierContent({
   return (
     <main className={`container margin-vert--xl${className ? ` ${className}` : ""}`}>
       <div className="row">
-        <div className="col col--8 col--offset-2">
+        <div className="col col--8 col--offset-2 text--center">
           <Heading as="h1" className="hero__title">
             {title}
           </Heading>
@@ -53,11 +53,11 @@ export function PicDefinitionIdentifierContent({
             site specification index.
           </p>
 
-          <pre>
+          <pre className="pic-identifier-box">
             <code>{identifier}</code>
           </pre>
 
-          <div className="margin-top--lg">
+          <div className="pic-identifier-actions margin-top--lg">
             <Link className="button button--primary" to={PIC_SPECIFICATION_URL}>
               Open specification index
             </Link>
