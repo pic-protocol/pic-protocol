@@ -562,7 +562,7 @@ async function runGR(){
   await logLine('<span class="dim">enforcement function:</span> <span class="ok">permit</span> for this exact crossing <span class="dim">(implementation-neutral; policy is just one input)</span>');
   await movePkt("guardrail","agentA",650); linkFlash("agentA","guardrail"); tileState("guardrail","pass"); setSub("guardrail","permit · hop-specific");
   await logLine('<span class="dim">⟵ the guardrail produces the outer advancement proposal</span> — enforcementResult: permit, bound to the collection commitment');
-  await logLine('<span class="dim">agent A → pic-x</span> · candidate outer <span class="k">PIC Token JWT</span> with one Transition binding collection commitment + permit',260);
+  await logLine('<span class="dim">agent A → pic-x</span> · submits the guardrail-produced candidate outer <span class="k">PIC Token JWT</span> with one Transition binding collection commitment + permit',260);
   await movePkt("agentA","picx",520); linkFlash("agentA","picx");
   await logLine('<span class="ok">✓</span> PIC-X settles the ordinary outer continuation — valid ENFORCE authority, PoR, collection binding, and bound permit → settled outer <span class="k">PIC Token JWT 1</span>');
   await movePkt("picx","agentA",520); tileState("agentA","pass"); setSub("agentA","settled · bound permit");
