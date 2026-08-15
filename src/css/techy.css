@@ -209,6 +209,97 @@
   opacity: 1;
 }
 
+/* ── PIC-X article rail ─────────────────────────────────────── */
+.picx-article-rail {
+  scrollbar-color: rgba(37, 194, 160, 0.7) rgba(0, 0, 0, 0.08);
+  scrollbar-width: thin;
+}
+
+.picx-article-rail::-webkit-scrollbar {
+  height: 10px;
+}
+
+.picx-article-rail::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.picx-article-rail::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #25c2a0, #2f80ed);
+  border-radius: 999px;
+}
+
+.picx-article-card {
+  transform: translateZ(0);
+}
+
+.picx-article-card:hover,
+.picx-article-card:focus-visible {
+  box-shadow:
+    0 0 0 1px rgba(37, 194, 160, 0.32),
+    0 24px 70px rgba(5, 35, 27, 0.12);
+}
+
+[data-theme="dark"] .picx-article-card:hover,
+[data-theme="dark"] .picx-article-card:focus-visible {
+  box-shadow:
+    0 0 0 1px rgba(37, 194, 160, 0.4),
+    0 26px 80px rgba(0, 0, 0, 0.34);
+}
+
+.picx-article-banner {
+  position: relative;
+  min-height: 220px;
+  padding: 18px;
+  overflow: hidden;
+  background-color: #07110f;
+}
+
+.picx-article-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.65;
+}
+
+.picx-article-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 28%),
+    linear-gradient(90deg, transparent 56%, rgba(255, 255, 255, 0.13) 56%, transparent 57%),
+    linear-gradient(160deg, transparent 52%, rgba(0, 0, 0, 0.36));
+}
+
+.picx-article-banner--architecture {
+  background:
+    linear-gradient(140deg, #06251f 0%, #0b564a 48%, #12336f 100%);
+}
+
+.picx-article-banner--exchange {
+  background:
+    linear-gradient(140deg, #141729 0%, #2d6a69 45%, #1b8f72 100%);
+}
+
+.picx-article-banner--discovery {
+  background:
+    linear-gradient(140deg, #111827 0%, #38415f 45%, #008f8c 100%);
+}
+
+.picx-article-banner--artifacts {
+  background:
+    linear-gradient(140deg, #171321 0%, #534379 44%, #1c7f89 100%);
+}
+
+.picx-article-banner--walkthrough {
+  background:
+    linear-gradient(140deg, #10221d 0%, #496735 42%, #086b86 100%);
+}
+
 /* ── Crosshair decoration ────────────────────────────────────── */
 .crosshair {
   position: relative;

@@ -12,13 +12,14 @@ const NAV_SECTIONS = [
     title: "Spec & Protocol",
     links: [
       { title: "Specification", href: "/specification" },
-      { title: "Protocol", href: "/protocol" },
+      { title: "Protocols", href: "/specification/protocols" },
     ],
   },
   {
     title: "Implementation",
     links: [
-      { title: "Implementations", href: "/implementations" },
+      { title: "PIC-X", href: "/pic-x" },
+      { title: "Implementations", href: "/specification/implementations" },
       {
         title: "Prototyping",
         href: "https://github.com/pic-protocol/pic-prototyping",
@@ -32,6 +33,8 @@ const NAV_SECTIONS = [
     ],
   },
 ];
+
+const isExternalHref = (href: string) => /^https?:\/\//.test(href);
 
 const GithubStarIcon = () => (
   <svg
@@ -70,6 +73,8 @@ export const Footer = () => {
                       <a
                         className="text-black/70 dark:text-white/70 hover:text-[#25c2a0] dark:hover:text-[#25c2a0] text-sm sm:text-[15px] font-normal leading-[1.4] no-underline transition-colors duration-200"
                         href={link.href}
+                        rel={isExternalHref(link.href) ? "noopener noreferrer" : undefined}
+                        target={isExternalHref(link.href) ? "_blank" : undefined}
                       >
                         {link.title}
                       </a>

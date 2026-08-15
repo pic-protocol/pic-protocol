@@ -4,120 +4,90 @@ sidebar_position: 2
 
 # PIC Lean Formal Proof
 
-The definitions and theorems of the paper are formalized and
-**machine-checked in Lean 4**. The full project lives in the PIC Model
-repository:
-[`pic-model/draft/0.1/pic-model-math/pic-lean`](https://github.com/ngallo/pic-model/tree/main/draft/0.1/pic-model-math/pic-lean).
+The PIC paper is formalized in **Lean 4**, a proof assistant whose kernel
+checks every theorem mechanically. The project lives in:
 
-The formalization intentionally uses **only Lean core** — no Mathlib
-dependency. It contains **no `sorry` and no added axioms**: every result is
-fully proved from Lean's kernel logic. As in the paper, the single-hop
-relationship evidence `PoR` is abstract (its concrete, e.g. cryptographic,
-construction is out of scope), so it enters as a parameter, mirroring the
-paper's unforgeability assumption. The project does not prove that a
-concrete cryptographic implementation of `PoR` is secure.
+[github.com/ngallo/pic-model/.../pic-lean](https://github.com/ngallo/pic-model/tree/main/draft/0.1/pic-model-math/pic-lean)
 
-## What the proofs say
+The Lean development uses only Lean core. It has no Mathlib dependency, no
+`sorry`, and no added axioms. A successful `lake build` means Lean accepted
+the definitions and proofs from its kernel logic.
 
-The core of the model fits in three declarations. A transition between
-execution steps is valid iff it is both causally related (`PoR`) and
-non-expansive (`C₁ ⊆ C₀`):
+## What is Lean?
 
-```lean
-/-- **Definition (Valid transition).** A transition is valid iff it is both
-causally related (`PoR`) and non-expansive (`C₁ ⊆ C₀`). -/
-def ValidTransition {Step PrivilegeType : Type}
-    (PoR : Step → Step → Prop)
-    (s₀ s₁ : Step)
-    (C₀ C₁ : AuthorityContext PrivilegeType) : Prop :=
-  PoR s₀ s₁ ∧ C₁ ⊆ₚ C₀
+[Lean](https://lean-lang.org/) is an open-source programming language and
+proof assistant. In this page, it is used as a machine checker for the PIC
+mathematical model: definitions and theorems are written in Lean, and Lean's
+small trusted kernel verifies that each proof is valid.
+
+That matters because the result is not just an argument written in prose. The
+proof object is checked by software designed specifically to reject invalid
+formal reasoning.
+
+## What this proves
+
+Lean proves the **abstract PIC model**: arbitrary privilege sets, arbitrary
+finite execution chains, and theorems about what can and cannot happen in a
+valid continuity chain.
+
+The central formal shape is:
+
+```text
+Valid transition
+= Proof of Relationship between adjacent steps
+  AND successor authority is no larger than predecessor authority
+
+Valid(s_i, C_i, s_{i+1}, C_{i+1})
+  iff PoR(s_i, s_{i+1}) and C_{i+1} subset C_i
 ```
 
-Proof of Continuity holds for a chain iff **every adjacent transition is
-valid** — continuity is the transitive composition of relationships:
+Then Proof of Continuity is the whole chain:
 
-```lean
-/-- **Definition (Proof of Continuity).** `PoC` holds for a chain iff every
-adjacent transition is valid: causally related via `PoR` and non-expansive. -/
-def PoC {Step PrivilegeType : Type}
-    (PoR : Step → Step → Prop)
-    (π : Chain Step PrivilegeType) : Prop :=
-  ∀ i, i < π.length →
-    ValidTransition PoR (π.step i) (π.step (i + 1)) (π.ctx i) (π.ctx (i + 1))
+```text
+PoC(chain)
+  iff every adjacent transition in the chain is valid
 ```
 
-From these two conditions, PIC Safety follows: on a valid continuity chain,
-**no hop can exercise a privilege absent from the origin authority
-context** — a privilege that was not granted at the origin cannot appear
-later in the same valid execution chain:
+From that, Lean proves the core safety result:
 
-```lean
-/-- **Theorem (PIC Safety), chain form.** On a valid continuity chain, no hop
-can exercise a privilege absent from the origin authority context. -/
-theorem picSafety {Step PrivilegeType : Type}
-    {PoR : Step → Step → Prop}
-    {π : Chain Step PrivilegeType}
-    (h : PoC PoR π)
-    (privilege : PrivilegeType)
-    (hAbsent : ¬ π.ctx 0 privilege) :
-    ∀ k, k ≤ π.length → ¬ π.ctx k privilege
+```text
+If PoC(chain), then C_n subset C_0.
 ```
 
-The same development also proves the negative results — a possession-based
-policy **admits authority mixing** and provably **cannot individuate
-occurrences** that share the same privilege but arise from different
-lineages — and the headline corollary: **the confused deputy is impossible
-under PIC** (`confusedDeputyImpossible`).
+In plain language: if a privilege was not present at the origin, it cannot
+appear later in the same valid PIC lineage.
 
-## Paper ↔ Lean mapping
+## Proofs in plain language
 
-| Paper | Lean declaration | File |
-| --- | --- | --- |
-| Privilege `(o, r) ∈ O × R` | `Privilege` | `Basic.lean` |
-| Authority context `C ⊆ O × R` | `AuthorityContext`, `⊆ₚ` | `Basic.lean` |
-| **Thm (PIC Safety)** | `authorityBoundedByOrigin`, `noPrivilegeEscalation` (linear form); `picSafety` (chain form) | `Basic.lean`, `Chain.lean` |
-| **Def (Proof of Relationship)** | parameter `PoR : Step → Step → Prop`; transitive composition `CausalReach` | `Chain.lean` |
-| **Def (Valid transition)** | `ValidTransition` | `Chain.lean` |
-| **Def (Proof of Continuity)** | `PoC` | `Chain.lean` |
-| **Lem (Continuity implies origin binding)** | `continuityOriginBinding` | `Chain.lean` |
-| Authorization rule `⋂ᵢ Cᵢ = C_n` | `authorizationRule`; monotone-decreasing chain `ctxAntitone`; irreversible drop `droppedAuthorityIsLost` | `Chain.lean` |
-| PoP semantics, selection function `σ` | `PopAuthorized` | `Possession.lean` |
-| **Thm (PoP admits authority mixing)** | `popAdmitsAuthorityMixing` | `Possession.lean` |
-| Event `e = (o, r, ℓ) ∈ O × R × 𝓛`, projection `p` | `Event`, `Event.project` | `Projection.lean` |
-| **Def (Possession policy)** | `PossessionBased` | `Projection.lean` |
-| **Thm (Lineage-invariant policies cannot individuate occurrences)** | `cannotIndividuate` | `Projection.lean` |
-| **Thm (Any resolution reintroduces continuity)** | `anyResolutionReintroducesContinuity`, `lineageDiscriminatorExists` | `Projection.lean` |
-| **Def (Lineage-invariant authorization)** | `LineageInvariant` (+ equivalence with `PossessionBased`) | `TradeOff.lean` |
-| **Thm (Possession–delegation–safety trade-off)** | `possessionDelegationSafetyTradeOff` | `TradeOff.lean` |
-| **Cor (Continuity restores confused-deputy safety)** | `continuityRestoresSafety` | `TradeOff.lean` |
-| **Def (Origin-bounded authority)** | `OriginBounded`, `poc_originBounded` | `ConfusedDeputy.lean` |
-| **Def (Open passthrough)** | `OpenPassthrough`, `openPassthroughImpossible` | `ConfusedDeputy.lean` |
-| **Def 1 (Confused deputy)** | `ConfusedDeputy` (restated inside a lineage) | `ConfusedDeputy.lean` |
-| **Thm (Confused deputy is impossible under PIC)** | `confusedDeputyImpossible` | `ConfusedDeputy.lean` |
-| Heterogeneous operation spaces, `𝒯_{i→i+1}` | `Translation`, `MonotoneTranslation`, `composedTranslation`, `heterogeneousSafety` | `Translation.lean` |
+| Lean result | What it means |
+| --- | --- |
+| `picSafety` / `authorityBoundedByOrigin` | Downstream authority is bounded by origin authority. No hop can gain a privilege absent from `C0`. |
+| `continuityOriginBinding` | The last hop is linked back to the origin through the composed chain of single-hop relationships. |
+| `authorizationRule` | On a valid decreasing chain, the authority available at the end is exactly the final carried context. |
+| `droppedAuthorityIsLost` | Once a privilege is removed on a branch, it cannot reappear later on that branch. |
+| `popAdmitsAuthorityMixing` | Possession-only authorization permits an executor to choose unrelated authority it happens to hold. |
+| `cannotIndividuate` | A possession-based policy cannot distinguish two uses of the same privilege that come from different lineages. |
+| `anyResolutionReintroducesContinuity` | If a policy can distinguish those two uses, it is reading lineage information, so it has become continuity-aware. |
+| `possessionDelegationSafetyTradeOff` | A system cannot simultaneously keep lineage-invariant possession, allow authority mixing, and guarantee confused-deputy safety. |
+| `confusedDeputyImpossible` | In a valid PIC execution, the confused-deputy condition is not representable as valid model behavior. |
+| `heterogeneousSafety` | If systems use different operation vocabularies, safety is relative to monotone policy translations between them. |
+| `concreteAcceptance_implies_PoC` | A concrete verifier that satisfies the required relationship checks refines to the abstract `PoC` model. |
 
-`Main.lean` instantiates the results on the paper's running examples: the
-`C₀ = {(convert, doc)}` chain where `(write, doc)` can never be authorized
-(`writeNeverAuthorized`), the impossibility of the confused deputy on that
-chain (`demoNoConfusedDeputy`), and the forbidden pair of the projection
-section — a possession-based policy provably cannot separate the authorized
-use from the confused use (`possessionCannotSeparate`), while any policy
-that does separate them is provably not possession-based
-(`separationRequiresLineage`).
+## What Lean does not claim
 
-## Verify it yourself
+Lean proves the mathematical model and the logical shape of the refinement.
+It does not prove the cryptographic security of a concrete SD-JWT issuer,
+runtime, COSE encoding, key-management deployment, or attestation system.
+Those are implementation assumptions and protocol-verification concerns.
 
-Install [`elan`](https://leanprover-community.github.io/get_started.html),
-the Lean version manager, and open a terminal in the `pic-lean` folder. The
-`lean-toolchain` file selects Lean 4.32.0 automatically.
+## Verify it
 
 ```bash
+cd draft/0.1/pic-model-math/pic-lean
 lake build
 ```
 
-A successful build means **Lean's kernel accepted all proofs**. To run the
-demonstration executable, which prints the list of verified results
-(paper → Lean names):
+To print the demonstration mapping from paper results to Lean declarations:
 
 ```bash
 lake exe pic_verification

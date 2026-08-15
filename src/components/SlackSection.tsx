@@ -30,6 +30,7 @@ export const SlackSection = () => {
           <a
             href="https://join.slack.com/t/picprotocol/shared_invite/zt-3wpt1lro7-poD6BSrcoVbVnyzqX1oxYQ"
             target="_blank"
+            rel="noopener noreferrer"
             className="text-center ml-auto md:ml-0 mr-auto leading-none py-3.5 bg-white hover:bg-white/90 hover:text-black/80 text-black tracking-[-0.48px] cursor-pointer px-6 border border-white/20 rounded-full text-base font-semibold transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)]"
           >
             Join Community →

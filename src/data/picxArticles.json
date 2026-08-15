@@ -1,0 +1,67 @@
+[
+  {
+    "id": "from-spec-to-arch",
+    "title": "Designing PIC-X: From Specification to Architecture to Code",
+    "url": "https://www.ngallo.it/blog/2026-08-01/pic-x-from-spec-to-arch/",
+    "date": "2026-08-01",
+    "author": "Nicola Gallo",
+    "summary": "Introduces PIC-X as the first open-source implementation component in the PIC software ecosystem, following the project from specification to architecture and code.",
+    "bannerKicker": "01 / Architecture",
+    "bannerTitle": "Spec to architecture to code",
+    "bannerFlow": ["spec", "trust plane", "runtime"],
+    "tags": ["Architecture", "Open source"],
+    "variant": "architecture"
+  },
+  {
+    "id": "exchanging-token-to-pca",
+    "title": "Designing PIC-X: Deriving an Initial PIC Context of Authority",
+    "url": "https://www.ngallo.it/blog/2026-08-01/pic-x-exchanging-token-to-pca/",
+    "date": "2026-08-01",
+    "author": "Nicola Gallo",
+    "summary": "Defines the initial continuity exchange: validate OAuth authority, validate the initial proposal, derive PCA, issue PIC COSE artifacts, and return the first PIC Token JWT.",
+    "bannerKicker": "02 / Exchange",
+    "bannerTitle": "OAuth authority into PCA",
+    "bannerFlow": ["oauth", "pca 0", "pic token"],
+    "tags": ["PCA", "Token exchange"],
+    "variant": "exchange"
+  },
+  {
+    "id": "well-known-config",
+    "title": "Designing PIC-X: Exposing Configuration through .well-known/pic-x-configuration",
+    "url": "https://www.ngallo.it/blog/2026-08-01/pic-x-well-known-config/",
+    "date": "2026-08-01",
+    "author": "Nicola Gallo",
+    "summary": "Explains PIC-X discovery: server control-plane metadata, realm issuer discovery, endpoints, JWKS, capabilities, and the multi-realm trust model.",
+    "bannerKicker": "03 / Discovery",
+    "bannerTitle": ".well-known realm metadata",
+    "bannerFlow": ["server", "realm", "jwks"],
+    "tags": ["Discovery", "Realms"],
+    "variant": "discovery"
+  },
+  {
+    "id": "token-types-jwts",
+    "title": "Designing PIC-X: PIC Token JWT and COSE Artifacts",
+    "url": "https://www.ngallo.it/blog/2026-08-11/pic-x-token-types-jwts/",
+    "date": "2026-08-11",
+    "author": "Nicola Gallo",
+    "summary": "Defines the PIC Token JWT and native COSE artifacts used by PIC Profile 0.2: PIC PCA COSE, PIC Continuity COSE, and PIC Continuity Transition COSE.",
+    "bannerKicker": "04 / Artifacts",
+    "bannerTitle": "JWT envelope, COSE core",
+    "bannerFlow": ["jwt", "pca cose", "continuity"],
+    "tags": ["JWT", "COSE"],
+    "variant": "artifacts"
+  },
+  {
+    "id": "centralized-token-exchange",
+    "title": "Designing PIC-X: Centralized Token Exchange End to End",
+    "url": "https://www.ngallo.it/blog/2026-08-14/pic-x-centralized-token-exchange/",
+    "date": "2026-08-14",
+    "author": "Nicola Gallo",
+    "summary": "Shows a complete centralized PIC Token Exchange flow from OAuth authority to PIC Token JWT 0, through continuity advancement, to the final attenuated authority state.",
+    "bannerKicker": "05 / Walkthrough",
+    "bannerTitle": "End-to-end attenuation flow",
+    "bannerFlow": ["pca 0", "pca 1", "pca 2"],
+    "tags": ["Walkthrough", "Continuity"],
+    "variant": "walkthrough"
+  }
+]

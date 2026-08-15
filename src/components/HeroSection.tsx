@@ -36,10 +36,10 @@ export const HeroSection = () => {
                     Why PIC
                   </Link>
                   <Link
-                    href="/specification"
+                    href="/pic-x"
                     className="pt-3.5 pb-3 text-center md:text-start leading-normal dark:bg-white dark:hover:bg-white/80 dark:hover:text-black/80 dark:text-black tracking-[-0.48px] cursor-pointer px-6 border hover:border-[#EDEDED]/75 border-[#EDEDED] rounded-full text-black hover:text-black/60 text-base font-semibold"
                   >
-                    Spec
+                    PIC-X
                   </Link>
                 </div>
               </div>
