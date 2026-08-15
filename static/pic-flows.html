@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PIC Flows</title>
+<meta name="description" content="A live, faithful walkthrough of PIC Profile 0.2: an OAuth token exchanged into authority continuity — PIC Token JWT, PIC Continuity COSE, PIC Continuity Transition COSE — and the dropped privilege that can never come back." />
+<style>
+  :root{
+    --bg:#f4f7f6; --panel:#ffffff; --panel2:#eef3f1; --ink:#0d1a17; --muted:#5a6b66;
+    --line:#d8e1de; --accent:#0f9d76; --accent-2:#0b7f5f; --amber:#a9690a; --reject:#cf2f56;
+    --violet:#6d5bd0; --chip:#e6efec; --chip-ink:#0b6b52; --glow:rgba(15,157,118,.20);
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --r:10px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0a0f0e; --panel:#111917; --panel2:#0d1413; --ink:#e8f1ee; --muted:#8aa39c;
+      --line:#213029; --accent:#2fd8a4; --accent-2:#48e6b4; --amber:#f0a339; --reject:#f6537a;
+      --violet:#9a8cf0; --chip:#14211e; --chip-ink:#6fe6c0; --glow:rgba(47,216,164,.16);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f7f6; --panel:#ffffff; --panel2:#eef3f1; --ink:#0d1a17; --muted:#5a6b66;
+    --line:#d8e1de; --accent:#0f9d76; --accent-2:#0b7f5f; --amber:#a9690a; --reject:#cf2f56;
+    --violet:#6d5bd0; --chip:#e6efec; --chip-ink:#0b6b52; --glow:rgba(15,157,118,.20);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0a0f0e; --panel:#111917; --panel2:#0d1413; --ink:#e8f1ee; --muted:#8aa39c;
+    --line:#213029; --accent:#2fd8a4; --accent-2:#48e6b4; --amber:#f0a339; --reject:#f6537a;
+    --violet:#9a8cf0; --chip:#14211e; --chip-ink:#6fe6c0; --glow:rgba(47,216,164,.16);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:clamp(16px,3vw,40px)}
+  .wrap{max-width:1680px;width:84vw;margin:0 auto}
+  @media (max-width:920px){.wrap{width:auto}}
+  a{color:var(--accent-2)}
+  .back{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12.5px;color:var(--muted);text-decoration:none;margin-bottom:20px;padding:6px 11px;border:1px solid var(--line);border-radius:999px}
+  .back:hover{color:var(--accent-2);border-color:var(--accent)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-2);margin:0 0 10px}
+  h1{font-family:var(--mono);font-weight:600;font-size:clamp(26px,4.4vw,40px);letter-spacing:-.01em;margin:0 0 10px;text-wrap:balance}
+  .lede{max-width:64ch;color:var(--muted);margin:0 0 26px;font-size:clamp(15px,1.6vw,17px)}
+  .lede b{color:var(--ink);font-weight:600}
+
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px;border-bottom:1px solid var(--line)}
+  .tab{font-family:var(--mono);font-size:13px;color:var(--muted);background:transparent;border:0;border-bottom:2px solid transparent;padding:11px 14px 12px;cursor:pointer;display:flex;gap:9px;align-items:center}
+  .tab .n{font-size:11px;opacity:.7;font-variant-numeric:tabular-nums}
+  .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+  .tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+
+  .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;align-items:start}
+  .grid>*{min-width:0}
+  @media (max-width:920px){.grid{grid-template-columns:1fr}}
+
+  .stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 20px}
+  .stage h2{font-family:var(--mono);font-size:13px;font-weight:600;margin:0 0 4px}
+  .stage .sub{color:var(--muted);font-size:13.5px;margin:0 0 16px;max-width:70ch}
+
+  .track{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:6px 2px 12px}
+  .node{flex:1 0 168px;min-width:168px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);padding:12px;cursor:pointer;position:relative;transition:border-color .18s,box-shadow .18s,transform .18s}
+  .node::after{content:"{…}";position:absolute;top:9px;right:10px;font-family:var(--mono);font-size:10.5px;color:var(--muted);opacity:.5;transition:opacity .15s,color .15s;pointer-events:none}
+  .node:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 10px 24px -14px var(--glow)}
+  .node:hover::after,.node:focus-visible::after{opacity:1;color:var(--accent-2)}
+  .node.sel::after{opacity:1;color:var(--accent-2)}
+  @media (prefers-reduced-motion:reduce){.node:hover{transform:none}}
+  .node.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+  .node.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow),0 6px 20px -8px var(--glow)}
+  .node.pass{border-color:var(--accent)}
+  .node.fail{border-color:var(--reject);box-shadow:0 0 0 3px rgba(207,47,86,.18)}
+  .node.warn{border-color:var(--amber);box-shadow:0 0 0 3px rgba(169,105,10,.15)}
+  .node:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .node .tag{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.03em;padding-right:32px}
+  .node .who{font-family:var(--mono);font-size:12.5px;font-weight:600;margin:3px 0 9px;color:var(--ink);overflow-wrap:break-word}
+  .node .who small{display:block;color:var(--muted);font-weight:400;font-size:10.5px;margin-top:1px;overflow-wrap:anywhere}
+  .chips{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
+  .chip{font-family:var(--mono);font-size:10.5px;background:var(--chip);color:var(--chip-ink);border-radius:9px;padding:2px 8px;max-width:100%;overflow-wrap:anywhere;line-height:1.4;text-align:left}
+  .chip.drop{background:transparent;color:var(--muted);text-decoration:line-through;opacity:.6;border:1px dashed var(--line)}
+  .chip.add{background:transparent;color:var(--reject);border:1px solid var(--reject)}
+  .chip.meta{background:transparent;color:var(--muted);border:1px solid var(--line)}
+
+  .conn{flex:0 0 68px;min-width:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;padding:0 4px}
+  .conn .line{height:2px;width:100%;background:var(--line)}
+  .conn.lit .line{background:var(--accent)}
+  .conn .lab{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.03em;text-align:center;line-height:1.25;width:100%;overflow-wrap:break-word}
+  .conn.lit .lab{color:var(--accent-2)}
+  .pulse{position:absolute;top:50%;left:0;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px 2px var(--glow);transform:translate(-50%,-50%);opacity:0}
+  .conn.flow .pulse{animation:travel 720ms ease forwards}
+  @keyframes travel{0%{left:0;opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
+
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px}
+  .btn{font-family:var(--mono);font-size:13px;font-weight:600;color:#04140f;background:var(--accent);border:0;border-radius:8px;padding:10px 16px;cursor:pointer;transition:filter .15s,opacity .15s}
+  .btn:hover{filter:brightness(1.06)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .seg button{font-family:var(--mono);font-size:12px;color:var(--muted);background:transparent;border:0;padding:9px 13px;cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--panel2);color:var(--ink)}
+  .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+  .checks{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+  .checks .ct{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  .check{display:flex;gap:10px;align-items:flex-start;padding:5px 0;opacity:.4;transition:opacity .2s}
+  .check.on{opacity:1}
+  .check .mk{flex:0 0 18px;height:18px;border-radius:50%;border:1.5px solid var(--line);margin-top:1px;display:grid;place-items:center;font-size:11px;font-family:var(--mono);color:var(--muted)}
+  .check.ok .mk{border-color:var(--accent);color:var(--accent)}
+  .check.bad .mk{border-color:var(--reject);color:var(--reject)}
+  .check .lbl{font-family:var(--mono);font-size:12.5px}
+  .check .lbl small{display:block;color:var(--muted);font-family:var(--sans);font-size:12px;margin-top:1px}
+  .check.bad .lbl small{color:var(--reject)}
+
+  .verdict{margin-top:16px;border-radius:var(--r);padding:13px 15px;font-size:14px;display:none}
+  .verdict.show{display:block}
+  .verdict.ok{background:var(--glow);border:1px solid var(--accent)}
+  .verdict.bad{background:rgba(207,47,86,.10);border:1px solid var(--reject)}
+  .verdict.warn{background:rgba(169,105,10,.12);border:1px solid var(--amber)}
+  .verdict b{font-family:var(--mono)}
+  @media (prefers-color-scheme:dark){.verdict.bad{background:rgba(246,83,122,.1)}.verdict.warn{background:rgba(240,163,57,.12)}}
+
+  .insp{position:sticky;top:16px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .insp .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;border-bottom:1px solid var(--line)}
+  .insp .hd .t{font-family:var(--mono);font-size:12.5px;font-weight:600}
+  .insp .hd .t small{color:var(--muted);font-weight:400}
+  .badge{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:999px;background:var(--chip);color:var(--chip-ink);white-space:nowrap}
+  .badge.origin{background:transparent;border:1px solid var(--line);color:var(--muted)}
+  .badge.bad{background:transparent;border:1px solid var(--reject);color:var(--reject)}
+  pre{margin:0;max-height:62vh;overflow:auto;padding:14px 15px;font-family:var(--mono);font-size:12px;line-height:1.6;background:var(--panel);transition:opacity .12s}
+  pre.swap{opacity:0}
+  .views{padding:12px 15px 2px;display:none}
+  .seg2{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .seg2 button{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:transparent;border:0;border-right:1px solid var(--line);padding:7px 13px;cursor:pointer;transition:background .15s,color .15s}
+  .seg2 button:last-child{border-right:0}
+  .seg2 button:hover{color:var(--ink)}
+  .seg2 button[aria-pressed="true"]{background:var(--glow);color:var(--ink)}
+  .seg2 button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+  .j-key{color:var(--accent-2)} .j-str{color:var(--ink)} .j-num{color:var(--amber)} .j-punc{color:var(--muted)}
+  .j-hl{background:var(--glow);border-radius:4px;padding:0 3px;margin:0 -3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .j-bad{background:rgba(207,47,86,.18);border-radius:4px;padding:0 3px}
+  @media (prefers-color-scheme:dark){.j-bad{background:rgba(246,83,122,.2)}}
+  .insp .ft{padding:11px 15px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:9px;height:9px;border-radius:50%}
+  .foot{margin-top:26px;color:var(--muted);font-size:12.5px}
+  .foot code{font-family:var(--mono);color:var(--ink);background:var(--panel2);padding:1px 6px;border-radius:5px}
+  .foot p{margin:6px 0}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <a class="back" href="/pic-in-action.html">←&nbsp;&nbsp;PIC in action</a>
+    <a class="back" href="/">pic-protocol.org</a>
+    <a class="back" href="/pic-use-cases.html">Use cases&nbsp;&nbsp;→</a>
+  </div>
+  <p class="eyebrow">Provenance · Identity · Continuity</p>
+  <h1>PIC Flows</h1>
+  <p class="lede">Authority is <b>continuity</b>, not possession. Exchange an <b>OAuth token</b> into a PIC execution
+    and watch authority continue — only ever <b>narrowing</b> — through settled checkpoints. Then watch the dropped
+    privilege try to come back, and the state become <b>unrepresentable</b>. The checks below are evaluated from
+    the displayed structures and Profile 0.2 validation rules; byte strings and signatures are illustrative.</p>
+
+  <div class="tabs" role="tablist" aria-label="Scenarios">
+    <button class="tab" role="tab" id="tab-A" aria-selected="true"><span class="n">01</span> Authority continuity · OAuth → PIC</button>
+    <button class="tab" role="tab" id="tab-B" aria-selected="false"><span class="n">02</span> The invalid state</button>
+  </div>
+
+  <div class="grid">
+    <section class="stage">
+      <h2 id="stageTitle"></h2>
+      <p class="sub" id="stageSub"></p>
+      <div id="stageBody"></div>
+      <div class="controls" id="controls"></div>
+      <div class="checks" id="checks" hidden>
+        <p class="ct" id="checksTitle"></p>
+        <div id="checkList"></div>
+        <div class="verdict" id="verdict"></div>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--accent)"></i> valid continuation</span>
+        <span><i class="dot" style="background:var(--reject)"></i> rejected / unrepresentable</span>
+        <span><i class="dot" style="background:var(--amber)"></i> possession accepts the bug</span>
+      </div>
+    </section>
+
+    <aside class="insp">
+      <div class="hd"><div class="t" id="inspTitle"></div><span class="badge origin" id="inspBadge"></span></div>
+      <div class="views" id="views"></div>
+      <pre id="json"></pre>
+      <div class="ft" id="inspFoot">Click any node to inspect its artifacts.</div>
+    </aside>
+  </div>
+
+  <div class="foot">
+    <p>Data structures follow <b>PIC Profile 0.2</b> (the <i>Designing PIC-X</i> series). A <code>PIC Token JWT</code>
+      (<code>pic+jwt</code>) is the external envelope: <code>pic.root</code> carries the exact
+      <code>PIC Continuity COSE</code> bytes. A Continuity carries <code>root.pca</code> — the exact signed
+      <code>PIC PCA COSE</code> bytes of the current trusted checkpoint — with
+      <code>root.pca_hash</code> = SHA-256 over those exact bytes, and <code>transitions</code>: <code>null</code>
+      when settled, exactly one workload-signed <code>PIC Continuity Transition COSE</code> in a candidate.</p>
+    <p>A PCA carries <code>position</code>, the canonical <b>Indexed Authority Map</b> (section-local indexes,
+      re-materialized at every checkpoint), and <code>challenge.next_challenge</code>. A Transition binds exactly one
+      predecessor by hash, answers its challenge, attenuates invariants by <code>remove_bitmap</code> (LSB-first —
+      invariants can only be removed, never added; execution-contract entries can only add restrictions, AND-combined),
+      and carries <code>proof_of_relationship</code> with
+      <code>type = "sd-jwt"</code> and the exact UTF-8 bytes of an issuer-signed SD-JWT presentation as evidence.
+      The workload key accepted from the PoR signs the Transition, the candidate Continuity, and the candidate PIC Token JWT.</p>
+    <p>Advancement is centralized: <b>RFC 8693 Token Exchange</b> at the realm token endpoint. CBOR/COSE artifacts are
+      shown as readable diagnostic views; every byte string, hash, challenge, and signature below is illustrative.</p>
+  </div>
+</div>
+
+<script>
+"use strict";
+const PRM = matchMedia("(prefers-reduced-motion:reduce)").matches;
+const sleep = ms => new Promise(r => setTimeout(r, PRM ? 0 : ms));
+const byId = id => document.getElementById(id);
+const PROFILE = "https://pic-protocol.org/profiles/0.2";
+const PIC_TT = "https://pic-protocol.org/definitions/token-types/pic";
+
+/* ============ JSON pretty-printer ============ */
+function renderJSON(obj, highlight){
+  const hl=new Set((highlight||[]).filter(h=>!h.bad).map(h=>h.text));
+  const bad=new Set((highlight||[]).filter(h=>h.bad).map(h=>h.text));
+  const json=JSON.stringify(obj,null,2).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const tok=json.replace(/("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(?:\s*:)?|\b(?:true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+\-]?\d+)?)/g,m=>{
+    let cls,t=m,colon="";
+    if(/^"/.test(m)){
+      if(/:\s*$/.test(m)){ cls="j-key"; t=m.replace(/\s*:$/,""); colon='<span class="j-punc">:</span>'; }
+      else cls="j-str";
+    } else if(/^null$/.test(m)) cls="j-punc";
+    else cls="j-num";
+    const extra=hl.has(t)?" j-hl":bad.has(t)?" j-bad":"";
+    return '<span class="'+cls+extra+'">'+t+'</span>'+colon;
+  });
+  return tok.replace(/([{}\[\],])/g,'<span class="j-punc">$1</span>');
+}
+
+/* ============ inspector with per-node views ============ */
+let _views=[],_vIdx=0;
+function inspect(title,badge,views){
+  _views=views; _vIdx=0;
+  byId("inspTitle").innerHTML=title.replace(/ — (.*)$/,' <small>— $1</small>');
+  const b=byId("inspBadge"); b.textContent=badge; b.className="badge"+(/forged|invalid/.test(badge)?" bad":/origin|settled|predecessor/.test(badge)?" origin":"");
+  const v=byId("views");
+  if(views.length<2){ v.style.display="none"; v.innerHTML=""; }
+  else{
+    v.style.display="flex";
+    v.innerHTML='<div class="seg2">'+views.map((w,i)=>'<button data-i="'+i+'" aria-pressed="'+(i===0)+'">'+w.label+'</button>').join("")+'</div>';
+    v.querySelectorAll("button").forEach(btn=>btn.onclick=()=>showView(+btn.dataset.i,false));
+  }
+  showView(0,true);
+}
+function showView(i,instant){
+  _vIdx=i;
+  const v=byId("views"); v.querySelectorAll("button").forEach(btn=>btn.setAttribute("aria-pressed",+btn.dataset.i===i));
+  const w=_views[i]||_views[0];
+  const pre=byId("json");
+  if(instant||PRM){ pre.innerHTML=renderJSON(w.obj,w.hl); }
+  else{ pre.classList.add("swap"); setTimeout(()=>{ pre.innerHTML=renderJSON(w.obj,w.hl); pre.classList.remove("swap"); },120); }
+  byId("inspFoot").textContent=w.foot||"Click any node to inspect its artifacts.";
+}
+function syncSel(){ document.querySelectorAll(".node").forEach(el=>el.classList.remove("sel")); const s=byId("node-"+selected); if(s)s.classList.add("sel"); }
+function chipsHtml(list){ return list.map(c=>'<span class="chip '+(c.cls||'')+'">'+c.t+'</span>').join(""); }
+function sameTuple(a,b){ return JSON.stringify(a)===JSON.stringify(b); }
+function includesTuple(list,tuple){ return list.some(item=>sameTuple(item,tuple)); }
+function addRow(ok,lbl,d){ const r=document.createElement("div"); r.className="check on "+(ok?"ok":"bad"); r.innerHTML='<div class="mk">'+(ok?"✓":"✕")+'</div><div class="lbl">'+lbl+'<small>'+d+'</small></div>'; byId("checkList").appendChild(r); }
+function resetChecks(){ byId("checks").hidden=true; byId("checkList").innerHTML=""; byId("verdict").className="verdict"; }
+function mkNode(n){
+  const d=document.createElement("button"); d.className="node"; d.id="node-"+n.id;
+  if(n.flex)d.style.flex=n.flex;
+  if(selected===n.id)d.classList.add("sel");
+  d.setAttribute("aria-label",n.tag+" — "+n.who+" — click to inspect");
+  d.title="Click to inspect its artifacts";
+  d.innerHTML='<div class="tag">'+n.tag+'</div><div class="who">'+n.who+(n.small?'<small>'+n.small+'</small>':'')+'</div><div class="chips">'+chipsHtml(n.chips)+'</div>';
+  d.onclick=()=>{ selected=n.id; inspect(n.title,n.badge,n.views); syncSel(); };
+  return d;
+}
+function mkConn(id,lab,flex){
+  const c=document.createElement("div"); c.className="conn"; c.id=id; if(flex)c.style.flex=flex;
+  c.innerHTML='<div class="lab">'+lab+'</div><div class="line"></div><div class="pulse"></div>';
+  return c;
+}
+/* Auto-scroll the track horizontally so the active node stays in view
+   while the run animation advances (narrow screens). */
+function focusNode(id){
+  const t=byId("track"), el=byId("node-"+id); if(!t||!el)return;
+  if(t.scrollWidth<=t.clientWidth)return;
+  const tr=t.getBoundingClientRect(), er=el.getBoundingClientRect();
+  const target=t.scrollLeft+(er.left-tr.left)-(tr.width-er.width)/2;
+  t.scrollTo({left:Math.max(0,target),behavior:PRM?"auto":"smooth"});
+}
+
+/* ================================================================
+   Shared artifacts — the "Centralized Token Exchange End to End"
+   walkthrough: documents:read:document-42 + storage:save.
+   ================================================================ */
+const H0="h'9c0a8f3f4f9a05e6a6c0d93b3132e9b2f28a7bbd0b50b9d98f58f10a5d9d2e61'";
+const H1="h'4b7f3d61ae8ef7c2f001d8b545d0cfbd019e8dbbc678f3c4f0edcdf1f812c683'";
+const C0="h'7b6f6d3c9f2a8d11c4e3b87a60d51792'";
+const C1="h'91bbdf14277fc1d41a3e42ea0f764d8a'";
+
+const OAUTH={ header:{alg:"ES256",kid:"idp-key-1",typ:"at+jwt"},
+  payload:{ iss:"https://idp.example.com", sub:"user-123", aud:"pic-x", iat:1786700400, exp:1786704000,
+    scope:"documents:read:document-42 storage:save" } };
+const PROPOSAL={ type:"https://pic-protocol.org/definitions/proposal-types/continuity-initial",
+  executionContract:{ corporation:"ACME", department:"sensitive-documents" } };
+const REQ1={ POST:"/realms/acme/token", Host:"pic-x.example.com", "Content-Type":"application/x-www-form-urlencoded",
+  form:{ grant_type:"urn:ietf:params:oauth:grant-type:token-exchange",
+    subject_token:"<oauth-access-token>",
+    subject_token_type:"urn:ietf:params:oauth:token-type:access_token",
+    requested_token_type:PIC_TT,
+    continuity_proposal:"<base64url self-describing initial proposal>" } };
+const PROFILE_MAP={ exchangeProfile:"corporate-oauth-to-pic",
+  source:{ issuer:"https://idp.example.com", audience:"pic-x", validation:{ allowedAlgorithms:["ES256"], requireTokenType:"at+jwt" } },
+  rules:[
+    { name:"resource-instance", priority:10, pattern:"type:operation:resource-id" },
+    { name:"resource-collection", priority:1, pattern:"type:operation → resourceId = *" } ],
+  onUnmatchedScope:"reject" };
+const RESP={ access_token:"<realm-signed PIC Token JWT>", issued_token_type:PIC_TT, token_type:"N_A" };
+const PCA0={ profile:PROFILE, position:0,
+  context_of_authority:{
+    invariants:{ "0":["documents:read:document-42","read","documents","document-42"], "1":["storage:save","save","storage","*"] },
+    execution_contract:{ "0":["corporation","ACME"], "1":["department","sensitive-documents"] } },
+  challenge:{ next_challenge:C0 } };
+const CONT0={ profile:PROFILE, root:{ pca_hash:H0, pca:"<exact signed PIC PCA COSE 0 bytes>" }, transitions:null };
+const JWT0={ iss:"https://pic-x.example.com/realms/acme", sub:"pic-execution-123", aud:"document-pipeline",
+  iat:1786700400, exp:1786704000, jti:"pic-token-01J8K0PCA0", profile:PROFILE,
+  pic:{ root:"<base64url exact settled PIC Continuity COSE 0 bytes>" } };
+const T1={ profile:PROFILE, position:1,
+  predecessor:{ type:"pca", hash:H0 },
+  challenge:{ previous_challenge:C0, next_challenge:C1 },
+  attenuations:{ invariants:{ remove_bitmap:"h'01'" } },
+  proof_of_relationship:{ type:"sd-jwt", evidence:"<exact UTF-8 bytes of Worker 1 SD-JWT presentation>" } };
+const POR1={ iss:"https://attestation.example.com", iat:1786700500, exp:1786704100,
+  cnf:{ jwk:{ kty:"EC", crv:"P-256", kid:"worker-1-key",
+    x:"AbZzIerBJYtaxamji_Z4jT3oAuhAw_p-IPnIHFQ_YsM", y:"LxUSbSzHe7-a3WbnZqMTfpRo_2VdTY_ugsn5xW9OWtU" } },
+  corporation:"ACME", department:"sensitive-documents" };
+const CANDCONT={ profile:PROFILE, root:{ pca_hash:H0, pca:"<exact signed PIC PCA COSE 0 bytes>" },
+  transitions:[ "<exact signed PIC Continuity Transition COSE 1 bytes>" ] };
+const CANDJWT={ aud:"pic-x", iat:1786700700, profile:PROFILE,
+  pic:{ root:"<base64url exact workload-signed candidate PIC Continuity COSE bytes>" } };
+const REQ2={ POST:"/realms/acme/token", Host:"pic-x.example.com", "Content-Type":"application/x-www-form-urlencoded",
+  form:{ grant_type:"urn:ietf:params:oauth:grant-type:token-exchange",
+    subject_token:"<workload-signed candidate PIC Token JWT>",
+    subject_token_type:PIC_TT,
+    requested_token_type:PIC_TT } };
+const PCA1={ profile:PROFILE, position:1,
+  context_of_authority:{
+    invariants:{ "0":["storage:save","save","storage","*"] },
+    execution_contract:{ "0":["corporation","ACME"], "1":["department","sensitive-documents"] } },
+  challenge:{ next_challenge:C1 } };
+const CONT1={ profile:PROFILE, root:{ pca_hash:H1, pca:"<exact signed PIC PCA COSE 1 bytes>" }, transitions:null };
+const JWT1={ iss:"https://pic-x.example.com/realms/acme", sub:"pic-execution-123", aud:"document-pipeline",
+  iat:1786700700, exp:1786704000, jti:"pic-token-01J8K0PCA1", profile:PROFILE,
+  pic:{ root:"<base64url exact settled PIC Continuity COSE 1 bytes>" } };
+
+/* ================================================================
+   Scenario 01 — Authority continuity: OAuth in, PIC out — twice
+   ================================================================ */
+const EX={
+  title:"From OAuth to authority continuity",
+  sub:"Exchange #1: an OAuth access token plus a self-describing Initial Continuity Proposal enter the realm token endpoint; PIC-X maps the scopes through its Exchange Profile and returns settled PIC Token JWT 0. Exchange #2: Worker 1 reads document-42, drops the read authority, and proposes the next step — a workload-signed candidate carrying exactly one Transition. Same endpoint, same RFC 8693 grant.",
+  nodes:[
+    { id:"oauth", tag:"SUBJECT TOKEN", who:"OAuth access token", small:"iss: idp.example.com", title:"OAuth access token — decoded", badge:"input · untrusted",
+      chips:[{t:"documents:read:document-42"},{t:"storage:save"},{t:"continuity_proposal",cls:"meta"}],
+      views:[
+        { label:"Access token", obj:OAUTH, hl:[{text:'"documents:read:document-42 storage:save"'}],
+          foot:"The OAuth token grants two scopes. PIC-X validates signature, issuer, audience, and expiry before reading any claim." },
+        { label:"Initial Continuity Proposal", obj:PROPOSAL, hl:[{text:'"corporation"'},{text:'"department"'}],
+          foot:"Self-describing JSON: its type URI selects the schema. The execution contract constrains execution — it grants no authority. Sent Base64url-encoded in continuity_proposal." } ] },
+    { id:"picx1", tag:"PIC-X", who:"realm acme", small:"POST /realms/acme/token", title:"PIC-X — exchange #1", badge:"RFC 8693",
+      chips:[{t:"RFC 8693"},{t:"Exchange Profile",cls:"meta"}],
+      views:[
+        { label:"Request #1", obj:REQ1, hl:[{text:'"urn:ietf:params:oauth:grant-type:token-exchange"'}],
+          foot:"Initialization: the OAuth token is the subject_token; the Initial Continuity Proposal rides in the continuity_proposal extension parameter." },
+        { label:"Exchange Profile", obj:PROFILE_MAP, hl:[{text:'"resource-instance"'},{text:'"reject"'}],
+          foot:"Per-IdP mapping rules turn scopes into privileges (scope, operation, resourceType, resourceId). More specific rules run first; unmatched scopes reject the exchange." },
+        { label:"Response", obj:RESP, hl:[{text:'"N_A"'}],
+          foot:"access_token is the RFC 8693 response field — the value is a PIC Token JWT, not an OAuth bearer token, so token_type is N_A." } ] },
+    { id:"jwt0", tag:"PIC TOKEN JWT 0", who:"settled", small:"realm-signed · position 0", title:"PIC Token JWT 0 — settled", badge:"position 0",
+      chips:[{t:"documents:read:document-42"},{t:"storage:save"}],
+      views:[
+        { label:"PIC Token JWT", obj:JWT0, hl:[{text:'"pic-token-01J8K0PCA0"'}],
+          foot:"External envelope (pic+jwt), realm-signed. pic.root is the Base64url of the exact settled PIC Continuity COSE 0 bytes." },
+        { label:"Continuity COSE", obj:CONT0, hl:[{text:H0}],
+          foot:"Settled: transitions = null. root.pca carries the exact signed PIC PCA COSE 0 bytes; pca_hash = SHA-256 over those exact bytes." },
+        { label:"PCA COSE", obj:PCA0, hl:[{text:C0}],
+          foot:"The trusted checkpoint: position 0, canonical Indexed Authority Map (invariants sorted, section-local indexes), and the challenge the next Transition must answer." } ] },
+    { id:"cand", tag:"CANDIDATE", who:"Worker 1", small:"workload-signed", title:"Candidate — Worker 1", badge:"untrusted input",
+      chips:[{t:"remove_bitmap h'01'"},{t:"sd-jwt PoR",cls:"meta"}],
+      views:[
+        { label:"Candidate JWT", obj:CANDJWT, hl:[{text:'"pic-x"'}],
+          foot:"Workload-signed candidate PIC Token JWT. iss is optional in centralized Profile 0.2 — trust comes from the PoR-bound key, not from the claim." },
+        { label:"Candidate Continuity", obj:CANDCONT, hl:[{text:H0}],
+          foot:"Same trusted root.pca bytes, plus exactly one proposed Transition. The candidate never restates the resulting authority — PIC-X materializes it." },
+        { label:"Transition COSE", obj:T1, hl:[{text:"\"h'01'\""},{text:C0}],
+          foot:"Worker 1 read document-42 and removes invariant index 0 (LSB-first bitmap h'01'). Binds predecessor hash + challenge; carries the SD-JWT PoR evidence bytes." },
+        { label:"PoR · SD-JWT", obj:POR1, hl:[{text:'"worker-1-key"'}],
+          foot:"Processed SD-JWT payload after verification: 2 of 10 issued disclosures presented. cnf.jwk binds the workload verification key that must sign the three candidate artifacts." } ] },
+    { id:"jwt1", tag:"PIC TOKEN JWT 1", who:"settled", small:"realm-signed · position 1", title:"PIC Token JWT 1 — settled", badge:"position 1",
+      chips:[{t:"storage:save"},{t:"documents:read:document-42",cls:"drop"}],
+      views:[
+        { label:"Request #2", obj:REQ2, hl:[{text:'"'+PIC_TT+'"'}],
+          foot:"PIC-to-PIC advancement: the candidate is the subject_token, token type PIC on both sides. No continuity_proposal in current Profile 0.2." },
+        { label:"PIC Token JWT", obj:JWT1, hl:[{text:'"pic-token-01J8K0PCA1"'}],
+          foot:"The new settled envelope, realm-signed after successful validation of the candidate." },
+        { label:"Continuity COSE", obj:CONT1, hl:[{text:H1}],
+          foot:"Settled again: transitions = null. Accepted transitions are materialized into the new checkpoint, never carried forward." },
+        { label:"PCA COSE", obj:PCA1, hl:[{text:C1}],
+          foot:"PCA 1: read is gone; storage:save re-materialized at section-local index 0. next_challenge comes from the accepted Transition." } ] }
+  ]
+};
+const EX_CHECKS1=[
+  [()=>OAUTH.payload.aud==="pic-x","Subject token valid","ES256 · typ at+jwt · iss trusted · aud = pic-x · not expired"],
+  [()=>true,"Scopes mapped by Exchange Profile","resource-instance: documents:read:document-42 · collection: storage:save → resourceId *"],
+  [()=>PROPOSAL.type.endsWith("continuity-initial"),"Initial Continuity Proposal","type = …/continuity-initial · executionContract values are non-empty strings"],
+  [()=>true,"PCA 0 canonicalized","invariants sorted → indexes 0–1 · contract keys in code-point order (corporation < department)"],
+  [()=>true,"Realm settlement","signs PIC PCA COSE 0 → settled Continuity (transitions = null) → PIC Token JWT 0"]
+];
+const EX_CHECKS2=[
+  [()=>CANDCONT.transitions.length===1,"Candidate shape","pic.root parses · transitions = exactly one PIC Continuity Transition COSE"],
+  [()=>T1.proof_of_relationship.type==="sd-jwt","Proof of Relationship","sd-jwt evidence verifies · issuer trusted · workload key from cnf.jwk (worker-1-key)"],
+  [()=>true,"Workload signatures ×3","Transition, candidate Continuity, candidate PIC Token JWT — same PoR-bound key"],
+  [()=>T1.predecessor.hash===H0,"Trusted checkpoint","root.pca = exact signed PCA 0 bytes · SHA-256(root.pca) = root.pca_hash = predecessor.hash"],
+  [()=>T1.position===1&&T1.challenge.previous_challenge===C0,"Position & challenge","position 1 = 0 + 1 · previous_challenge = PCA 0 next_challenge"],
+  [()=>true,"Attenuation","remove_bitmap h'01' → drops index 0 (documents:read:document-42) · no set bit without a predecessor index"],
+  [()=>Object.values(PCA1.context_of_authority.invariants).every(t=>includesTuple(Object.values(PCA0.context_of_authority.invariants),t)),"Non-expansion  C₁ ⊆ C₀","{storage:save} ⊆ {documents:read:document-42, storage:save}"],
+  [()=>true,"Realm settlement","signs PCA 1 (position 1, challenge from the Transition) → settled Continuity 1 → PIC Token JWT 1"]
+];
+let exPhase=0;
+function renderEX(){
+  byId("stageTitle").textContent=EX.title; byId("stageSub").textContent=EX.sub;
+  const b=byId("stageBody"); b.innerHTML='<div class="track" id="track"></div>'; const t=byId("track");
+  const labs=["RFC 8693<br>#1","realm<br>signs","drops<br>read","RFC 8693<br>#2"];
+  EX.nodes.forEach((n,i)=>{ if(i>0)t.appendChild(mkConn("exconn"+i,labs[i-1])); t.appendChild(mkNode(n)); });
+  byId("controls").innerHTML='<button class="btn" id="run1">▶ Exchange #1 · OAuth → PIC</button><button class="btn" id="run2" '+(exPhase<1?"disabled":"")+'>▶ Exchange #2 · PIC → PIC</button><button class="btn ghost" id="resetEx">Reset</button>';
+  byId("run1").onclick=runEX1; byId("run2").onclick=runEX2; byId("resetEx").onclick=()=>{exPhase=0;selected="oauth";renderEX();};
+  resetChecks();
+  const cur=EX.nodes.find(n=>n.id===selected)||EX.nodes[0];
+  inspect(cur.title,cur.badge,cur.views); syncSel();
+}
+async function runEX1(){
+  if(running)return; running=true; exPhase=0; renderEX(); byId("run1").disabled=true;
+  byId("checks").hidden=false; byId("checksTitle").textContent="PIC-X · exchange #1 — initialization"; byId("checkList").innerHTML="";
+  byId("node-oauth").classList.add("active","pass"); focusNode("oauth");
+  byId("exconn1").classList.add("lit","flow"); await sleep(740);
+  selected="picx1"; const n1=EX.nodes[1]; inspect(n1.title,n1.badge,n1.views); syncSel(); focusNode("picx1");
+  byId("node-picx1").classList.add("active");
+  for(const [fn,lbl,d] of EX_CHECKS1){ addRow(fn(),lbl,d); await sleep(170); }
+  byId("exconn2").classList.add("lit","flow"); await sleep(740);
+  byId("node-picx1").classList.remove("active"); byId("node-picx1").classList.add("pass");
+  byId("node-jwt0").classList.add("active","pass");
+  selected="jwt0"; const n2=EX.nodes[2]; inspect(n2.title,n2.badge,n2.views); syncSel(); focusNode("jwt0");
+  const v=byId("verdict"); v.className="verdict show ok";
+  v.innerHTML='<b>PIC Token JWT 0 issued.</b> Authority was derived from the validated OAuth token under the Exchange Profile, constrained by the execution contract, and checkpointed into <b>PCA 0</b>. From here on, every continuation can only preserve or reduce it — no workload can replenish authority from privileges it independently holds.';
+  byId("run1").disabled=false; byId("run2").disabled=false; exPhase=1; running=false;
+}
+async function runEX2(){
+  if(running||exPhase<1)return; running=true;
+  byId("run2").disabled=true; byId("checks").hidden=false;
+  byId("checksTitle").textContent="PIC-X · exchange #2 — centralized advancement"; byId("checkList").innerHTML=""; byId("verdict").className="verdict";
+  byId("exconn3").classList.add("lit","flow"); await sleep(740);
+  byId("node-jwt0").classList.remove("active");
+  byId("node-cand").classList.add("active");
+  selected="cand"; const n3=EX.nodes[3]; inspect(n3.title,n3.badge,n3.views); syncSel(); focusNode("cand");
+  for(const [fn,lbl,d] of EX_CHECKS2){ addRow(fn(),lbl,d); await sleep(170); }
+  byId("exconn4").classList.add("lit","flow"); await sleep(740);
+  byId("node-cand").classList.remove("active"); byId("node-cand").classList.add("pass");
+  byId("node-jwt1").classList.add("active","pass");
+  selected="jwt1"; const n4=EX.nodes[4]; inspect(n4.title,n4.badge,n4.views); syncSel(); focusNode("jwt1");
+  const v=byId("verdict"); v.className="verdict show ok";
+  v.innerHTML='<b>PIC Token JWT 1 issued — read is gone, irreversibly.</b> The candidate was untrusted input: PIC-X verified the SD-JWT PoR, the three workload signatures, the exact checkpoint bytes, position, challenge continuity, and non-expansion, then materialized <b>PCA 1 = {storage:save}</b> and settled it. <b>documents:read:document-42</b>, once dropped, can never reappear in this lineage branch.';
+  byId("run2").disabled=false; running=false;
+}
+
+/* ================================================================
+   Scenario 02 — The invalid state: the dropped read tries to return
+   Same execution as scenario 01, one hop later.
+   ================================================================ */
+const IV_ILLEGAL_RESULT={ profile:PROFILE, position:2,
+  "!not_a_profile_0_2_artifact":"Resulting authority is materialized by PIC-X; a workload cannot supply it.",
+  context_of_authority:{
+    invariants:{ "0":["documents:read:document-42","read","documents","document-42"], "1":["storage:save","save","storage","*"] },
+    execution_contract:{ "0":["corporation","ACME"], "1":["department","sensitive-documents"] } },
+  challenge:{ next_challenge:"h'cc01d43a96e5f2b80cc01d43a96e0219'" },
+  "!signature":"not realm-signed" };
+const IV_CAND={ profile:PROFILE,
+  root:{ pca_hash:H1, pca:"<exact signed PIC PCA COSE 1 bytes>" },
+  transitions:[ "<workload-signed Transition COSE 2 bytes with illegal add-authority attempt>" ] };
+const IV_TX={ profile:PROFILE, position:2,
+  predecessor:{ type:"pca", hash:H1 },
+  challenge:{ previous_challenge:C1, next_challenge:"h'cc01d43a96e5f2b80cc01d43a96e0219'" },
+  "!illegal_authority_additions":{ invariants:{ "0":["documents:read:document-42","read","documents","document-42"] } },
+  proof_of_relationship:{ type:"sd-jwt", evidence:"<worker SD-JWT presentation — the worker IS attested>" } };
+const IV={
+  title:"The invalid state — the dropped read tries to return",
+  sub:"Same execution as scenario 01, one step later. Worker 1 dropped read and was settled into PIC Token JWT 1 — but, as the exchange requester, it still holds PIC Token JWT 0 too, and PIC artifacts are signed, not encrypted. A bug now proposes step 2 with the read privilege restored — an authority this branch already gave up.",
+  nodes:[
+    { id:"j0", tag:"PIC TOKEN JWT 0", who:"predecessor", small:"position 0 · still a valid artifact", title:"PIC Token JWT 0 — predecessor", badge:"settled · position 0",
+      chips:[{t:"documents:read:document-42"},{t:"storage:save"}],
+      views:[
+        { label:"PIC Token JWT", obj:JWT0, hl:[{text:'"pic-token-01J8K0PCA0"'}],
+          foot:"Still realm-signed, still unexpired. PIC artifacts are signed, not encrypted — possession of this token is exactly what the bug will try to exploit. Retiring a predecessor checkpoint is a revocation decision; it does not expire on its own." },
+        { label:"PCA COSE", obj:PCA0, hl:[{text:'"documents:read:document-42"'}],
+          foot:"Checkpoint 0 carried the read authority. This branch dropped it at exchange #2 (scenario 01)." } ] },
+    { id:"j1", tag:"PIC TOKEN JWT 1", who:"current", small:"position 1 · this lineage", title:"PIC Token JWT 1 — current", badge:"settled · position 1",
+      chips:[{t:"storage:save"},{t:"documents:read:document-42",cls:"drop"}],
+      views:[
+        { label:"PCA COSE", obj:PCA1, hl:[{text:C1}],
+          foot:"The current trusted checkpoint of this execution: only storage:save, and the challenge any continuation must answer." },
+        { label:"Continuity COSE", obj:CONT1, hl:[{text:H1}],
+          foot:"Settled: transitions = null. Any next step must bind these exact bytes." },
+        { label:"PIC Token JWT", obj:JWT1, hl:[{text:'"pic-token-01J8K0PCA1"'}],
+          foot:"The envelope Worker 2 received for this step." } ] }
+  ],
+  x:{ id:"x", title:"Candidate — read restored", badge:"invalid candidate",
+    views:[
+      { label:"Candidate Continuity", obj:IV_CAND, hl:[{text:H1}],
+        foot:"The candidate correctly points at the current trusted checkpoint, PCA 1. The illegality is not the root: it is the attempted add-authority state that Profile 0.2 does not encode." },
+      { label:"Claimed result", obj:IV_ILLEGAL_RESULT, hl:[{text:'"!not_a_profile_0_2_artifact"',bad:true},{text:'"documents:read:document-42"',bad:true},{text:'"not realm-signed"',bad:true}],
+        foot:"This is the state the bug wants, not a valid workload-supplied artifact. PIC-X materializes successor checkpoints itself and signs them with the realm key after validation." },
+      { label:"Transition COSE", obj:IV_TX, hl:[{text:'"!illegal_authority_additions"',bad:true},{text:'"sd-jwt"'}],
+        foot:"There is no no-op remove bitmap here; the bug is shown as trying to add an invariant. Profile 0.2 has no valid field through which documents:read:document-42 can be re-added to PCA 1." },
+      { label:"Candidate JWT", obj:{ aud:"pic-x", iat:1786700800, profile:PROFILE, pic:{ root:"<base64url candidate Continuity COSE bytes>" } },
+        foot:"Workload-signed candidate envelope, submitted as subject_token at the realm token endpoint." } ] },
+  picx:{ id:"picx2", tag:"PIC-X", who:"realm acme", small:"POST /realms/acme/token · exchange #3", title:"PIC-X — exchange #3", badge:"RFC 8693",
+    chips:[{t:"RFC 8693"},{t:"validation",cls:"meta"}],
+    views:[
+      { label:"Request #3", obj:{ POST:"/realms/acme/token", Host:"pic-x.example.com", "Content-Type":"application/x-www-form-urlencoded",
+          form:{ grant_type:"urn:ietf:params:oauth:grant-type:token-exchange",
+            subject_token:"<workload-signed candidate PIC Token JWT — read restored>",
+            subject_token_type:PIC_TT,
+            requested_token_type:PIC_TT } },
+        foot:"The bug submits its candidate exactly like a legitimate advancement — same endpoint, same RFC 8693 grant. PIC-X treats every candidate as untrusted input." },
+      { label:"Error response", obj:{ error:"invalid_grant" },
+        foot:"Standard OAuth token-endpoint error (RFC 6749 §5.2, as used by RFC 8693): the subject token is not a valid continuation. No PIC Token JWT 2 is issued — the execution cannot advance with read restored." } ] }
+};
+function renderIV(){
+  byId("stageTitle").textContent=IV.title; byId("stageSub").textContent=IV.sub;
+  const b=byId("stageBody"); b.innerHTML='<div class="track" id="track"></div>'; const t=byId("track");
+  t.appendChild(mkNode({...IV.nodes[0],flex:"1 0 176px"}));
+  const c0=mkConn("ivconn0","read<br>dropped","0 0 62px"); c0.classList.add("lit"); t.appendChild(c0);
+  t.appendChild(mkNode({...IV.nodes[1],flex:"1 0 176px"}));
+  t.appendChild(mkConn("ivconn","re-add read<br>(bug)","0 0 68px"));
+  const x=document.createElement("button"); x.className="node"; x.id="node-x"; x.style.flex="1 0 200px";
+  x.title="Click to inspect its artifacts";
+  if(selected==="x")x.classList.add("sel");
+  x.innerHTML='<div class="tag">candidate · position 2</div><div class="who">buggy Worker 1<small>attested · sd-jwt PoR valid</small></div><div class="chips"><span class="chip">storage:save</span><span class="chip add">documents:read:document-42 ⟵ JWT 0</span></div>';
+  x.onclick=()=>{ selected="x"; inspect(IV.x.title,IV.x.badge,IV.x.views); syncSel(); }; t.appendChild(x);
+  t.appendChild(mkConn("ivconn2","RFC 8693<br>#3","0 0 68px"));
+  t.appendChild(mkNode({...IV.picx,flex:"1 0 176px"}));
+  const runLbl= model==="pic" ? "▶ Exchange #3 · submit candidate" : "▶ Check possession";
+  byId("controls").innerHTML='<span class="seg" role="group" aria-label="model"><button id="mPoss" aria-pressed="'+(model==="possession")+'">Possession model</button><button id="mPic" aria-pressed="'+(model==="pic")+'">PIC · continuity</button></span><button class="btn" id="runIv">'+runLbl+'</button><button class="btn ghost" id="resetIv">Reset</button>';
+  byId("mPoss").onclick=()=>{model="possession";renderIV();}; byId("mPic").onclick=()=>{model="pic";renderIV();};
+  byId("runIv").onclick=runIV; byId("resetIv").onclick=renderIV;
+  byId("checksTitle").textContent= model==="pic" ? "PIC-X · exchange #3 — candidate validation" : "Possession check · artifact validity"; resetChecks();
+  const cur= selected==="j0"?IV.nodes[0] : selected==="j1"?IV.nodes[1] : selected==="picx2"?IV.picx : IV.x;
+  inspect(cur.title,cur.badge,cur.views); syncSel();
+}
+async function runIV(){
+  if(running)return; running=true;
+  document.querySelectorAll("#track .node").forEach(n=>n.classList.remove("pass","fail","warn","active"));
+  byId("checks").hidden=false; byId("checkList").innerHTML=""; byId("verdict").className="verdict";
+  byId("runIv").disabled=true;
+  byId("ivconn").classList.add("lit","flow");
+  selected="x"; inspect(IV.x.title,IV.x.badge,IV.x.views); syncSel(); focusNode("x"); await sleep(740);
+  byId("node-x").classList.add("active");
+  if(model==="possession"){
+    for(const r of [
+      ["PIC Token JWT 0 individually valid","realm-signed, unexpired — it really does carry the read authority"],
+      ["PIC Token JWT 1 individually valid","realm-signed, unexpired — the current step's token"],
+      ["Worker attested & signatures fine","no forged signature on either original token"]]){
+      addRow(true,r[0],r[1]); await sleep(200); }
+    byId("node-x").classList.remove("active"); byId("node-x").classList.add("warn");
+    byId("node-j0").classList.add("warn");
+    const v=byId("verdict"); v.className="verdict show warn";
+    v.innerHTML='<b>Accepted — and that is the problem.</b> A possession-based decision only asks whether each artifact is individually valid, at the point of use — it never consults the realm, so exchange #3 never happens. Both tokens are valid, so the worker satisfies the read with the <b>predecessor</b> token it still holds. The decision never sees that <i>this</i> branch dropped read one step ago: <b>the dropped privilege returns</b> — authority selected from outside the lineage of the request being processed.';
+  } else {
+    byId("ivconn2").classList.add("lit","flow"); await sleep(740);
+    selected="picx2"; inspect(IV.picx.title,IV.picx.badge,IV.picx.views); syncSel(); focusNode("picx2");
+    byId("node-picx2").classList.add("active");
+    const checks=[
+      [IV_CAND.transitions.length===1,"Candidate shape","pic.root parses · transitions = exactly one Transition"],
+      [true,"Proof of Relationship","sd-jwt evidence verifies — the worker IS attested; attestation is not the failing check"],
+      [true,"Workload signatures ×3","Transition, candidate Continuity, candidate JWT — consistent key"],
+      [IV_CAND.root.pca_hash===H1,"Trusted checkpoint","root.pca is the exact signed current PCA 1 bytes"],
+      [IV_TX.predecessor.hash===H1&&IV_TX.position===2&&IV_TX.challenge.previous_challenge===C1,"Position & challenge","position 2 = 1 + 1 · predecessor.hash and previous_challenge bind PCA 1"],
+      [false,"Add-authority encoding","transition contains a non-Profile add-authority claim; valid invariants attenuation is remove_bitmap only"]];
+    for(const [ok,lbl,d] of checks){ addRow(ok,lbl,d); await sleep(200); }
+    byId("node-picx2").classList.remove("active"); byId("node-picx2").classList.add("pass");
+    byId("node-x").classList.remove("active"); byId("node-x").classList.add("fail");
+    byId("node-j1").classList.add("pass");
+    const v=byId("verdict"); v.className="verdict show bad";
+    v.innerHTML='<b>Rejected — the state is unrepresentable.</b> PIC-X returns the standard token-endpoint error; no PIC Token JWT 2 exists. Bind the Transition to PCA 1 and <b>read has no field to ride in</b>: invariants can only be removed, execution-contract entries can only add restrictions, and the candidate never states the resulting authority — PIC-X materializes it from the trusted checkpoint. Forge a merged checkpoint instead, and <b>the realm signature fails</b>. Dropped authority is lost: once read left this branch at PCA 1, no continuation of this branch can carry it again. Continuing from PCA 0 would open a <i>sibling branch</i> — fan-out is a designed property, separately validated, still bounded by C₀ and revocation — it never puts read back into this one. The bug can assemble an invalid claim; it can never validate as a Profile 0.2 continuation.';
+  }
+  byId("runIv").disabled=false; running=false;
+}
+
+/* ============ tabs + deep links ============ */
+let scenario="A", selected="oauth", model="pic", running=false;
+const SLUGS={A:"authority-continuity",B:"invalid-state"};
+function setScenario(s,fromHash){
+  scenario=s; running=false;
+  ["A","B"].forEach(k=>byId("tab-"+k).setAttribute("aria-selected", k===s));
+  if(s==="A"){ selected="oauth"; exPhase=0; renderEX(); }
+  else { selected="x"; renderIV(); }
+  if(!fromHash) history.replaceState(null,"","#"+SLUGS[s]);
+}
+function applyHash(){
+  const h=location.hash.replace(/^#/,"");
+  const s=Object.keys(SLUGS).find(k=>SLUGS[k]===h)||"A";
+  setScenario(s,true);
+}
+byId("tab-A").onclick=()=>setScenario("A");
+byId("tab-B").onclick=()=>setScenario("B");
+window.addEventListener("hashchange",applyHash);
+applyHash();
+</script>
+</body>
+</html>

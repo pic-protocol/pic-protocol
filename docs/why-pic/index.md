@@ -153,5 +153,7 @@ The problems behind all of this are treated separately, in order:
   entity at a **specific origin** and propagated, only narrowing, through a causal chain of executors.
 - **[The N+1 Unknown Executor Problem](./n-plus-1-unknown-executor-problem.md)** — the temporal dimension: authority
   is emitted toward a successor that *does not exist yet* when its predecessor acts.
+- **[The N+1 Outcome on Unknown Facts](./n-plus-1-outcome-unknown-facts.md)** — the runtime dimension: the concrete
+  outcome may not exist when the user signs, so the predicate is signed first and evidence is checked at commit.
 - **[The N+1 Invalid State Problem](./authority-mixing.md)** — executor *n+1* can judge only the state it receives,
   so the protocol must guarantee that *n* can never hand it an **invalid state that validates**.

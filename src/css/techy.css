@@ -209,6 +209,77 @@
   opacity: 1;
 }
 
+/* ── PIC-X hero product card ─────────────────────────────────── */
+.picx-hero-card {
+  background:
+    linear-gradient(140deg, rgba(15, 21, 20, 0.96) 0%, rgba(18, 27, 25, 0.94) 48%, rgba(15, 24, 31, 0.95) 100%),
+    #101514;
+}
+
+.picx-hero-card::before,
+.picx-hero-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.picx-hero-card::before {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+  opacity: 0.62;
+}
+
+.picx-hero-card::after {
+  inset: 1.15rem;
+  border: 1px solid rgba(37, 194, 160, 0.11);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 24%),
+    linear-gradient(160deg, transparent 56%, rgba(0, 0, 0, 0.2));
+}
+
+.picx-logo-stage {
+  isolation: isolate;
+}
+
+.picx-logo-stage::before,
+.picx-logo-stage::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.picx-logo-stage::before {
+  inset: 8% 5%;
+  background: radial-gradient(ellipse at center, rgba(37, 194, 160, 0.09), transparent 64%);
+}
+
+.picx-logo-stage::after {
+  left: 14%;
+  right: 14%;
+  bottom: 14%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(37, 194, 160, 0.38), rgba(47, 128, 237, 0.32), transparent);
+}
+
+@media (max-width: 639px) {
+  .picx-hero-card::after {
+    inset: 0.9rem;
+  }
+
+  .picx-logo-stage::before {
+    inset: 12% 0;
+  }
+
+  .picx-article-rail {
+    padding-right: 18vw;
+  }
+}
+
 /* ── PIC-X article rail ─────────────────────────────────────── */
 .picx-article-rail {
   scrollbar-color: rgba(37, 194, 160, 0.7) rgba(0, 0, 0, 0.08);

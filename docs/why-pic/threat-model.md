@@ -115,12 +115,14 @@ Given this perimeter, a receiving boundary cannot rely on the credential, on pos
 assurance that it selected correctly. It must verify a relationship it can check for itself — which is exactly the
 property named [Authority Continuity](./index.md).
 
-The three problems this model gives rise to are treated separately:
+The main problem pages this model gives rise to are treated separately:
 
 - **[The Authority Propagation Problem](./authority-propagation.md)** — how authority is created by a permissioned
   entity at a **specific origin** and propagated, only narrowing, through a causal chain of executors.
 - **[The N+1 Unknown Executor Problem](./n-plus-1-unknown-executor-problem.md)** — the temporal dimension: authority
   is emitted toward a successor that *does not exist yet* when its predecessor acts.
+- **[The N+1 Outcome on Unknown Facts](./n-plus-1-outcome-unknown-facts.md)** — the runtime-outcome dimension: a
+  concrete option may appear only while the execution is already in flight.
 - **[The N+1 Invalid State Problem](./authority-mixing.md)** — executor *n+1* can judge only the state it receives,
   so the protocol must guarantee that *n* can never hand it an **invalid state that validates**.
 

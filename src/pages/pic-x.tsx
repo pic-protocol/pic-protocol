@@ -89,34 +89,19 @@ export default function PicXPage(): ReactNode {
                 ))}
               </div>
             </div>
-            <div className="relative overflow-hidden rounded-[22px] border border-black/10 bg-white/70 p-5 shadow-[0_24px_80px_rgba(5,35,27,0.08)] dark:border-[#25c2a0]/14 dark:bg-[#111917]/72 dark:shadow-[0_24px_90px_rgba(0,0,0,0.28)] sm:rounded-[28px] sm:p-7">
-              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(37,194,160,0.12),transparent_34%,rgba(6,182,212,0.10)_100%)]" />
-              <div className="relative z-10 flex items-center justify-between gap-3">
-                <span className="mono rounded-full border border-[#25c2a0]/30 bg-[#25c2a0]/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#007d5b] dark:text-[#25c2a0]">
-                  realm exchange
-                </span>
-                <span className="mono hidden text-[11px] uppercase tracking-[0.14em] text-black/35 dark:text-white/35 sm:inline">
+            <div className="picx-hero-card relative overflow-hidden rounded-[22px] border border-black/10 bg-white/70 p-5 shadow-[0_24px_80px_rgba(5,35,27,0.08)] dark:border-[#25c2a0]/14 dark:bg-[#111917]/72 dark:shadow-[0_24px_90px_rgba(0,0,0,0.28)] sm:rounded-[28px] sm:p-7">
+              <div className="relative z-10 flex justify-end">
+                <span className="picx-profile-chip mono text-[11px] uppercase tracking-[0.14em] text-white/45">
                   profile 0.2
                 </span>
               </div>
 
-              <div className="relative z-10 mx-auto mt-5 flex min-h-[270px] items-center justify-center border-y border-[#25c2a0]/10 py-7 sm:mt-6 sm:min-h-[350px] sm:py-8 lg:min-h-[430px]">
+              <div className="picx-logo-stage relative z-10 mx-auto mt-5 flex min-h-[300px] items-center justify-center py-8 sm:mt-6 sm:min-h-[400px] sm:py-10 lg:min-h-[480px]">
                 <img
                   src="/img/pic-x/pic-x.png"
                   alt="PIC-X logo"
                   className="h-auto max-h-[250px] w-auto max-w-[78%] object-contain drop-shadow-[0_18px_50px_rgba(37,194,160,0.18)] sm:max-h-[330px] lg:max-h-[400px]"
                 />
-              </div>
-
-              <div className="relative z-10 mt-5 grid grid-cols-3 gap-2 sm:mt-6">
-                {["validate", "attenuate", "settle"].map((label) => (
-                  <span
-                    key={label}
-                    className="mono rounded-lg border border-black/8 bg-white/80 px-1.5 py-2 text-center text-[9px] font-semibold uppercase tracking-[0.06em] text-black/45 dark:border-white/8 dark:bg-[#0b1110]/70 dark:text-white/45 sm:px-2 sm:text-[10px] sm:tracking-[0.12em]"
-                  >
-                    {label}
-                  </span>
-                ))}
               </div>
             </div>
           </div>
@@ -186,15 +171,15 @@ export default function PicXPage(): ReactNode {
             </div>
           </div>
 
-          <div className="relative z-10 mx-auto mt-12 max-w-7xl px-6 md:mt-16">
+          <div className="relative z-10 mx-auto mt-12 max-w-7xl px-5 sm:px-6 md:mt-16">
             <div
-              className="picx-article-rail flex snap-x snap-mandatory gap-5 overflow-x-auto pb-8 pt-1 md:gap-6"
+              className="picx-article-rail flex snap-x snap-mandatory gap-4 overflow-x-auto pb-8 pt-1 md:gap-6"
               aria-label="PIC-X article series"
             >
               {PICX_ARTICLES.map((article) => (
                 <a
                   key={article.id}
-                  className="picx-article-card group flex min-h-[548px] w-[86vw] max-w-[390px] shrink-0 snap-start flex-col rounded-lg border border-black/10 bg-white p-3 text-black no-underline shadow-[0_20px_60px_rgba(5,35,27,0.08)] ring-1 ring-transparent transition hover:border-[#25c2a0]/55 hover:text-black hover:ring-[#25c2a0]/35 dark:border-white/10 dark:bg-[#171d1c] dark:text-white dark:shadow-[0_22px_70px_rgba(0,0,0,0.24)] dark:hover:text-white sm:w-[380px]"
+                  className="picx-article-card group flex min-h-[548px] w-[78vw] max-w-[360px] shrink-0 snap-start flex-col rounded-lg border border-black/10 bg-white p-3 text-black no-underline shadow-[0_20px_60px_rgba(5,35,27,0.08)] ring-1 ring-transparent transition hover:border-[#25c2a0]/55 hover:text-black hover:ring-[#25c2a0]/35 dark:border-white/10 dark:bg-[#171d1c] dark:text-white dark:shadow-[0_22px_70px_rgba(0,0,0,0.24)] dark:hover:text-white sm:w-[380px] sm:max-w-[390px]"
                   href={article.url}
                   target="_blank"
                   rel="noopener noreferrer"
