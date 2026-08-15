@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PIC Flows</title>
 <meta name="description" content="A live, faithful walkthrough of PIC Profile 0.2: an OAuth token exchanged into authority continuity — PIC Token JWT, PIC Continuity COSE, PIC Continuity Transition COSE — and the dropped privilege that can never come back." />
+<script async src="https://plausible.io/js/pa-i7fASAHMgS-8ZoTMzxiGY.js"></script>
+<script>
+  window.plausible = window.plausible || function(){ (window.plausible.q = window.plausible.q || []).push(arguments); };
+  window.plausible.init = window.plausible.init || function(i){ window.plausible.o = i || {}; };
+  window.plausible.init();
+</script>
 <style>
   :root{
     --bg:#f4f7f6; --panel:#ffffff; --panel2:#eef3f1; --ink:#0d1a17; --muted:#5a6b66;
@@ -41,7 +47,7 @@
   .back:hover{color:var(--accent-2);border-color:var(--accent)}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-2);margin:0 0 10px}
   h1{font-family:var(--mono);font-weight:600;font-size:clamp(26px,4.4vw,40px);letter-spacing:-.01em;margin:0 0 10px;text-wrap:balance}
-  .lede{max-width:64ch;color:var(--muted);margin:0 0 26px;font-size:clamp(15px,1.6vw,17px)}
+  .lede{color:var(--muted);margin:0 0 26px;font-size:clamp(15px,1.6vw,17px)}
   .lede b{color:var(--ink);font-weight:600}
 
   .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px;border-bottom:1px solid var(--line)}
@@ -56,7 +62,7 @@
 
   .stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 20px}
   .stage h2{font-family:var(--mono);font-size:13px;font-weight:600;margin:0 0 4px}
-  .stage .sub{color:var(--muted);font-size:13.5px;margin:0 0 16px;max-width:70ch}
+  .stage .sub{color:var(--muted);font-size:13.5px;margin:0 0 16px}
 
   .track{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:6px 2px 12px}
   .node{flex:1 0 168px;min-width:168px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);padding:12px;cursor:pointer;position:relative;transition:border-color .18s,box-shadow .18s,transform .18s}
@@ -217,7 +223,12 @@
 <script>
 "use strict";
 const PRM = matchMedia("(prefers-reduced-motion:reduce)").matches;
-const sleep = ms => new Promise(r => setTimeout(r, PRM ? 0 : ms));
+/* Cancellation token: a Reset or tab switch bumps RUN, every pending sleep
+   of an in-flight run rejects, and the animation dies cleanly. */
+let RUN=0;
+const sleep = ms => new Promise((res,rej)=>{ const t=RUN; setTimeout(()=>{ if(t===RUN)res(); else rej("cancelled"); }, PRM?0:ms); });
+function cancelRuns(){ RUN++; running=false; }
+const guard = fn => () => { fn().catch(()=>{}); };
 const byId = id => document.getElementById(id);
 const PROFILE = "https://pic-protocol.org/profiles/0.2";
 const PIC_TT = "https://pic-protocol.org/definitions/token-types/pic";
@@ -434,18 +445,20 @@ const EX_CHECKS2=[
 ];
 let exPhase=0;
 function renderEX(){
+  cancelRuns();
   byId("stageTitle").textContent=EX.title; byId("stageSub").textContent=EX.sub;
   const b=byId("stageBody"); b.innerHTML='<div class="track" id="track"></div>'; const t=byId("track");
   const labs=["RFC 8693<br>#1","realm<br>signs","drops<br>read","RFC 8693<br>#2"];
   EX.nodes.forEach((n,i)=>{ if(i>0)t.appendChild(mkConn("exconn"+i,labs[i-1])); t.appendChild(mkNode(n)); });
-  byId("controls").innerHTML='<button class="btn" id="run1">▶ Exchange #1 · OAuth → PIC</button><button class="btn" id="run2" '+(exPhase<1?"disabled":"")+'>▶ Exchange #2 · PIC → PIC</button><button class="btn ghost" id="resetEx">Reset</button>';
-  byId("run1").onclick=runEX1; byId("run2").onclick=runEX2; byId("resetEx").onclick=()=>{exPhase=0;selected="oauth";renderEX();};
+  byId("controls").innerHTML='<button class="btn" id="run1">▶ Exchange #1 · OAuth → PIC</button><button class="btn" id="run2">▶ Exchange #2 · PIC → PIC</button><button class="btn ghost" id="resetEx">Reset</button>';
+  byId("run1").onclick=guard(runEX1); byId("run2").onclick=guard(runEX2); byId("resetEx").onclick=()=>{exPhase=0;selected="oauth";renderEX();};
+  setBusy(false);
   resetChecks();
   const cur=EX.nodes.find(n=>n.id===selected)||EX.nodes[0];
   inspect(cur.title,cur.badge,cur.views); syncSel();
 }
 async function runEX1(){
-  if(running)return; running=true; exPhase=0; renderEX(); byId("run1").disabled=true;
+  if(running)return; exPhase=0; renderEX(); setBusy(true);
   byId("checks").hidden=false; byId("checksTitle").textContent="PIC-X · exchange #1 — initialization"; byId("checkList").innerHTML="";
   byId("node-oauth").classList.add("active","pass"); focusNode("oauth");
   byId("exconn1").classList.add("lit","flow"); await sleep(740);
@@ -458,11 +471,16 @@ async function runEX1(){
   selected="jwt0"; const n2=EX.nodes[2]; inspect(n2.title,n2.badge,n2.views); syncSel(); focusNode("jwt0");
   const v=byId("verdict"); v.className="verdict show ok";
   v.innerHTML='<b>PIC Token JWT 0 issued.</b> Authority was derived from the validated OAuth token under the Exchange Profile, constrained by the execution contract, and checkpointed into <b>PCA 0</b>. From here on, every continuation can only preserve or reduce it — no workload can replenish authority from privileges it independently holds.';
-  byId("run1").disabled=false; byId("run2").disabled=false; exPhase=1; running=false;
+  exPhase=1; setBusy(false);
+}
+function ffEX1(){
+  ["oauth","picx1","jwt0"].forEach(id=>{const n=byId("node-"+id); if(n)n.classList.add("pass");});
+  ["exconn1","exconn2"].forEach(id=>{const c=byId(id); if(c)c.classList.add("lit");});
+  exPhase=1;
 }
 async function runEX2(){
-  if(running||exPhase<1)return; running=true;
-  byId("run2").disabled=true; byId("checks").hidden=false;
+  if(running)return; if(exPhase<1)ffEX1();
+  setBusy(true); byId("checks").hidden=false;
   byId("checksTitle").textContent="PIC-X · exchange #2 — centralized advancement"; byId("checkList").innerHTML=""; byId("verdict").className="verdict";
   byId("exconn3").classList.add("lit","flow"); await sleep(740);
   byId("node-jwt0").classList.remove("active");
@@ -475,7 +493,7 @@ async function runEX2(){
   selected="jwt1"; const n4=EX.nodes[4]; inspect(n4.title,n4.badge,n4.views); syncSel(); focusNode("jwt1");
   const v=byId("verdict"); v.className="verdict show ok";
   v.innerHTML='<b>PIC Token JWT 1 issued — read is gone, irreversibly.</b> The candidate was untrusted input: PIC-X verified the SD-JWT PoR, the three workload signatures, the exact checkpoint bytes, position, challenge continuity, and non-expansion, then materialized <b>PCA 1 = {storage:save}</b> and settled it. <b>documents:read:document-42</b>, once dropped, can never reappear in this lineage branch.';
-  byId("run2").disabled=false; running=false;
+  setBusy(false);
 }
 
 /* ================================================================
@@ -541,6 +559,7 @@ const IV={
         foot:"Standard OAuth token-endpoint error (RFC 6749 §5.2, as used by RFC 8693): the subject token is not a valid continuation. No PIC Token JWT 2 is issued — the execution cannot advance with read restored." } ] }
 };
 function renderIV(){
+  cancelRuns();
   byId("stageTitle").textContent=IV.title; byId("stageSub").textContent=IV.sub;
   const b=byId("stageBody"); b.innerHTML='<div class="track" id="track"></div>'; const t=byId("track");
   t.appendChild(mkNode({...IV.nodes[0],flex:"1 0 176px"}));
@@ -557,16 +576,16 @@ function renderIV(){
   const runLbl= model==="pic" ? "▶ Exchange #3 · submit candidate" : "▶ Check possession";
   byId("controls").innerHTML='<span class="seg" role="group" aria-label="model"><button id="mPoss" aria-pressed="'+(model==="possession")+'">Possession model</button><button id="mPic" aria-pressed="'+(model==="pic")+'">PIC · continuity</button></span><button class="btn" id="runIv">'+runLbl+'</button><button class="btn ghost" id="resetIv">Reset</button>';
   byId("mPoss").onclick=()=>{model="possession";renderIV();}; byId("mPic").onclick=()=>{model="pic";renderIV();};
-  byId("runIv").onclick=runIV; byId("resetIv").onclick=renderIV;
+  byId("runIv").onclick=guard(runIV); byId("resetIv").onclick=renderIV;
+  setBusy(false);
   byId("checksTitle").textContent= model==="pic" ? "PIC-X · exchange #3 — candidate validation" : "Possession check · artifact validity"; resetChecks();
   const cur= selected==="j0"?IV.nodes[0] : selected==="j1"?IV.nodes[1] : selected==="picx2"?IV.picx : IV.x;
   inspect(cur.title,cur.badge,cur.views); syncSel();
 }
 async function runIV(){
-  if(running)return; running=true;
+  if(running)return; setBusy(true);
   document.querySelectorAll("#track .node").forEach(n=>n.classList.remove("pass","fail","warn","active"));
   byId("checks").hidden=false; byId("checkList").innerHTML=""; byId("verdict").className="verdict";
-  byId("runIv").disabled=true;
   byId("ivconn").classList.add("lit","flow");
   selected="x"; inspect(IV.x.title,IV.x.badge,IV.x.views); syncSel(); focusNode("x"); await sleep(740);
   byId("node-x").classList.add("active");
@@ -598,11 +617,17 @@ async function runIV(){
     const v=byId("verdict"); v.className="verdict show bad";
     v.innerHTML='<b>Rejected — the state is unrepresentable.</b> PIC-X returns the standard token-endpoint error; no PIC Token JWT 2 exists. Bind the Transition to PCA 1 and <b>read has no field to ride in</b>: invariants can only be removed, execution-contract entries can only add restrictions, and the candidate never states the resulting authority — PIC-X materializes it from the trusted checkpoint. Forge a merged checkpoint instead, and <b>the realm signature fails</b>. Dropped authority is lost: once read left this branch at PCA 1, no continuation of this branch can carry it again. Continuing from PCA 0 would open a <i>sibling branch</i> — fan-out is a designed property, separately validated, still bounded by C₀ and revocation — it never puts read back into this one. The bug can assemble an invalid claim; it can never validate as a Profile 0.2 continuation.';
   }
-  byId("runIv").disabled=false; running=false;
+  setBusy(false);
 }
 
 /* ============ tabs + deep links ============ */
 let scenario="A", selected="oauth", model="pic", running=false;
+/* Button discipline: during a run every action button is disabled and ONLY
+   Reset is active (it aborts); when idle, actions enabled, Reset disabled. */
+function setBusy(b){
+  running=b;
+  document.querySelectorAll("#controls .btn").forEach(x=>{ x.disabled = x.classList.contains("ghost") ? !b : b; });
+}
 const SLUGS={A:"authority-continuity",B:"invalid-state"};
 function setScenario(s,fromHash){
   scenario=s; running=false;

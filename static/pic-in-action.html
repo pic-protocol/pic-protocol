@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PIC in Action</title>
 <meta name="description" content="PIC in action: pick your path. Flows — the Profile 0.2 protocol stepped through wire by wire — or Use Cases — a service mesh and an AI agent running on authority continuity." />
+<script async src="https://plausible.io/js/pa-i7fASAHMgS-8ZoTMzxiGY.js"></script>
+<script>
+  window.plausible = window.plausible || function(){ (window.plausible.q = window.plausible.q || []).push(arguments); };
+  window.plausible.init = window.plausible.init || function(i){ window.plausible.o = i || {}; };
+  window.plausible.init();
+</script>
 <style>
   :root{
     --bg:#f4f7f6; --panel:#ffffff; --panel2:#eef3f1; --ink:#0d1a17; --muted:#5a6b66;
@@ -39,7 +45,7 @@
   .back:hover{color:var(--accent-2);border-color:var(--accent)}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-2);margin:0 0 10px}
   h1{font-family:var(--mono);font-weight:600;font-size:clamp(28px,5vw,46px);letter-spacing:-.01em;margin:0 0 10px;text-wrap:balance}
-  .lede{max-width:64ch;color:var(--muted);margin:0 0 34px;font-size:clamp(15px,1.7vw,18px)}
+  .lede{color:var(--muted);margin:0 0 34px;font-size:clamp(15px,1.7vw,18px)}
   .lede b{color:var(--ink);font-weight:600}
 
   .choices{display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -53,15 +59,15 @@
   @media (prefers-reduced-motion:reduce){.choice:hover{transform:none}}
   .choice .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2)}
   .choice h2{font-family:var(--mono);font-size:clamp(30px,4.4vw,44px);margin:0;font-weight:600;letter-spacing:-.01em}
-  .choice p{margin:0;color:var(--muted);font-size:15px;max-width:52ch}
+  .choice p{margin:0;color:var(--muted);font-size:15px}
   .choice .go{margin-top:auto;font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--accent-2)}
   .choice:hover .go{color:var(--accent)}
-  .jump{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
-  .jump .jl{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:flex-start;align-content:flex-start;min-height:74px}
+  .jump .jl{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;line-height:27px}
   .jump a{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:5px 11px;transition:color .15s,border-color .15s;overflow-wrap:anywhere}
   .jump a:hover{color:var(--accent-2);border-color:var(--accent)}
 
-  .foot{margin-top:34px;color:var(--muted);font-size:12.5px;max-width:100ch}
+  .foot{margin-top:34px;color:var(--muted);font-size:12.5px}
   .foot code{font-family:var(--mono);color:var(--ink);background:var(--panel2);padding:1px 6px;border-radius:5px}
   .foot p{margin:6px 0}
 </style>
@@ -106,6 +112,7 @@
         <span class="jl">jump to</span>
         <a href="/pic-use-cases.html#service-mesh">service mesh</a>
         <a href="/pic-use-cases.html#ai-agent">ai agent · sandboxed</a>
+        <a href="/pic-use-cases.html#agents-guardrails">ai agents · guardrails</a>
       </div>
     </div>
   </div>
