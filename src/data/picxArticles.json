@@ -63,5 +63,18 @@
     "bannerFlow": ["pca 0", "pca 1", "pca 2"],
     "tags": ["Walkthrough", "Continuity"],
     "variant": "walkthrough"
+  },
+  {
+    "id": "hardy-compiler-to-aiagent",
+    "title": "From Hardy Compiler to Hardy AI Agent",
+    "url": "https://www.ngallo.it/blog/2026-07-25/fron-hardy-compiler-to-hardy-aiagent/",
+    "date": "2026-07-25",
+    "author": "Nicola Gallo",
+    "summary": "Connects compiler-style execution boundaries to AI agents, showing why confused-deputy failures appear when agents act through ambient credentials and why authority continuity matters.",
+    "bannerKicker": "06 / Agent Security",
+    "bannerTitle": "Confused deputy to agent authority",
+    "bannerFlow": ["compiler", "agent", "authority"],
+    "tags": ["AI agents", "Confused deputy"],
+    "variant": "agent-security"
   }
 ]

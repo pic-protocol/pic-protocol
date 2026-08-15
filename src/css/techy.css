@@ -371,6 +371,11 @@
     linear-gradient(140deg, #10221d 0%, #496735 42%, #086b86 100%);
 }
 
+.picx-article-banner--agent-security {
+  background:
+    linear-gradient(140deg, #101216 0%, #263a45 43%, #0c6c61 100%);
+}
+
 /* ── Crosshair decoration ────────────────────────────────────── */
 .crosshair {
   position: relative;
