@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PIC in Action</title>
 <meta name="description" content="A live, faithful walkthrough of PIC Profile 0.2: an OAuth token exchanged into authority continuity — PIC Token JWT, PIC Continuity COSE, PIC Continuity Transition COSE — and the dropped privilege that can never come back." />
-<body>
 <style>
   :root{
     --bg:#f4f7f6; --panel:#ffffff; --panel2:#eef3f1; --ink:#0d1a17; --muted:#5a6b66;
@@ -149,6 +148,8 @@
   .foot code{font-family:var(--mono);color:var(--ink);background:var(--panel2);padding:1px 6px;border-radius:5px}
   .foot p{margin:6px 0}
 </style>
+</head>
+<body>
 
 <div class="wrap">
   <a class="back" href="/">←&nbsp;&nbsp;pic-protocol.org</a>
@@ -156,8 +157,8 @@
   <h1>PIC in action</h1>
   <p class="lede">Authority is <b>continuity</b>, not possession. Exchange an <b>OAuth token</b> into a PIC execution
     and watch authority continue — only ever <b>narrowing</b> — through settled checkpoints. Then watch the dropped
-    privilege try to come back, and the state become <b>unrepresentable</b>. Every check below is computed live from
-    the artifacts, exactly as PIC-X would.</p>
+    privilege try to come back, and the state become <b>unrepresentable</b>. The checks below are evaluated from
+    the displayed structures and Profile 0.2 validation rules; byte strings and signatures are illustrative.</p>
 
   <div class="tabs" role="tablist" aria-label="Scenarios">
     <button class="tab" role="tab" id="tab-A" aria-selected="true"><span class="n">01</span> Authority continuity · OAuth → PIC</button>
@@ -261,6 +262,8 @@ function showView(i,instant){
 }
 function syncSel(){ document.querySelectorAll(".node").forEach(el=>el.classList.remove("sel")); const s=byId("node-"+selected); if(s)s.classList.add("sel"); }
 function chipsHtml(list){ return list.map(c=>'<span class="chip '+(c.cls||'')+'">'+c.t+'</span>').join(""); }
+function sameTuple(a,b){ return JSON.stringify(a)===JSON.stringify(b); }
+function includesTuple(list,tuple){ return list.some(item=>sameTuple(item,tuple)); }
 function addRow(ok,lbl,d){ const r=document.createElement("div"); r.className="check on "+(ok?"ok":"bad"); r.innerHTML='<div class="mk">'+(ok?"✓":"✕")+'</div><div class="lbl">'+lbl+'<small>'+d+'</small></div>'; byId("checkList").appendChild(r); }
 function resetChecks(){ byId("checks").hidden=true; byId("checkList").innerHTML=""; byId("verdict").className="verdict"; }
 function mkNode(n){
@@ -422,7 +425,7 @@ const EX_CHECKS2=[
   [()=>T1.predecessor.hash===H0,"Trusted checkpoint","root.pca = exact signed PCA 0 bytes · SHA-256(root.pca) = root.pca_hash = predecessor.hash"],
   [()=>T1.position===1&&T1.challenge.previous_challenge===C0,"Position & challenge","position 1 = 0 + 1 · previous_challenge = PCA 0 next_challenge"],
   [()=>true,"Attenuation","remove_bitmap h'01' → drops index 0 (documents:read:document-42) · no set bit without a predecessor index"],
-  [()=>Object.values(PCA1.context_of_authority.invariants).every(t=>Object.values(PCA0.context_of_authority.invariants).some(p=>p[0]===t[0])),"Non-expansion  C₁ ⊆ C₀","{storage:save} ⊆ {documents:read:document-42, storage:save}"],
+  [()=>Object.values(PCA1.context_of_authority.invariants).every(t=>includesTuple(Object.values(PCA0.context_of_authority.invariants),t)),"Non-expansion  C₁ ⊆ C₀","{storage:save} ⊆ {documents:read:document-42, storage:save}"],
   [()=>true,"Realm settlement","signs PCA 1 (position 1, challenge from the Transition) → settled Continuity 1 → PIC Token JWT 1"]
 ];
 let exPhase=0;
@@ -475,19 +478,20 @@ async function runEX2(){
    Scenario 02 — The invalid state: the dropped read tries to return
    Same execution as scenario 01, one hop later.
    ================================================================ */
-const IV_FORGED={ profile:PROFILE, position:2,
+const IV_ILLEGAL_RESULT={ profile:PROFILE, position:2,
+  "!not_a_profile_0_2_artifact":"Resulting authority is materialized by PIC-X; a workload cannot supply it.",
   context_of_authority:{
     invariants:{ "0":["documents:read:document-42","read","documents","document-42"], "1":["storage:save","save","storage","*"] },
     execution_contract:{ "0":["corporation","ACME"], "1":["department","sensitive-documents"] } },
-  challenge:{ next_challenge:"h'aa004f1e3c5b82d7960a4f1e3c5bff11'" },
-  "!signature":"worker key — NOT the realm signing key" };
-const IV_HX="h'beef00d1c4a7e2f5b80d3a6c91e47f2073c16a92e57d0338800d1c4a7e20bad0'";
+  challenge:{ next_challenge:"h'cc01d43a96e5f2b80cc01d43a96e0219'" },
+  "!signature":"not realm-signed" };
 const IV_CAND={ profile:PROFILE,
-  root:{ pca_hash:IV_HX, pca:"<worker-forged 'PCA 2' bytes — not realm-signed>" },
-  transitions:[ "<worker-signed Transition bytes>" ] };
+  root:{ pca_hash:H1, pca:"<exact signed PIC PCA COSE 1 bytes>" },
+  transitions:[ "<workload-signed Transition COSE 2 bytes with illegal add-authority attempt>" ] };
 const IV_TX={ profile:PROFILE, position:2,
-  predecessor:{ type:"pca", hash:"h'beef00d1…e20bad0' (the forged checkpoint)" },
+  predecessor:{ type:"pca", hash:H1 },
   challenge:{ previous_challenge:C1, next_challenge:"h'cc01d43a96e5f2b80cc01d43a96e0219'" },
+  "!illegal_authority_additions":{ invariants:{ "0":["documents:read:document-42","read","documents","document-42"] } },
   proof_of_relationship:{ type:"sd-jwt", evidence:"<worker SD-JWT presentation — the worker IS attested>" } };
 const IV={
   title:"The invalid state — the dropped read tries to return",
@@ -510,14 +514,14 @@ const IV={
         { label:"PIC Token JWT", obj:JWT1, hl:[{text:'"pic-token-01J8K0PCA1"'}],
           foot:"The envelope Worker 2 received for this step." } ] }
   ],
-  x:{ id:"x", title:"Candidate — read restored", badge:"forged checkpoint",
+  x:{ id:"x", title:"Candidate — read restored", badge:"invalid candidate",
     views:[
-      { label:"Candidate Continuity", obj:IV_CAND, hl:[{text:"\""+IV_HX.replace(/^h/,"h")+"\"",bad:true}],
-        foot:"The bug's only option: replace root.pca with worker-signed bytes claiming {read, save}. The hash is internally consistent — and matches no checkpoint the realm ever signed." },
-      { label:"Forged 'PCA 2'", obj:IV_FORGED, hl:[{text:'"documents:read:document-42"',bad:true},{text:'"worker key — NOT the realm signing key"',bad:true}],
-        foot:"The authority this lineage already gave up, re-asserted at position 2. In Profile 0.2 a checkpoint is realm-signed; a workload cannot produce one." },
-      { label:"Transition COSE", obj:IV_TX, hl:[{text:'"sd-jwt"'}],
-        foot:"Note what is NOT here: invariants attenuation is remove-only (remove_bitmap), and execution_contract.additions can only add restrictions. There is no field in the grammar through which documents:read:document-42 could be re-added to PCA 1." },
+      { label:"Candidate Continuity", obj:IV_CAND, hl:[{text:H1}],
+        foot:"The candidate correctly points at the current trusted checkpoint, PCA 1. The illegality is not the root: it is the attempted add-authority state that Profile 0.2 does not encode." },
+      { label:"Claimed result", obj:IV_ILLEGAL_RESULT, hl:[{text:'"!not_a_profile_0_2_artifact"',bad:true},{text:'"documents:read:document-42"',bad:true},{text:'"not realm-signed"',bad:true}],
+        foot:"This is the state the bug wants, not a valid workload-supplied artifact. PIC-X materializes successor checkpoints itself and signs them with the realm key after validation." },
+      { label:"Transition COSE", obj:IV_TX, hl:[{text:'"!illegal_authority_additions"',bad:true},{text:'"sd-jwt"'}],
+        foot:"There is no no-op remove bitmap here; the bug is shown as trying to add an invariant. Profile 0.2 has no valid field through which documents:read:document-42 can be re-added to PCA 1." },
       { label:"Candidate JWT", obj:{ aud:"pic-x", iat:1786700800, profile:PROFILE, pic:{ root:"<base64url candidate Continuity COSE bytes>" } },
         foot:"Workload-signed candidate envelope, submitted as subject_token at the realm token endpoint." } ] },
   picx:{ id:"picx2", tag:"PIC-X", who:"realm acme", small:"POST /realms/acme/token · exchange #3", title:"PIC-X — exchange #3", badge:"RFC 8693",
@@ -580,15 +584,15 @@ async function runIV(){
       [IV_CAND.transitions.length===1,"Candidate shape","pic.root parses · transitions = exactly one Transition"],
       [true,"Proof of Relationship","sd-jwt evidence verifies — the worker IS attested; attestation is not the failing check"],
       [true,"Workload signatures ×3","Transition, candidate Continuity, candidate JWT — consistent key"],
-      [false,"root.pca realm signature","worker-signed bytes are not a realm-signed PIC PCA COSE"],
-      [IV_CAND.root.pca_hash===H1,"Trusted checkpoint lookup","pca_hash matches no settled checkpoint of this execution"],
-      [false,"Add-authority encoding","invariants: remove_bitmap only · execution_contract: added restrictions only — no encoding re-adds documents:read:document-42"]];
+      [IV_CAND.root.pca_hash===H1,"Trusted checkpoint","root.pca is the exact signed current PCA 1 bytes"],
+      [IV_TX.predecessor.hash===H1&&IV_TX.position===2&&IV_TX.challenge.previous_challenge===C1,"Position & challenge","position 2 = 1 + 1 · predecessor.hash and previous_challenge bind PCA 1"],
+      [false,"Add-authority encoding","transition contains a non-Profile add-authority claim; valid invariants attenuation is remove_bitmap only"]];
     for(const [ok,lbl,d] of checks){ addRow(ok,lbl,d); await sleep(200); }
     byId("node-picx2").classList.remove("active"); byId("node-picx2").classList.add("pass");
     byId("node-x").classList.remove("active"); byId("node-x").classList.add("fail");
     byId("node-j1").classList.add("pass");
     const v=byId("verdict"); v.className="verdict show bad";
-    v.innerHTML='<b>Rejected — the state is unrepresentable.</b> PIC-X returns the standard token-endpoint error; no PIC Token JWT 2 exists. Bind the Transition to PCA 1 and <b>read has no field to ride in</b>: invariants can only be removed, execution-contract entries can only add restrictions, and the candidate never states the resulting authority — PIC-X materializes it from the trusted checkpoint. Forge a merged checkpoint instead, and <b>the realm signature fails</b>. Dropped authority is lost: once read left this branch at PCA 1, no continuation of this branch can carry it again. Continuing from PCA 0 would open a <i>sibling branch</i> — fan-out is a designed property, separately validated, still bounded by C₀ and revocation — it never puts read back into this one. The bug can assemble the bytes; they can never validate.';
+    v.innerHTML='<b>Rejected — the state is unrepresentable.</b> PIC-X returns the standard token-endpoint error; no PIC Token JWT 2 exists. Bind the Transition to PCA 1 and <b>read has no field to ride in</b>: invariants can only be removed, execution-contract entries can only add restrictions, and the candidate never states the resulting authority — PIC-X materializes it from the trusted checkpoint. Forge a merged checkpoint instead, and <b>the realm signature fails</b>. Dropped authority is lost: once read left this branch at PCA 1, no continuation of this branch can carry it again. Continuing from PCA 0 would open a <i>sibling branch</i> — fan-out is a designed property, separately validated, still bounded by C₀ and revocation — it never puts read back into this one. The bug can assemble an invalid claim; it can never validate as a Profile 0.2 continuation.';
   }
   byId("runIv").disabled=false; running=false;
 }
