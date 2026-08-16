@@ -43,6 +43,13 @@ In `PIC`, a transition between execution steps is valid only if two conditions h
 - **Causal relationship**: the step is a valid causal continuation of its immediate predecessor within the same execution lineage, witnessed by a **Proof of Relationship (PoR)** — single-hop evidence binding the executor to the step that came before it.
 - **Monotonic authority restriction**: the authority carried forward is a restriction of the authority held at the previous hop — it may remain identical or decrease, but it never expands.
 
+At a glance:
+
+```text
+valid hop = Proof of Relationship + non-expansion
+valid chain = Proof of Continuity
+```
+
 Composed transitively along the chain, these valid transitions form a **Proof of Continuity (PoC)**: the proof that the entire lineage, from origin to current state, is unbroken and monotonic. Relationship is local; continuity is global.
 
-From these two conditions the guarantees follow: provenance remains traceable from origin to current state, the origin principal `p₀` is preserved throughout the chain, and authority cannot be re-created mid-chain, cannot escape its origin, and cannot expand across any dimension. The confused deputy problem becomes structurally inexpressible — not mitigated, but impossible by construction.
+From these two conditions the guarantees follow: provenance remains traceable from origin to current state, the origin principal `p₀` is preserved throughout the chain, and authority cannot be re-created mid-chain, cannot escape its origin, and cannot expand across any dimension. At a conforming receiving boundary, the confused-deputy state is not valid PIC state.

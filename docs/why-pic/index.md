@@ -7,9 +7,17 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Why PIC
 
-**Provenance Identity Continuity (PIC) has its roots in distributed systems.** Its core idea is simple: under a threat model in which execution cannot
-be trusted to select authority correctly, propagated authority should be accepted only through a **verifiable
-execution relationship** — not merely because a credential is valid and possessed.
+**Provenance Identity Continuity (PIC) has its roots in distributed systems.** Its core idea is simple: when execution cannot
+be trusted to select authority correctly, propagated authority should be accepted only as a **verifiable, non-expansive
+continuation** of the authority it came from — not merely because a credential is valid and possessed.
+
+At a glance:
+
+| PIC asks | PIC requires |
+| --- | --- |
+| Does this authority belong to this execution? | A **Proof of Relationship** to the predecessor. |
+| Did authority expand? | A successor context bounded by the predecessor. |
+| Can the chain be trusted from origin to now? | A **Proof of Continuity** over the lineage. |
 
 ## The practical problem
 
@@ -28,8 +36,9 @@ context**.
 
 The first conclusion — that the conventional bearer access token was itself the problem — was too broad.
 **Bearer-token protocols work correctly within their stated scope and threat model.** What that architecture
-required was an *additional property* which the flow in use did not establish: a **receiver-verifiable relationship**
-between propagated authority and the execution for which it was granted.
+required was an *additional property* which the flow in use did not establish: a receiver-verifiable relationship
+between propagated authority and the execution for which it was granted, plus a check that the successor authority
+did not expand.
 
 ### The missing property at a glance
 
@@ -38,7 +47,7 @@ between propagated authority and the execution for which it was granted.
 | Is the credential valid? | Necessary, but **not sufficient**. |
 | Who possesses it? | Possession does not establish *which execution* it belongs to. |
 | Which execution may continue? | This is the **Authority Continuity** question. |
-| What should the receiver verify? | A specific, **request-bound**, **non-expansive** continuation under the applicable verification rules. |
+| What should the receiver verify? | **PoR + non-expansion**, and any profile-required request, integrity, and freshness checks. |
 
 ## Why this matters for AI agents
 
@@ -52,10 +61,10 @@ the current task.
 
 :::tip The question a receiving boundary must be able to answer
 
-> *"Can this execution prove that it is a valid continuation of the authority and request it received?"*
+> *"Can this execution prove that it is the next valid continuation of the authority it received?"*
 
-A receiving boundary should accept **only a verifiable continuation**. That is **Authority Continuity**, and PIC is
-one proposed construction for it.
+A receiving boundary should accept **only a verified continuity advancement**. That is **Authority Continuity**, and
+PIC is one construction for it.
 
 :::
 
@@ -93,7 +102,7 @@ continued.
 | **The executor's act** | *"Choose which authority to use."* | *"Propose a continuation that the next boundary can verify."* |
 | **Who decides** | The executor, internally | The **receiving boundary** |
 | **What is trusted** | That selection was performed correctly | Nothing — the proposal is **verified** |
-| **What is checked** | The credential is valid and possessed | The continuation is *admissible*, *request-bound*, and *non-expansive* |
+| **What is checked** | The credential is valid and possessed | The advancement has PoR, preserves lineage, and is non-expansive |
 
 :::info The executor may propose — the boundary decides
 
@@ -110,8 +119,8 @@ being continued**.
 
 An agent holding credentials for two tenants, two customers, or two workflows is one incorrect association away from
 acting with authority that is entirely valid — and entirely unrelated to the request it is serving. No credential
-check detects that: both credentials are authentic, and both are legitimately held. Only a **continuation check** —
-one that binds the authority to the execution it came from — can distinguish them.
+check detects that: both credentials are authentic, and both are legitimately held. Only a **continuity check** —
+PoR plus non-expansion over the lineage — can distinguish them.
 
 ## The threat model
 
@@ -127,13 +136,13 @@ own page.
 
 ## The scope, stated
 
-PIC addresses the **authorization protocol** by requiring a *verifiable continuation* instead of relying on the
+PIC addresses the **authorization protocol** by requiring a *verified continuity advancement* instead of relying on the
 executor's internal authority selection. The boundary of that claim is part of the model, not a caveat added to it.
 
 | PIC establishes | PIC does not claim |
 | --- | --- |
-| Propagated authority is accepted only as a **verifiable continuation** of the execution it came from | That an executor's **subjective intent** can be proven |
-| Authority is **preserved or attenuated** across a hop, never expanded | That an executor's **internal behavior** is correct |
+| Propagated authority is accepted only as a **verified continuity advancement** of the execution it came from | That an executor's **subjective intent** can be proven |
+| Authority is **preserved or attenuated** across a hop, never expanded | That an executor's **internal behavior** or side effects are correct |
 | The **receiving boundary** decides admissibility, not the executor | That any given **implementation or deployment** is secure |
 
 :::tip Define the threat model first — then evaluate the complete system against it

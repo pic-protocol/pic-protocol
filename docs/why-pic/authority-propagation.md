@@ -14,8 +14,9 @@ Authentication and initial authorization have already happened. A user signs in 
 represents the **initial authority**: what the permissioned entity is entitled to, derived from permissions, policy,
 consent, and context.
 
-PIC does not replace any of that. It begins at the point where the access token is exchanged, through the **OAuth 2.0
-Token Exchange** profile, for a **PCA** — the origin PIC Context of Authority.
+PIC does not replace any of that. It begins at the point where existing authority is converted into a **PCA** —
+the origin **PIC Context of Authority**. In the current Profile 0.2 / PIC-X realization, PIC-X is the exchange and
+settlement component that validates the incoming authority and returns the first settled PIC Token JWT.
 
 <ThemedZoomableImage
   alt="A user signs in with an identity provider, receives an OAuth access token carrying the initial authority, and exchanges it for the origin PIC Context of Authority"
@@ -42,8 +43,15 @@ unrelated context? Possession of a token or credential proves *who holds an
 artifact*, not *which execution caused its use*. Left unsolved, this gap
 produces the confused deputy, privilege escalation, and ambient authority.
 
-**PIC solves it**: authority is created once at the origin and propagated as
-a verifiable, non-expansive continuation across the entire execution chain.
+PIC's shape is small:
+
+| Step | Meaning |
+| --- | --- |
+| Origin | Establish a root **PCA** from permissioned intent. |
+| Hop | Prove relationship to the predecessor and keep authority non-expansive. |
+| Chain | Compose those hops as **Proof of Continuity**. |
+
+In Profile 0.2, each accepted advancement is settled into the next trusted PIC Token JWT.
 
 ## Permissions, Intent, Authority and Execution
 
@@ -85,6 +93,10 @@ These may also be referred to as **previous peer**, **self**, and **next
 peer** — or by any equivalent identifiers that make the causal relationship
 explicit.
 
+At a receiving boundary, the question is not "does this executor possess a valid artifact?" It is:
+
+> Is this authority state the next valid, non-expansive continuation of the predecessor state?
+
 ## Execution Constraints
 
 Every step is also bounded by **constraints** restricting how, when, and
@@ -99,4 +111,4 @@ see [ZTAuth*](https://spec.ztauthstar.com).
 :::
 
 Authority is created from intent and propagated through execution. At every
-step, it can only narrow.
+step, it can only stay the same or narrow.

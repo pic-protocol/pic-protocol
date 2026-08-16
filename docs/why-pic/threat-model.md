@@ -43,6 +43,11 @@ as the *evidence presented to the next boundary*.
 These five elements define the perimeter against which a protocol is evaluated. The last two are treated in full on
 their own pages — this page states them only as elements of the model.
 
+Receiver rule, in one line:
+
+> Accept the next authority state only when the predecessor relationship, lineage binding, freshness, integrity, and
+> non-expansion checks all pass under the selected profile.
+
 ## Application to long-running AI agents
 
 The model becomes especially visible for a **long-running agent**: one that can serve overlapping requests, retain
@@ -112,8 +117,8 @@ must also verify the applicable **predecessor**, **request**, **lineage**, **rel
 ## What follows from the model
 
 Given this perimeter, a receiving boundary cannot rely on the credential, on possession, or on the executor's
-assurance that it selected correctly. It must verify a relationship it can check for itself — which is exactly the
-property named [Authority Continuity](./index.md).
+assurance that it selected correctly. It must verify a relationship and a non-expansive successor state for itself —
+the property named [Authority Continuity](./index.md).
 
 The main problem pages this model gives rise to are treated separately:
 

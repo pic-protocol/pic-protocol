@@ -36,7 +36,7 @@ The missing axis is not identity. It is **runtime evidence**.
 | --- | --- |
 | The user signs the task and its bounds. | The concrete outcome appears. |
 | The agent does not know the final option. | The guardrail can inspect evidence. |
-| Possession proves an artifact is held. | Continuity proves the action belongs to a valid signed case. |
+| Possession proves an artifact is held. | A verified continuation proves the action belongs to a valid signed case. |
 
 The agent's guess must never be the authority. The signed predicate and the runtime proof decide.
 
@@ -83,13 +83,13 @@ The discipline is the same as the N+1 unknown executor problem:
 The decision point does not create the outcome. The world creates the outcome. The decision point establishes, from
 evidence, which signed case the outcome satisfies.
 
-## PIC of PIC
+## Guardrail as PIC
 
 This is where policy evaluation itself becomes an ordinary verified execution.
 
-The guardrail evaluates the signed conditional context against runtime evidence and returns a **signed decision
-result** containing the authority actually granted for the next step. That result is not a bare `Permit` or `Deny`.
-It is the next bounded authority context.
+The guardrail evaluates the signed conditional context against runtime evidence and produces the next bounded
+continuity state. That result is not a bare `Permit` or `Deny`. It is authority for the next step, bounded by the
+signed case and by the evidence that actually materialized.
 
 In that sense, the authorization decision becomes the base context for the following execution:
 
@@ -98,7 +98,7 @@ signed task + signed conditional contexts
         +
 runtime evidence at commit
         v
-signed bounded decision result
+guardrail-verified bounded result
         v
 next PIC authority context
 ```
@@ -106,9 +106,12 @@ next PIC authority context
 The agent may discover options, collect evidence, and propose the next action. It does not get to decide that a
 trade-off is acceptable. The signed case waits until the fact exists.
 
+When the enforcement process itself must be governed, this is the shape of **Sandboxed Execution**: the guardrail
+process continues only as valid PIC state.
+
 ## Why this belongs in Why PIC
 
 The problem is not only that the next executor may be unknown. The next **outcome** may be unknown too.
 
 PIC's answer is the same in both cases: never trust possession or prediction where the required fact does not yet
-exist. Accept only a signed, bounded, evidence-backed continuation at the moment the action commits.
+exist. Accept only a bounded, evidence-backed continuity advancement at the moment the action commits.

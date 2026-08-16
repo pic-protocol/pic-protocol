@@ -97,9 +97,18 @@ linking lineage 2's `read all` to lineage 1's chain, so the mixed state is **not
 bug may still execute, but the state it attempts to build can never validate: executor *n+1* never faces the
 dilemma, because an invalid state can never reach it as valid.
 
+The receiving check is deliberately boring:
+
+```text
+same predecessor lineage?
+valid Proof of Relationship?
+non-expansive successor authority?
+profile-required request, integrity, and freshness checks?
+```
+
 As with the N+1 unknown executor problem, **Proof of Continuity** solves it by respecting lineage across space and
 time: each hop is authorized only against the authority context of the lineage that caused it. Authority sources may
 be carried together, but they are **never merged into a combined authority**.
 
-Not detection, not mitigation: **at executor *n+1*, an invalid state cannot exist as valid — even in the presence of
-bugs.**
+Not detection, not mitigation: **at a conforming executor *n+1*, an invalid mixed authority state is not valid PIC
+state — even in the presence of bugs upstream.**
