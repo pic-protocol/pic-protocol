@@ -486,6 +486,377 @@
     0 18px 48px rgba(0, 0, 0, 0.16);
 }
 
+/* ── Agent runtime brief ─────────────────────────────────────── */
+.agent-brief-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  gap: 1.5rem;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(0, 84, 61, 0.12);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 77% 32%, rgba(47, 128, 237, 0.12), transparent 27%),
+    radial-gradient(circle at 46% 62%, rgba(37, 194, 160, 0.16), transparent 33%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 251, 250, 0.96));
+  padding: 1.1rem;
+}
+
+[data-theme="dark"] .agent-brief-shell {
+  border-color: rgba(37, 194, 160, 0.16);
+  background:
+    radial-gradient(circle at 77% 32%, rgba(47, 128, 237, 0.14), transparent 28%),
+    radial-gradient(circle at 46% 62%, rgba(37, 194, 160, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(24, 30, 29, 0.98), rgba(18, 24, 23, 0.98));
+}
+
+.agent-brief-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0, 84, 61, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 84, 61, 0.055) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  pointer-events: none;
+}
+
+[data-theme="dark"] .agent-brief-shell::before {
+  background-image:
+    linear-gradient(rgba(37, 194, 160, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 194, 160, 0.07) 1px, transparent 1px);
+}
+
+.agent-brief-copy,
+.agent-brief-stage {
+  position: relative;
+  z-index: 1;
+}
+
+.agent-brief-copy {
+  display: flex;
+  min-height: 470px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.agent-brief-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.agent-brief-primary,
+.agent-brief-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.86rem 1.18rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.agent-brief-primary {
+  border: 1px solid rgba(0, 84, 61, 0.85);
+  background: #00543d;
+  color: #fff;
+}
+
+.agent-brief-primary:hover,
+.agent-brief-primary:focus-visible {
+  background: #25c2a0;
+  border-color: #25c2a0;
+  color: #05231b;
+  transform: translateY(-1px);
+}
+
+.agent-brief-secondary {
+  border: 1px solid rgba(0, 84, 61, 0.18);
+  background: rgba(255, 255, 255, 0.62);
+  color: #00543d;
+}
+
+.agent-brief-secondary:hover,
+.agent-brief-secondary:focus-visible {
+  border-color: rgba(0, 84, 61, 0.48);
+  color: #003d2d;
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .agent-brief-primary {
+  border-color: rgba(37, 194, 160, 0.8);
+  background: #25c2a0;
+  color: #05231b;
+}
+
+[data-theme="dark"] .agent-brief-secondary {
+  border-color: rgba(37, 194, 160, 0.28);
+  background: rgba(255, 255, 255, 0.04);
+  color: #25c2a0;
+}
+
+.agent-brief-stage {
+  min-height: 470px;
+  overflow: hidden;
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(5, 35, 27, 0.92), rgba(8, 23, 28, 0.92)),
+    #0b1513;
+  box-shadow: inset 0 0 0 1px rgba(37, 194, 160, 0.18);
+}
+
+.agent-brief-stage::before,
+.agent-brief-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.agent-brief-stage::before {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.75;
+}
+
+.agent-brief-stage::after {
+  background:
+    radial-gradient(circle at 50% 44%, rgba(37, 194, 160, 0.22), transparent 24%),
+    linear-gradient(90deg, transparent 0%, rgba(37, 194, 160, 0.1) 48%, rgba(37, 194, 160, 0.1) 52%, transparent 100%);
+}
+
+.agent-brief-core {
+  position: absolute;
+  left: 50%;
+  top: 43%;
+  z-index: 3;
+  display: flex;
+  width: min(70%, 390px);
+  min-height: 150px;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid rgba(37, 194, 160, 0.35);
+  border-radius: 999px;
+  background: rgba(7, 18, 16, 0.92);
+  box-shadow:
+    0 0 0 10px rgba(37, 194, 160, 0.08),
+    0 28px 80px rgba(0, 0, 0, 0.28);
+  padding: 1.5rem;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.agent-brief-core::before,
+.agent-brief-core::after {
+  content: "";
+  position: absolute;
+  inset: -18px;
+  border: 1px solid rgba(37, 194, 160, 0.2);
+  border-radius: inherit;
+  animation: agent-brief-pulse 4.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.agent-brief-core::after {
+  inset: -34px;
+  border-color: rgba(47, 128, 237, 0.18);
+  animation-delay: 1.1s;
+}
+
+.agent-brief-core .mono {
+  color: #25c2a0;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.agent-brief-core strong {
+  color: #fff;
+  font-family: "Clash Grotesk", Inter, sans-serif;
+  font-size: 2.45rem;
+  font-weight: 600;
+  line-height: 0.95;
+  margin-top: 0.6rem;
+}
+
+.agent-brief-flow {
+  position: absolute;
+  left: 2rem;
+  right: 2rem;
+  top: 1.5rem;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.agent-brief-flow span {
+  min-width: 0;
+  border: 1px solid rgba(37, 194, 160, 0.22);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.16);
+  color: rgba(255, 255, 255, 0.68);
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace;
+  font-size: 0.64rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  padding: 0.58rem 0.52rem;
+  text-align: center;
+}
+
+.agent-brief-checks {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.agent-brief-check {
+  min-height: 154px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+  background: rgba(14, 23, 21, 0.9);
+  padding: 0.95rem;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.18);
+}
+
+.agent-brief-check .mono {
+  color: #25c2a0;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.agent-brief-check strong {
+  display: block;
+  color: #fff;
+  font-family: "Clash Grotesk", Inter, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.05;
+  margin-top: 0.45rem;
+}
+
+.agent-brief-check p {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 0.55rem 0 0;
+}
+
+@keyframes agent-brief-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@media (max-width: 1023px) {
+  .agent-brief-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .agent-brief-copy,
+  .agent-brief-stage {
+    min-height: auto;
+  }
+
+  .agent-brief-copy {
+    padding: 1.5rem;
+  }
+
+  .agent-brief-stage {
+    min-height: 560px;
+  }
+
+  .agent-brief-core strong {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .agent-brief-shell {
+    border-radius: 14px;
+    gap: 1rem;
+    padding: 0.75rem;
+  }
+
+  .agent-brief-copy {
+    padding: 1rem;
+  }
+
+  .agent-brief-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .agent-brief-primary,
+  .agent-brief-secondary {
+    width: 100%;
+  }
+
+  .agent-brief-stage {
+    min-height: 720px;
+  }
+
+  .agent-brief-flow {
+    left: 1rem;
+    right: 1rem;
+    top: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .agent-brief-flow span:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .agent-brief-core {
+    top: 37%;
+    width: calc(100% - 3rem);
+    min-height: 138px;
+  }
+
+  .agent-brief-core strong {
+    font-size: 1.85rem;
+  }
+
+  .agent-brief-checks {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  .agent-brief-check {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-brief-core::before,
+  .agent-brief-core::after {
+    animation: none;
+  }
+}
+
 /* ── Current specification map ───────────────────────────────── */
 .spec-map-stage {
   position: relative;

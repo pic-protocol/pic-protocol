@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import Link from "@docusaurus/Link";
 import { CURRENT_SPEC_RELEASE } from "../data/specification";
 
 const getDocumentHref = (href: string) => href;
@@ -90,7 +89,7 @@ export const SpecificationMapSection = () => {
       className="px-6 pt-16 md:pt-20 xl:px-24 dark:bg-[#1F1F21]"
     >
       <div className="mx-auto max-w-300">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-6">
           <div className="max-w-180">
             <span className="mono mb-3 block text-[10px] font-semibold uppercase tracking-normal text-[#00543D] dark:text-[#25c2a0]">
               {"// current_specification"}
@@ -103,13 +102,6 @@ export const SpecificationMapSection = () => {
               the Specification page, so the map follows the latest release.
             </p>
           </div>
-
-          <Link
-            href="/specification"
-            className="inline-flex w-fit items-center justify-center rounded-full border border-[#00543D]/25 px-5 py-3 text-sm font-semibold text-[#00543D] no-underline transition hover:bg-[#00543D] hover:text-white dark:border-[#25c2a0]/40 dark:text-[#25c2a0] dark:hover:bg-[#25c2a0] dark:hover:text-[#05231b]"
-          >
-            Open Specification
-          </Link>
         </div>
 
         <div className="spec-map-stage mt-10 md:mt-12">
