@@ -2,6 +2,11 @@
 sidebar_position: 2
 ---
 
+import {
+  CurrentLegalAppendicesLink,
+  SpecificationIndexTables,
+} from '@site/src/components/SpecificationIndexTables';
+
 # PIC Specification
 
 The **PIC Specification** defines the generic, implementation-independent
@@ -13,7 +18,7 @@ deployment choices to the protocols built on top of it.
 Since version 0.2 the specification is published as a **document set**: an
 entry point whose **Documents table** indexes every subordinate
 specification, plus shared
-[Legal Appendices](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.html)
+<CurrentLegalAppendicesLink />
 incorporated by reference into every document.
 
 :::info Public drafts
@@ -27,30 +32,7 @@ kind**; implementers and users assume all risks of their use. For the complete p
 
 :::
 
-## Current specification (0.2 draft)
-
-The current profile identifier is
-[`https://pic-protocol.org/profiles/0.2`](/profiles/0.2). It redirects to the
-rendered PIC 0.2 specification entry point.
-
-Each document is available as rendered **HTML**, plain **text**, and RFC
-**XML**; the **Source** column links to the authoritative Markdown.
-
-| Document | HTML | Text | XML | Source |
-| --- | --- | --- | --- | --- |
-| PIC Specification Set | [HTML](/profiles/0.2) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-spec.md) |
-| PIC Prover and Verifier | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-prover-verifier-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-prover-verifier-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-prover-verifier-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-prover-verifier-spec.md) |
-| PIC Revocation | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-revocation-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-revocation-spec.md) |
-| PIC Sandboxed Execution | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-lineage-guardrail-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-lineage-guardrail-spec.md) |
-| PIC Architecture and Deployment | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-architecture-deployment-spec.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-architecture-deployment-spec.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-architecture-deployment-spec.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-architecture-deployment-spec.md) |
-| PIC Legal Appendices | [HTML](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.html) | [TXT](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.txt) | [XML](https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.xml) | [md](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.2/pic-legal.md) |
-
-## Releases
-
-| Version | Status | Description | Reference |
-| --- | --- | --- | --- |
-| 0.2 | *Draft — current* | Specification set: entry point with Documents table, Prover and Verifier, Revocation, Sandboxed Execution, Architecture and Deployment, and shared Legal Appendices | [pic-spec 0.2](/profiles/0.2) |
-| 0.1 | *Draft — superseded* | Initial generic specification draft (single document) | [pic-spec 0.1](https://github.com/pic-protocol/pic-spec/blob/main/draft/0.1/pic-spec.md) |
+<SpecificationIndexTables />
 
 All releases are **drafts**: expect clarifications, additional normative
 text, and structural adjustments driven by community feedback and
@@ -73,4 +55,4 @@ Every PIC document published here is an **independently developed draft**, not a
 
 PIC documents are published and maintained by **Nitro Agility S.r.l.** as **Specification Steward**. The full legal terms —
 disclaimer, limitation of liability, licensing, and attribution — are in the
-[Legal Appendices](https://htmlpreview.github.io/?https://raw.githubusercontent.com/pic-protocol/pic-spec/main/draft/0.2/rfc/pic-legal.html).
+<CurrentLegalAppendicesLink />.

@@ -5,7 +5,7 @@ export const ArticleScrollSection = () => {
   return (
     <section
       id="tw-scope"
-      className="px-6 pt-16 md:pt-20 xl:px-24 dark:bg-[#1F1F21]"
+      className="home-article-section bg-[#FAFAFA] px-6 pt-16 md:pt-20 xl:px-24 dark:bg-[#1F1F21]"
     >
       <div className="mx-auto max-w-300">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">

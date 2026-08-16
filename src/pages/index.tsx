@@ -3,6 +3,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import { HeroSection } from "../components/HeroSection";
 import { TrioSection } from "../components/TrioSection";
+import { SpecificationMapSection } from "../components/SpecificationMapSection";
 import { ArticleScrollSection } from "../components/ArticleScrollSection";
 import { SlackSection } from "../components/SlackSection";
 
@@ -15,8 +16,11 @@ export default function Home(): ReactNode {
     >
       <HeroSection />
       <TrioSection />
-      <ArticleScrollSection />
-      <SlackSection />
+      <SpecificationMapSection />
+      <div className="home-article-slack-band">
+        <ArticleScrollSection />
+        <SlackSection />
+      </div>
     </Layout>
   );
 }

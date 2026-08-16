@@ -154,6 +154,16 @@ main[class*="docMainContainer"]::before,
   height: auto;
 }
 
+.spec-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.spec-table-muted {
+  color: var(--pic-text-muted);
+  font-size: 0.82rem;
+}
+
 /* ── Zoomable figures ────────────────────────────────────────── */
 .zoomable-figure {
   margin: 2rem 0;
