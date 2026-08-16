@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PIC in Action</title>
-<meta name="description" content="PIC in action: pick your path. Flows — the Profile 0.2 protocol stepped through wire by wire — or Use Cases — a service mesh, a sandboxed AI agent, and agent-to-agent guardrails running on authority continuity." />
+<meta name="description" content="PIC in action: pick your path. Flows, use cases, and decentralization with bounded subchains and PIC-X checkpoints." />
 <script async src="https://plausible.io/js/pa-i7fASAHMgS-8ZoTMzxiGY.js"></script>
 <script>
   window.plausible = window.plausible || function(){ (window.plausible.q = window.plausible.q || []).push(arguments); };
@@ -39,7 +39,7 @@
   *{box-sizing:border-box}
   html,body{margin:0}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;padding:clamp(16px,3vw,40px)}
-  .wrap{max-width:1100px;margin:0 auto}
+  .wrap{max-width:1320px;margin:0 auto}
   a{color:var(--accent-2)}
   .back{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12.5px;color:var(--muted);text-decoration:none;margin-bottom:20px;padding:6px 11px;border:1px solid var(--line);border-radius:999px}
   .back:hover{color:var(--accent-2);border-color:var(--accent)}
@@ -48,8 +48,9 @@
   .lede{color:var(--muted);margin:0 0 34px;font-size:clamp(15px,1.7vw,18px)}
   .lede b{color:var(--ink);font-weight:600}
 
-  .choices{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-  @media (max-width:860px){.choices{grid-template-columns:1fr}}
+  .choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+  @media (max-width:1080px){.choices{grid-template-columns:1fr 1fr}}
+  @media (max-width:760px){.choices{grid-template-columns:1fr}}
   .col{display:flex;flex-direction:column;min-width:0}
   .choice{display:flex;flex-direction:column;gap:12px;flex:1;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:clamp(24px,3.6vw,36px);text-decoration:none;color:var(--ink);transition:border-color .18s,transform .18s,box-shadow .18s;min-height:250px;position:relative;overflow:hidden}
   .choice::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 100% 0%,var(--glow),transparent 55%);opacity:0;transition:opacity .25s;pointer-events:none}
@@ -78,8 +79,9 @@
   <a class="back" href="/">←&nbsp;&nbsp;pic-protocol.org</a>
   <p class="eyebrow">Provenance · Identity · Continuity</p>
   <h1>PIC in action</h1>
-  <p class="lede">Authority is <b>continuity</b>, not possession. See it live, two ways: step through the
-    <b>protocol flows</b> wire by wire, or watch the <b>use cases</b> where continuity goes to work.
+  <p class="lede">Authority is <b>continuity</b>, not possession. See it live, three ways: step through the
+    <b>protocol flows</b> wire by wire, watch the <b>use cases</b> where continuity goes to work, or follow a
+    <b>decentralized subchain</b> as it returns to PIC-X for a checkpoint.
     Everything is interactive — the flows evaluate their checks from the displayed Profile 0.2 structures,
     the use cases are illustrative walkthroughs — and every scenario has its own link.</p>
 
@@ -118,13 +120,28 @@
         <a href="/pic-use-cases.html#agents-guardrails">ai agents · guardrails</a>
       </div>
     </div>
+
+    <div class="col">
+      <a class="choice" href="/pic-decentralization.html">
+        <span class="k">03 · high-performance continuity</span>
+        <h2>Subchains</h2>
+        <p>A wallet or PIC-X-compliant IdP creates authority; <b>PIC-X</b> propagates it into continuity. A bounded
+          subchain then travels through moving swarms of autonomous AI agents, returns for
+          compact checkpoints, and remains governed by the source plus PIC-X policy.</p>
+        <span class="go">enter decentralization&nbsp;&nbsp;→</span>
+      </a>
+      <div class="jump">
+        <span class="jl">jump to</span>
+        <a href="/pic-decentralization.html">subchain and checkpoint</a>
+      </div>
+    </div>
   </div>
 
   <div class="foot">
     <p>Both paths run on the same substrate: <b>PIC Profile 0.2</b> (the <i>Designing PIC-X</i> series) —
       <b>RFC 8693 Token Exchange</b> at the realm token endpoint, realm-signed checkpoints, workload-signed
-      candidates, <code>sd-jwt</code> Proof of Relationship, and non-expansive attenuation. Every scenario tab has
-      its own URL, so you can link straight to a flow or a use case. More flows and use cases will land here over time.</p>
+      candidates, <code>sd-jwt</code> Proof of Relationship, and non-expansive attenuation. Every scenario has
+      its own URL, so you can link straight to a flow, a use case, or a decentralization walkthrough. More demos will land here over time.</p>
   </div>
 </div>
 
