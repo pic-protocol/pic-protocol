@@ -212,7 +212,7 @@ export default function PicXPage(): ReactNode {
                 as="h2"
                 className="font-[Clash_Grotesk]! m-0 text-[32px] font-semibold leading-tight tracking-normal md:text-[44px]"
               >
-                Built in public for experimentation and review.
+                PIC Exchange open source.
               </Heading>
             </div>
             <div className="text-[17px] leading-8 text-black/65 dark:text-white/65">

@@ -20,10 +20,6 @@ const NAV_SECTIONS = [
     links: [
       { title: "PIC-X", href: "/pic-x" },
       { title: "Implementations", href: "/specification/implementations" },
-      {
-        title: "Prototyping",
-        href: "https://github.com/pic-protocol/pic-prototyping",
-      },
     ],
   },
   {

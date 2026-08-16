@@ -145,7 +145,7 @@ export const PicxArticleRail = ({
                     {article.bannerFlow.map((item) => (
                       <span
                         key={item}
-                        className="mono min-w-0 rounded-md border border-white/16 bg-black/20 px-2 py-2 text-center text-[9px] font-semibold uppercase tracking-[0.06em] text-white/70"
+                        className="mono flex min-h-8 min-w-0 items-center justify-center rounded-md border border-white/16 bg-black/20 px-2 py-2 text-center text-[9px] font-semibold uppercase leading-tight tracking-[0.06em] text-white/70"
                       >
                         {item}
                       </span>
