@@ -24,7 +24,7 @@ export const ArticleScrollSection = () => {
 
           <Link
             href="/pic-x"
-            className="inline-flex w-fit items-center justify-center rounded-full border border-[#00543D]/25 px-5 py-3 text-sm font-semibold text-[#00543D] no-underline transition hover:bg-[#00543D] hover:text-white dark:border-[#25c2a0]/40 dark:text-[#25c2a0] dark:hover:bg-[#25c2a0] dark:hover:text-[#05231b]"
+            className="inline-flex w-fit items-center justify-center rounded-xl border border-[#00543D]/25 px-5 py-3 text-sm font-semibold text-[#00543D] no-underline transition hover:bg-[#00543D] hover:text-white dark:border-[#25c2a0]/40 dark:text-[#25c2a0] dark:hover:bg-[#25c2a0] dark:hover:text-[#05231b]"
           >
             Explore PIC-X
           </Link>

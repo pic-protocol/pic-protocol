@@ -46,7 +46,7 @@ export default function PicXPage(): ReactNode {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
-                  className="inline-flex items-center justify-center rounded-full bg-[#25c2a0] px-5 py-3 text-sm font-semibold text-[#05231b] no-underline transition hover:bg-[#32d8b4]"
+                  className="inline-flex items-center justify-center rounded-xl bg-[#25c2a0] px-5 py-3 text-sm font-semibold text-[#05231b] no-underline transition hover:bg-[#32d8b4]"
                   href={GITHUB_URL}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -54,7 +54,7 @@ export default function PicXPage(): ReactNode {
                   View on GitHub
                 </a>
                 <a
-                  className="inline-flex items-center justify-center rounded-full border border-black/15 px-5 py-3 text-sm font-semibold text-black no-underline transition hover:border-[#25c2a0] hover:text-[#007d5b] dark:border-white/20 dark:text-white dark:hover:border-[#25c2a0] dark:hover:text-[#25c2a0]"
+                  className="inline-flex items-center justify-center rounded-xl border border-black/15 px-5 py-3 text-sm font-semibold text-black no-underline transition hover:border-[#25c2a0] hover:text-[#007d5b] dark:border-white/20 dark:text-white dark:hover:border-[#25c2a0] dark:hover:text-[#25c2a0]"
                   href="/pic-in-action.html"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -66,7 +66,7 @@ export default function PicXPage(): ReactNode {
                 {["origin-bound", "lineage-aware", "non-expanding"].map((label) => (
                   <span
                     key={label}
-                    className="mono rounded-xl border border-black/8 bg-white/70 px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.08em] text-black/45 dark:border-white/8 dark:bg-white/5 dark:text-white/45"
+                    className="mono rounded-lg border border-black/8 bg-white/70 px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.08em] text-black/45 dark:border-white/8 dark:bg-white/5 dark:text-white/45"
                   >
                     {label}
                   </span>
@@ -160,7 +160,7 @@ export default function PicXPage(): ReactNode {
           </div>
 
           <div className="relative z-10 mx-auto mt-3 max-w-7xl px-6">
-            <div className="flex flex-col gap-4 rounded-lg border border-[#25c2a0]/20 bg-white/75 p-5 dark:bg-[#121817]/78 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-4 rounded-xl border border-[#25c2a0]/20 bg-white/75 p-5 dark:bg-[#121817]/78 sm:flex-row sm:items-center sm:justify-between">
               <p className="m-0 max-w-3xl text-[15px] leading-7 text-black/62 dark:text-white/58">
                 Writing about PIC or PIC-X, or building on it? Add your article
                 to{" "}
@@ -171,7 +171,7 @@ export default function PicXPage(): ReactNode {
                 ecosystem.
               </p>
               <a
-                className="inline-flex shrink-0 items-center justify-center rounded-full border border-[#25c2a0]/40 px-5 py-3 text-sm font-semibold text-[#007d5b] no-underline transition hover:bg-[#25c2a0] hover:text-[#05231b] dark:text-[#25c2a0]"
+                className="inline-flex shrink-0 items-center justify-center rounded-xl border border-[#25c2a0]/40 px-5 py-3 text-sm font-semibold text-[#007d5b] no-underline transition hover:bg-[#25c2a0] hover:text-[#05231b] dark:text-[#25c2a0]"
                 href={`${WEBSITE_REPO_URL}/pulls`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -223,7 +223,7 @@ export default function PicXPage(): ReactNode {
                 other PIC-compatible infrastructure.
               </p>
               <a
-                className="mt-4 inline-flex items-center justify-center rounded-full border border-[#25c2a0]/40 px-5 py-3 text-sm font-semibold text-[#007d5b] no-underline transition hover:bg-[#25c2a0] hover:text-[#05231b] dark:text-[#25c2a0]"
+                className="mt-4 inline-flex items-center justify-center rounded-xl border border-[#25c2a0]/40 px-5 py-3 text-sm font-semibold text-[#007d5b] no-underline transition hover:bg-[#25c2a0] hover:text-[#05231b] dark:text-[#25c2a0]"
                 href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"

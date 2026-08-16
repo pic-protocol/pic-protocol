@@ -118,18 +118,18 @@ export const PicxArticleRail = ({
         {articles.map((article) => (
           <a
             key={article.id}
-            className="picx-article-card group flex min-h-[548px] w-[78vw] max-w-[360px] shrink-0 snap-start flex-col rounded-lg border border-black/10 bg-white p-3 text-black no-underline shadow-[0_20px_60px_rgba(5,35,27,0.08)] ring-1 ring-transparent transition hover:border-[#25c2a0]/55 hover:text-black hover:ring-[#25c2a0]/35 dark:border-white/10 dark:bg-[#171d1c] dark:text-white dark:shadow-[0_22px_70px_rgba(0,0,0,0.24)] dark:hover:text-white sm:w-[380px] sm:max-w-[390px]"
+            className="picx-article-card group flex min-h-[548px] w-[78vw] max-w-[360px] shrink-0 snap-start flex-col rounded-xl border border-black/10 bg-white p-3 text-black no-underline shadow-[0_20px_60px_rgba(5,35,27,0.08)] ring-1 ring-transparent transition hover:border-[#25c2a0]/55 hover:text-black hover:ring-[#25c2a0]/35 dark:border-white/10 dark:bg-[#171d1c] dark:text-white dark:shadow-[0_22px_70px_rgba(0,0,0,0.24)] dark:hover:text-white sm:w-[380px] sm:max-w-[390px]"
             href={article.url}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Read ${article.title}`}
           >
             <div
-              className={`picx-article-banner picx-article-banner--${article.variant} rounded-md`}
+              className={`picx-article-banner picx-article-banner--${article.variant} rounded-lg`}
             >
               <div className="relative z-10 flex h-full flex-col justify-between">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="mono rounded-full border border-white/20 bg-black/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/80">
+                  <span className="mono rounded-lg border border-white/20 bg-black/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/80">
                     {article.bannerKicker}
                   </span>
                   <span className="mono text-[10px] uppercase tracking-[0.16em] text-white/45">
@@ -145,7 +145,7 @@ export const PicxArticleRail = ({
                     {article.bannerFlow.map((item) => (
                       <span
                         key={item}
-                        className="mono flex min-h-8 min-w-0 items-center justify-center rounded-md border border-white/16 bg-black/20 px-2 py-2 text-center text-[9px] font-semibold uppercase leading-tight tracking-[0.06em] text-white/70"
+                        className="mono flex min-h-8 min-w-0 items-center justify-center rounded-lg border border-white/16 bg-black/20 px-2 py-2 text-center text-[9px] font-semibold uppercase leading-tight tracking-[0.06em] text-white/70"
                       >
                         {item}
                       </span>
@@ -178,7 +178,7 @@ export const PicxArticleRail = ({
                   {article.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full border border-black/8 bg-black/[0.03] px-3 py-1 text-xs font-medium text-black/52 dark:border-white/8 dark:bg-white/[0.04] dark:text-white/50"
+                      className="rounded-lg border border-black/8 bg-black/[0.03] px-3 py-1 text-xs font-medium text-black/52 dark:border-white/8 dark:bg-white/[0.04] dark:text-white/50"
                     >
                       {tag}
                     </span>

@@ -103,7 +103,7 @@ export const Footer = () => {
             href="https://github.com/pic-protocol/pic-spec"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-x-2 px-4 py-2 rounded-full border border-black/15 dark:border-[#25c2a0]/20 text-black/70 dark:text-white/70 hover:text-[#25c2a0] dark:hover:text-[#25c2a0] hover:border-[#25c2a0]/40 dark:hover:border-[#25c2a0]/40 text-sm font-medium no-underline transition-all duration-300 hover:shadow-[0_0_16px_rgba(37,194,160,0.1)]"
+            className="inline-flex items-center gap-x-2 px-4 py-2 rounded-xl border border-black/15 dark:border-[#25c2a0]/20 text-black/70 dark:text-white/70 hover:text-[#25c2a0] dark:hover:text-[#25c2a0] hover:border-[#25c2a0]/40 dark:hover:border-[#25c2a0]/40 text-sm font-medium no-underline transition-all duration-300 hover:shadow-[0_0_16px_rgba(37,194,160,0.1)]"
           >
             <GithubStarIcon />
             Star on GitHub

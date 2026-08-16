@@ -36,13 +36,13 @@ export const HeroSection = () => {
                 <div className="flex flex-col justify-center md:flex-row gap-4 mt-8 max-w-full w-full">
                   <Link
                     href="/why-pic"
-                    className="pt-3.5 pb-3 text-center md:text-start leading-normal tracking-[-0.48px] cursor-pointer px-6 hover:bg-[#004130] bg-[#00543D] rounded-full text-white hover:text-white/90 text-base font-semibold"
+                    className="pt-3.5 pb-3 text-center md:text-start leading-normal tracking-[-0.48px] cursor-pointer px-6 hover:bg-[#004130] bg-[#00543D] rounded-xl text-white hover:text-white/90 text-base font-semibold"
                   >
                     Why PIC
                   </Link>
                   <Link
                     href="/pic-x"
-                    className="pt-3.5 pb-3 text-center md:text-start leading-normal dark:bg-white dark:hover:bg-white/80 dark:hover:text-black/80 dark:text-black tracking-[-0.48px] cursor-pointer px-6 border hover:border-[#EDEDED]/75 border-[#EDEDED] rounded-full text-black hover:text-black/60 text-base font-semibold"
+                    className="pt-3.5 pb-3 text-center md:text-start leading-normal dark:bg-white dark:hover:bg-white/80 dark:hover:text-black/80 dark:text-black tracking-[-0.48px] cursor-pointer px-6 border hover:border-[#EDEDED]/75 border-[#EDEDED] rounded-xl text-black hover:text-black/60 text-base font-semibold"
                   >
                     PIC-X
                   </Link>
@@ -52,26 +52,22 @@ export const HeroSection = () => {
           </div>
         </div>
 
-        {/* Bottom */}
-        <div
-          className="
-    hidden lg:block absolute z-50 left-0 right-0 bottom-0 h-80
-    bg-[linear-gradient(180deg,rgba(250,250,250,0)_0%,#FAFAFA_80.6%)]
-    dark:bg-[linear-gradient(180deg,rgba(26,26,28,0)_0%,#1A1A1C_80.6%)]
-  "
-        />
+        {/* The bottom fade lives in .pic-home-hero::after (under the ring):
+            a sibling overlay here would veil the CTA buttons. */}
         {/* Left */}
         <div
+          aria-hidden="true"
           className="
-    hidden absolute z-50 top-0 bottom-0 min-[1440px]:block -left-12 w-24
+    pointer-events-none hidden absolute z-50 top-0 bottom-0 min-[1440px]:block -left-12 w-24
     bg-[linear-gradient(90deg,#FFFFFF_80.6%,rgba(250,250,250,0)_100%)]
     dark:bg-[linear-gradient(90deg,#1A1A1C_80.6%,rgba(26,26,28,0)_100%)]
   "
         />
         {/* Right */}
         <div
+          aria-hidden="true"
           className="
-    hidden absolute z-50 top-0 bottom-0 min-[1440px]:block -right-12 w-24
+    pointer-events-none hidden absolute z-50 top-0 bottom-0 min-[1440px]:block -right-12 w-24
     bg-[linear-gradient(270deg,#FFFFFF_80.6%,rgba(250,250,250,0)_100%)]
     dark:bg-[linear-gradient(270deg,#1A1A1C_80.6%,rgba(26,26,28,0)_100%)]
   "

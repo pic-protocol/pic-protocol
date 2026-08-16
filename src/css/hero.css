@@ -53,14 +53,14 @@
   z-index: 22;
   background:
     radial-gradient(ellipse at 50% 46%, transparent 0%, transparent 36%, rgba(255, 255, 255, 0.32) 70%, rgba(255, 255, 255, 0.82) 100%),
-    linear-gradient(180deg, transparent 0%, transparent 62%, rgba(250, 250, 250, 0.78) 100%);
+    linear-gradient(180deg, transparent 0%, transparent 62%, rgba(250, 250, 250, 0.85) 92%, #fafafa 100%);
   mix-blend-mode: normal;
 }
 
 [data-theme="dark"] .pic-home-hero::after {
   background:
     radial-gradient(ellipse at 50% 46%, transparent 0%, transparent 34%, rgba(26, 26, 28, 0.2) 66%, rgba(26, 26, 28, 0.82) 100%),
-    linear-gradient(180deg, transparent 0%, transparent 60%, rgba(26, 26, 28, 0.78) 100%);
+    linear-gradient(180deg, transparent 0%, transparent 60%, rgba(26, 26, 28, 0.85) 92%, #1a1a1c 100%);
 }
 
 .pic-home-hero-chain {
