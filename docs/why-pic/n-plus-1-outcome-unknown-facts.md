@@ -2,6 +2,9 @@
 sidebar_position: 3.5
 ---
 
+import ThemedImage from '@theme/ThemedImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+
 # The N+1 Outcome on Unknown Facts
 
 Some decisions cannot be closed when the user signs, because the relevant fact does not exist yet.
@@ -12,6 +15,15 @@ offers a safer path than the one expected at the start.
 
 This is the **N+1 outcome problem**: the authority needed at step *n+1* depends on facts that were unavailable at
 step *n*.
+
+<ThemedImage
+  alt="A signed predicate waits while an unknown outcome appears at runtime, then evidence is checked before a signed bounded result is issued"
+  style={{width: '100%', maxWidth: '880px', display: 'block', margin: '1.75rem auto'}}
+  sources={{
+    light: useBaseUrl('/img/why-pic/outcome-unknown-facts-light.svg'),
+    dark: useBaseUrl('/img/why-pic/outcome-unknown-facts-dark.svg'),
+  }}
+/>
 
 ## The mistake
 
