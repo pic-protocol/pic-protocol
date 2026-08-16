@@ -212,7 +212,6 @@
 /* ── PIC-X hero product card ─────────────────────────────────── */
 .picx-hero-card {
   background:
-    radial-gradient(ellipse at 50% 43%, rgba(37, 194, 160, 0.13), transparent 40%),
     linear-gradient(140deg, rgba(20, 29, 27, 0.94) 0%, rgba(19, 42, 38, 0.9) 48%, rgba(18, 30, 38, 0.9) 100%),
     #101514;
 }
@@ -275,28 +274,26 @@
 }
 
 .picx-logo-stage::before {
-  inset: 20% 18%;
-  background:
-    radial-gradient(ellipse at center, rgba(37, 194, 160, 0.05), transparent 58%);
+  display: none;
 }
 
 [data-theme="dark"] .picx-logo-stage::before {
-  background: radial-gradient(ellipse at center, rgba(37, 194, 160, 0.045), transparent 58%);
+  display: none;
 }
 
 .picx-logo-stage img {
   mix-blend-mode: screen;
   opacity: 0.96;
   filter:
-    drop-shadow(0 10px 22px rgba(37, 194, 160, 0.055))
-    drop-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
+    drop-shadow(0 8px 14px rgba(37, 194, 160, 0.035))
+    drop-shadow(0 2px 5px rgba(0, 0, 0, 0.12));
 }
 
 [data-theme="dark"] .picx-logo-stage img {
   opacity: 0.95;
   filter:
-    drop-shadow(0 10px 22px rgba(37, 194, 160, 0.05))
-    drop-shadow(0 2px 10px rgba(0, 0, 0, 0.22));
+    drop-shadow(0 8px 14px rgba(37, 194, 160, 0.035))
+    drop-shadow(0 2px 6px rgba(0, 0, 0, 0.18));
 }
 
 .picx-logo-stage::after {
