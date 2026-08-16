@@ -119,10 +119,12 @@
   .seg button[aria-pressed="true"]{background:var(--panel2);color:var(--ink)}
   .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 
-  .console{margin-top:16px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;font-family:var(--mono);font-size:12px;line-height:1.75;overflow:auto;display:none}
-  .console.show{display:block;height:320px}
-  .console .ct{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
-  .cl{opacity:0;transform:translateY(3px);transition:opacity .25s,transform .25s;overflow-wrap:anywhere}
+  .console{margin-top:16px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;font-family:var(--mono);font-size:12px;line-height:1.75;overflow:hidden;display:none;min-width:0}
+  .console.show{display:flex;height:320px;flex-direction:column}
+  .console .ct{flex:0 0 auto;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  #consoleBody{min-height:0;overflow-y:auto;overflow-x:hidden;padding-right:2px}
+  .cl{opacity:0;transform:translateY(3px);transition:opacity .25s,transform .25s;white-space:normal;overflow-wrap:anywhere;word-break:break-word}
+  .cl span{overflow-wrap:anywhere;word-break:break-word}
   .cl.on{opacity:1;transform:none}
   .cl .ok{color:var(--accent-2);font-weight:600}
   .cl .bad{color:var(--reject);font-weight:600}
@@ -218,7 +220,7 @@ function clearConsole(title){
 async function logLine(html,delay){
   const b=byId("consoleBody"); const d=document.createElement("div"); d.className="cl"; d.innerHTML=html;
   b.appendChild(d); requestAnimationFrame(()=>d.classList.add("on"));
-  byId("console").scrollTop=byId("console").scrollHeight;
+  b.scrollTop=b.scrollHeight;
   await sleep(delay==null?420:delay);
 }
 function setVerdict(cls,html){ const v=byId("verdict"); v.className="verdict show "+cls; v.innerHTML=html; }
@@ -256,9 +258,9 @@ function fitScene(){
 window.addEventListener("resize",fitScene);
 function setPkt(id){ const p=byId("pkt"),c=center(id); p.style.transform="translate3d("+(c.x-7)+"px,"+(c.y-7)+"px,28px)"; }
 async function movePkt(from,to,ms){
-  const p=byId("pkt");
+  const p=byId("pkt"), t=RUN;
   p.style.transition="none"; setPkt(from); p.style.opacity=1;
-  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  await new Promise((res,rej)=>requestAnimationFrame(()=>requestAnimationFrame(()=>{ if(t===RUN)res(); else rej("cancelled"); })));
   p.style.transition=PRM?"none":"transform "+(ms||650)+"ms ease-in-out";
   setPkt(to); await sleep(ms||650);
 }
@@ -393,7 +395,7 @@ async function pwnMESH(){
   await logLine('<span class="bad">✕</span> pic-x responds to the caller: <span class="bad">error</span> — payments:refund ∉ C₀, no checkpoint of this lineage ever granted it · not a valid continuation');
   await logLine('<span class="bad">✕</span> the ambient service credential cannot enter the lineage — there is no encoding that adds an invariant');
   await logLine('<span class="dim">attacker: replay the settled token elsewhere?</span> signed, public — but advancing needs the PoR-bound key, predecessor hash, challenge, position');
-  await logLine('<span class="ok">✓</span> blast radius = <span class="k">PCA 1 = {orders:read, orders:write}</span>, on order data, until revocation — not the service account, not the mesh');
+  await logLine('<span class="ok">✓</span> blast radius <span class="k">inside Alice\'s lineage</span> = <span class="k">PCA 1 = {orders:read, orders:write}</span>, on order data, until revocation — the service account\'s ambient authority never enters the lineage');
   setVerdict("bad",'<b>Compromise contained by construction.</b> The attacker owns the pod, its service account, and every token that passed through — and still cannot cause <b>payments:refund</b> inside Alice\'s execution: the privilege is absent from the origin authority context, and PIC has no way to say it. What a possession model would have accepted (a valid service credential!), continuity cannot even represent.');
   setBusy(false);
 }
@@ -474,13 +476,15 @@ async function runAGENT(){
   await pingPicx("runtime"); tileState("agent","pass");
   await movePkt("runtime","docs",520); tileState("docs","pass"); setSub("docs","Transition 1");
   await logLine('<span class="ok">✓</span> Transition 1 settled · the sandbox calls the docs tool <span class="k">directly</span>, carrying the settled token — the tool verifies it before executing');
-  await logLine('<span class="dim">docs tool → pic-x</span> · candidate · Transition 2 — <span class="dim">response: settled</span>',260);
-  await pingPicx("docs");
-  await movePkt("docs","store",480); tileState("store","pass"); setSub("store","read · then dropped");
-  await logLine('<span class="ok">✓</span> Transition 2 settled · the docs tool calls the <span class="k">report store</span> directly — it verifies the settled continuation, serves report-42 · remove_bitmap h\'01\' → read dropped after use · PCA 2 = {mail:send:user-123}');
+  await logLine('<span class="dim">docs tool → report store</span> · direct call carrying settled <span class="k">PIC Token JWT 1</span> — the store verifies <span class="k">read ∈ PCA 1</span> before serving',260);
+  await movePkt("docs","store",480); tileState("store","pass"); setSub("store","served · read ∈ PCA 1");
+  await logLine('<span class="ok">✓</span> <span class="k">report store</span> verifies the settled continuation and serves report-42 — under a checkpoint that still holds the privilege');
+  await logLine('<span class="dim">report store → pic-x</span> · candidate · Transition 2 — <span class="dim">read dropped after use · remove_bitmap h\'01\'</span>',260);
+  await pingPicx("store"); setSub("store","read · dropped after use");
+  await logLine('<span class="ok">✓</span> Transition 2 settled · <span class="k">PCA 2 = {mail:send:user-123}</span> — the dropped read can never reappear in this lineage branch');
   setSub("runtime","PCA 2 · {mail:send}");
   await logLine('<span class="dim">report store → audit worker · its own housekeeping:</span> a <span class="k">new lineage from its own origin</span> — Alice’s C₀ untouched, never merged');
-  await logLine('<span class="dim">own lineage, same rule: the store settles its own advancement at pic-x, then calls the audit worker directly — no continuation skips settlement</span>',260);
+  await logLine('<span class="dim">own lineage, same rule: the store initializes its own lineage at pic-x — its own exchange, its own PCA 0 — then calls the audit worker directly; no continuation skips settlement</span>',260);
   await pingPicx("store");
   await movePkt("store","audit",480); linkFlash("store","audit"); tileState("audit","pass"); setSub("audit","own lineage · settled");
   pktHide();
@@ -500,10 +504,12 @@ async function runAGENT(){
   await pingPicx("runtime");
   await movePkt("runtime","mail",520); tileState("mail","pass"); setSub("mail","Transition 3");
   await logLine('<span class="ok">✓</span> Transition 3 settled · the sandbox calls the mail tool directly — it verifies the settled continuation and hands off downstream');
-  await logLine('<span class="dim">mail tool → pic-x</span> · candidate · Transition 4 — <span class="dim">response: settled</span>',260);
-  await pingPicx("mail");
-  await movePkt("mail","relay",480); tileState("relay","pass"); setSub("relay","sent · send dropped");
-  await logLine('<span class="ok">✓</span> Transition 4 settled · the mail tool calls the <span class="k">mail relay</span> directly — it verifies the settled continuation and delivers · mail:send dropped after use · <span class="k">PCA 4 = { }</span>');
+  await logLine('<span class="dim">mail tool → mail relay</span> · direct call carrying settled <span class="k">PIC Token JWT 3</span> — the relay verifies <span class="k">send ∈ PCA 3</span> before delivering',260);
+  await movePkt("mail","relay",480); tileState("relay","pass"); setSub("relay","delivered · send ∈ PCA 3");
+  await logLine('<span class="ok">✓</span> <span class="k">mail relay</span> verifies the settled continuation and delivers — under a checkpoint that still holds the privilege');
+  await logLine('<span class="dim">mail relay → pic-x</span> · candidate · Transition 4 — <span class="dim">mail:send dropped after use · remove_bitmap h\'01\'</span>',260);
+  await pingPicx("relay"); setSub("relay","sent · send dropped");
+  await logLine('<span class="ok">✓</span> Transition 4 settled · <span class="k">PCA 4 = { }</span>');
   setSub("runtime","PCA 4 · { }"); tileState("runtime","pass"); pktHide();
   await logLine('<span class="ok">✓ task complete</span> · final executable authority: <span class="k">zero</span>');
   setVerdict("ok",'<b>The injection ran. The damage is unrepresentable.</b> Alice’s user-authorized path stayed inside verified, narrowing continuations at PIC-X: sandbox → docs → report store, then sandbox → mail → relay. The agent was fully influenced — it genuinely proposed delete and exfiltrate — and it did not matter: <b>C₀ never contained those privileges</b>, so the poisoned document’s best move was a proposal that cannot exist. The audit call ran in the store’s <i>own</i> lineage, from its own origin — carried alongside, never merged. The task finished holding <b>nothing</b>.');

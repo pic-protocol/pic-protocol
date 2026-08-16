@@ -444,6 +444,12 @@ const EX_CHECKS2=[
   [()=>true,"Realm settlement","signs PCA 1 (position 1, challenge from the Transition) → settled Continuity 1 → PIC Token JWT 1"]
 ];
 let exPhase=0;
+function connFlow(id){
+  const c=byId(id); if(!c)return;
+  c.classList.add("lit"); c.classList.remove("flow");
+  void c.getBoundingClientRect();
+  c.classList.add("flow");
+}
 function renderEX(){
   cancelRuns();
   byId("stageTitle").textContent=EX.title; byId("stageSub").textContent=EX.sub;
@@ -461,11 +467,11 @@ async function runEX1(){
   if(running)return; exPhase=0; renderEX(); setBusy(true);
   byId("checks").hidden=false; byId("checksTitle").textContent="PIC-X · exchange #1 — initialization"; byId("checkList").innerHTML="";
   byId("node-oauth").classList.add("active","pass"); focusNode("oauth");
-  byId("exconn1").classList.add("lit","flow"); await sleep(740);
+  connFlow("exconn1"); await sleep(740);
   selected="picx1"; const n1=EX.nodes[1]; inspect(n1.title,n1.badge,n1.views); syncSel(); focusNode("picx1");
   byId("node-picx1").classList.add("active");
   for(const [fn,lbl,d] of EX_CHECKS1){ addRow(fn(),lbl,d); await sleep(170); }
-  byId("exconn2").classList.add("lit","flow"); await sleep(740);
+  connFlow("exconn2"); await sleep(740);
   byId("node-picx1").classList.remove("active"); byId("node-picx1").classList.add("pass");
   byId("node-jwt0").classList.add("active","pass");
   selected="jwt0"; const n2=EX.nodes[2]; inspect(n2.title,n2.badge,n2.views); syncSel(); focusNode("jwt0");
@@ -482,12 +488,12 @@ async function runEX2(){
   if(running)return; if(exPhase<1)ffEX1();
   setBusy(true); byId("checks").hidden=false;
   byId("checksTitle").textContent="PIC-X · exchange #2 — centralized advancement"; byId("checkList").innerHTML=""; byId("verdict").className="verdict";
-  byId("exconn3").classList.add("lit","flow"); await sleep(740);
+  connFlow("exconn3"); await sleep(740);
   byId("node-jwt0").classList.remove("active");
   byId("node-cand").classList.add("active");
   selected="cand"; const n3=EX.nodes[3]; inspect(n3.title,n3.badge,n3.views); syncSel(); focusNode("cand");
   for(const [fn,lbl,d] of EX_CHECKS2){ addRow(fn(),lbl,d); await sleep(170); }
-  byId("exconn4").classList.add("lit","flow"); await sleep(740);
+  connFlow("exconn4"); await sleep(740);
   byId("node-cand").classList.remove("active"); byId("node-cand").classList.add("pass");
   byId("node-jwt1").classList.add("active","pass");
   selected="jwt1"; const n4=EX.nodes[4]; inspect(n4.title,n4.badge,n4.views); syncSel(); focusNode("jwt1");
@@ -586,7 +592,7 @@ async function runIV(){
   if(running)return; setBusy(true);
   document.querySelectorAll("#track .node").forEach(n=>n.classList.remove("pass","fail","warn","active"));
   byId("checks").hidden=false; byId("checkList").innerHTML=""; byId("verdict").className="verdict";
-  byId("ivconn").classList.add("lit","flow");
+  connFlow("ivconn");
   selected="x"; inspect(IV.x.title,IV.x.badge,IV.x.views); syncSel(); focusNode("x"); await sleep(740);
   byId("node-x").classList.add("active");
   if(model==="possession"){
@@ -600,7 +606,7 @@ async function runIV(){
     const v=byId("verdict"); v.className="verdict show warn";
     v.innerHTML='<b>Accepted — and that is the problem.</b> A possession-based decision only asks whether each artifact is individually valid, at the point of use — it never consults the realm, so exchange #3 never happens. Both tokens are valid, so the worker satisfies the read with the <b>predecessor</b> token it still holds. The decision never sees that <i>this</i> branch dropped read one step ago: <b>the dropped privilege returns</b> — authority selected from outside the lineage of the request being processed.';
   } else {
-    byId("ivconn2").classList.add("lit","flow"); await sleep(740);
+    connFlow("ivconn2"); await sleep(740);
     selected="picx2"; inspect(IV.picx.title,IV.picx.badge,IV.picx.views); syncSel(); focusNode("picx2");
     byId("node-picx2").classList.add("active");
     const checks=[
@@ -626,7 +632,7 @@ let scenario="A", selected="oauth", model="pic", running=false;
    Reset is active (it aborts); when idle, actions enabled, Reset disabled. */
 function setBusy(b){
   running=b;
-  document.querySelectorAll("#controls .btn").forEach(x=>{ x.disabled = x.classList.contains("ghost") ? !b : b; });
+  document.querySelectorAll("#controls button").forEach(x=>{ x.disabled = x.classList.contains("ghost") ? !b : b; });
 }
 const SLUGS={A:"authority-continuity",B:"invalid-state"};
 function setScenario(s,fromHash){
