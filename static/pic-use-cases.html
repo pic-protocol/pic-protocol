@@ -443,7 +443,7 @@ async function pingPicx(from){
 }
 const AGENT={
   title:"An agent that proposes, a sandbox that continues",
-  sub:"The user asks: “summarize report-42 and email it to me.” The request enters the sandbox perimeter, where the sandbox — the PIC compliance layer — owns the lineage: it exchanges the user's intent at PIC-X and converts accepted proposals into Transitions. The agent only proposes — no credentials, no protocol. The user lineage continues through docs → report store and mail → relay; the audit worker’s housekeeping is shown as a separate lineage from its own origin, carried beside Alice’s context but never merged. Halfway through, the document turns out to be poisoned."
+  sub:"The user asks: “summarize report-42 and email it to me.” The request enters the sandbox perimeter, where the sandbox — the PIC compliance layer — owns the lineage: it exchanges the user's intent at PIC-X and converts accepted proposals into Transitions. The agent only proposes — no credentials, no protocol. The user lineage continues through docs → report store and mail → relay, with each handoff settled at PIC-X before the next direct call. The audit worker’s housekeeping is shown as a separate lineage from its own origin, carried beside Alice’s context but never merged. Halfway through, the document turns out to be poisoned."
 };
 function renderAGENT(){
   cancelRuns();
@@ -505,16 +505,18 @@ async function runAGENT(){
   await logLine('<span class="dim">sandbox → pic-x</span> · candidate · Transition 4 — <span class="dim">response: settled</span>',260);
   await pingPicx("runtime");
   await movePkt("runtime","mail",520); tileState("mail","pass"); setSub("mail","Transition 4");
-  await logLine('<span class="ok">✓</span> Transition 4 settled · the sandbox calls the mail tool directly — it verifies the settled continuation and hands off downstream');
-  await logLine('<span class="dim">mail tool → mail relay</span> · direct call carrying settled <span class="k">PIC Token JWT 4</span> — the relay verifies <span class="k">send ∈ PCA 4</span> before delivering',260);
-  await movePkt("mail","relay",480); tileState("relay","pass"); setSub("relay","delivered · send ∈ PCA 4");
+  await logLine('<span class="ok">✓</span> Transition 4 settled · the sandbox calls the mail tool directly — it verifies the settled continuation and prepares the downstream handoff');
+  await logLine('<span class="dim">mail tool → pic-x</span> · candidate · Transition 5 — <span class="dim">handoff to mail relay · response: settled</span>',260);
+  await pingPicx("mail"); setSub("mail","Transition 5");
+  await logLine('<span class="dim">mail tool → mail relay</span> · direct call carrying settled <span class="k">PIC Token JWT 5</span> — the relay verifies <span class="k">send ∈ PCA 5</span> before delivering',260);
+  await movePkt("mail","relay",480); tileState("relay","pass"); setSub("relay","delivered · send ∈ PCA 5");
   await logLine('<span class="ok">✓</span> <span class="k">mail relay</span> verifies the settled continuation and delivers — under a checkpoint that still holds the privilege');
-  await logLine('<span class="dim">mail relay → pic-x</span> · candidate · Transition 5 — <span class="dim">mail:send dropped after use · remove_bitmap h\'01\'</span>',260);
+  await logLine('<span class="dim">mail relay → pic-x</span> · candidate · Transition 6 — <span class="dim">mail:send dropped after use · remove_bitmap h\'01\'</span>',260);
   await pingPicx("relay"); setSub("relay","sent · send dropped");
-  await logLine('<span class="ok">✓</span> Transition 5 settled · <span class="k">PCA 5 = { }</span>');
-  setSub("runtime","PCA 5 · { }"); tileState("runtime","pass"); pktHide();
+  await logLine('<span class="ok">✓</span> Transition 6 settled · <span class="k">PCA 6 = { }</span>');
+  setSub("runtime","PCA 6 · { }"); tileState("runtime","pass"); pktHide();
   await logLine('<span class="ok">✓ task complete</span> · final executable authority: <span class="k">zero</span>');
-  setVerdict("ok",'<b>The injection ran. The damage is unrepresentable.</b> Alice’s user-authorized path stayed inside verified, narrowing continuations at PIC-X: sandbox → docs → report store, then sandbox → mail → relay. The agent was fully influenced — it genuinely proposed delete and exfiltrate — and it did not matter: <b>C₀ never contained those privileges</b>, so the poisoned document’s best move was a proposal that cannot exist. The audit worker ran in <i>its own</i> lineage, from its own origin — carried alongside, never merged. The task finished holding <b>nothing</b>.');
+  setVerdict("ok",'<b>The injection ran. The damage is unrepresentable.</b> Alice’s user-authorized path stayed inside verified, narrowing continuations at PIC-X: sandbox → docs → report store, then sandbox → mail → relay, with the mail relay handoff settled before delivery. The agent was fully influenced — it genuinely proposed delete and exfiltrate — and it did not matter: <b>C₀ never contained those privileges</b>, so the poisoned document’s best move was a proposal that cannot exist. The audit worker ran in <i>its own</i> lineage, from its own origin — carried alongside, never merged. The task finished holding <b>nothing</b>.');
   setBusy(false);
 }
 
