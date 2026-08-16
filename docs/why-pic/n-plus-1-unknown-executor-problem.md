@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-import ThemedImage from '@theme/ThemedImage';
+import ThemedZoomableImage from '@site/src/components/ThemedZoomableImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # The N+1 Unknown Executor Problem
@@ -11,7 +11,7 @@ Distributed execution is not a sequence of positions. It is a sequence of **caus
 
 A workload does not exist because it is next in a list. It exists because it was provisioned at a specific moment, in response to a specific event. It becomes an **executor** in an authority propagation only if it can **securely carry that authority forward** as a valid continuation of the execution chain.
 
-<ThemedImage
+<ThemedZoomableImage
   alt="Executor n acts at time x, while executor n+1 is only provisioned at time x plus a positive offset and does not exist yet"
   style={{width: '100%', maxWidth: '880px', display: 'block', margin: '1.75rem auto'}}
   sources={{

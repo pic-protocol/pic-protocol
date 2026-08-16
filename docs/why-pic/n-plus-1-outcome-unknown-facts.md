@@ -2,7 +2,7 @@
 sidebar_position: 3.5
 ---
 
-import ThemedImage from '@theme/ThemedImage';
+import ThemedZoomableImage from '@site/src/components/ThemedZoomableImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # The N+1 Outcome on Unknown Facts
@@ -16,7 +16,7 @@ offers a safer path than the one expected at the start.
 This is the **N+1 outcome problem**: the authority needed at step *n+1* depends on facts that were unavailable at
 step *n*.
 
-<ThemedImage
+<ThemedZoomableImage
   alt="A signed predicate waits while an unknown outcome appears at runtime, then evidence is checked before a signed bounded result is issued"
   style={{width: '100%', maxWidth: '880px', display: 'block', margin: '1.75rem auto'}}
   sources={{

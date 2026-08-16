@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-import ThemedImage from '@theme/ThemedImage';
+import ThemedZoomableImage from '@site/src/components/ThemedZoomableImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # The N+1 Invalid State Problem
@@ -59,7 +59,7 @@ wrong source*, satisfying a request with an authority the requester never had. T
 **Composition** is the sharpest instance — a bug merges two individually valid authorities into a state no origin
 ever granted:
 
-<ThemedImage
+<ThemedZoomableImage
   alt="Two independently valid lineages are attenuated correctly, then a bug composes authority from both into one state presented to executor n+1 as a single continuation"
   style={{width: '100%', maxWidth: '880px', display: 'block', margin: '1.75rem auto'}}
   sources={{

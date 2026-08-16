@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-import ThemedImage from '@theme/ThemedImage';
+import ThemedZoomableImage from '@site/src/components/ThemedZoomableImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # The Authority Propagation Problem
@@ -17,7 +17,7 @@ consent, and context.
 PIC does not replace any of that. It begins at the point where the access token is exchanged, through the **OAuth 2.0
 Token Exchange** profile, for a **PCA** — the origin PIC Context of Authority.
 
-<ThemedImage
+<ThemedZoomableImage
   alt="A user signs in with an identity provider, receives an OAuth access token carrying the initial authority, and exchanges it for the origin PIC Context of Authority"
   style={{width: '100%', maxWidth: '880px', display: 'block', margin: '1.75rem auto'}}
   sources={{
@@ -61,7 +61,7 @@ execution and bounds everything that follows. The entity may act directly or
 through delegation; in both cases, the origin is the entity whose permissions
 bound the execution.
 
-<ThemedImage
+<ThemedZoomableImage
   alt="A permissioned entity forms an intent that creates the origin authority context, carried as a PCA across the executor chain and narrowing at every step"
   style={{width: '100%', maxWidth: '880px', display: 'block', margin: '1.75rem auto'}}
   sources={{

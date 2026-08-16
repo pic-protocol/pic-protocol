@@ -2,7 +2,7 @@
 sidebar_position: 1.5
 ---
 
-import ThemedImage from '@theme/ThemedImage';
+import ThemedZoomableImage from '@site/src/components/ThemedZoomableImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # The Threat Model
@@ -64,7 +64,7 @@ verify** that the presented authority belongs to the execution being continued.
 One executor may host several distinct execution occurrences. They may share the same principal, the same executor
 identity, and overlapping or identical privilege sets while continuing **different requests**.
 
-<ThemedImage
+<ThemedZoomableImage
   alt="One untrusted executor hosting two execution occurrences; which authority states are locally attributable and which must not be accepted without a verified execution relationship"
   style={{width: '100%', maxWidth: '880px', display: 'block', margin: '1.75rem auto'}}
   sources={{

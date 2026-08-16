@@ -376,6 +376,11 @@
     linear-gradient(140deg, #101216 0%, #263a45 43%, #0c6c61 100%);
 }
 
+.picx-article-banner--formal-model {
+  background:
+    linear-gradient(140deg, #101216 0%, #334155 42%, #0f766e 100%);
+}
+
 /* ── Crosshair decoration ────────────────────────────────────── */
 .crosshair {
   position: relative;

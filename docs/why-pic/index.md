@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-import ThemedImage from '@theme/ThemedImage';
+import ThemedZoomableImage from '@site/src/components/ThemedZoomableImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Why PIC
@@ -64,7 +64,7 @@ one proposed construction for it.
 Distributed systems teach that unavoidable trade-offs should be made *explicit*. In agentic authorization, three
 concerns interact: **authorization protocol**, **freedom of choice**, and **supervised choice**.
 
-<ThemedImage
+<ThemedZoomableImage
   alt="The governance of choice: a non-negotiable authorization protocol, freedom of choice maximized safely, and supervised choice used when needed"
   style={{width: '100%', maxWidth: '860px', display: 'block', margin: '1.75rem auto'}}
   sources={{
