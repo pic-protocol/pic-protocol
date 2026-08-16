@@ -465,6 +465,22 @@
   --pic-rail-bg: #1f1f21;
 }
 
+.home-article-slack-band .home-article-section + #tw-scope {
+  padding-top: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .home-article-slack-band .home-article-section + #tw-scope {
+    padding-top: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-article-slack-band .home-article-section + #tw-scope {
+    padding-top: 4rem;
+  }
+}
+
 [data-theme="dark"] .home-article-section .picx-article-card {
   box-shadow: none;
 }
