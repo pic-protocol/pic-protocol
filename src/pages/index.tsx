@@ -15,13 +15,15 @@ export default function Home(): ReactNode {
       title={`${siteConfig.title}`}
       description="Provenance Identity Continuity"
     >
-      <HeroSection />
-      <TrioSection />
-      <AgentBriefSection />
-      <SpecificationMapSection />
-      <div className="home-article-slack-band">
-        <ArticleScrollSection />
-        <SlackSection />
+      <div className="pic-home-frame">
+        <HeroSection />
+        <TrioSection />
+        <AgentBriefSection />
+        <SpecificationMapSection />
+        <div className="home-article-slack-band">
+          <ArticleScrollSection />
+          <SlackSection />
+        </div>
       </div>
     </Layout>
   );

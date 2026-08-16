@@ -212,6 +212,13 @@
 /* ── PIC-X hero product card ─────────────────────────────────── */
 .picx-hero-card {
   background:
+    radial-gradient(ellipse at 50% 43%, rgba(37, 194, 160, 0.13), transparent 40%),
+    linear-gradient(140deg, rgba(20, 29, 27, 0.94) 0%, rgba(19, 42, 38, 0.9) 48%, rgba(18, 30, 38, 0.9) 100%),
+    #101514;
+}
+
+[data-theme="dark"] .picx-hero-card {
+  background:
     linear-gradient(140deg, rgba(15, 21, 20, 0.96) 0%, rgba(18, 27, 25, 0.94) 48%, rgba(15, 24, 31, 0.95) 100%),
     #101514;
 }
@@ -227,15 +234,29 @@
 
 .picx-hero-card::before {
   background:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 36px 36px;
+  opacity: 0.68;
+}
+
+[data-theme="dark"] .picx-hero-card::before {
+  background:
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 36px 36px;
   opacity: 0.62;
 }
 
 .picx-hero-card::after {
   inset: 1.15rem;
-  border: 1px solid rgba(37, 194, 160, 0.11);
+  border: 1px solid rgba(37, 194, 160, 0.15);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.11), transparent 24%),
+    linear-gradient(160deg, transparent 56%, rgba(0, 0, 0, 0.18));
+}
+
+[data-theme="dark"] .picx-hero-card::after {
+  border-color: rgba(37, 194, 160, 0.11);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 24%),
     linear-gradient(160deg, transparent 56%, rgba(0, 0, 0, 0.2));
@@ -254,8 +275,25 @@
 }
 
 .picx-logo-stage::before {
-  inset: 8% 5%;
-  background: radial-gradient(ellipse at center, rgba(37, 194, 160, 0.09), transparent 64%);
+  inset: 15% 8%;
+  background:
+    radial-gradient(ellipse at center, rgba(37, 194, 160, 0.075), transparent 60%);
+}
+
+[data-theme="dark"] .picx-logo-stage::before {
+  background: radial-gradient(ellipse at center, rgba(37, 194, 160, 0.06), transparent 60%);
+}
+
+.picx-logo-stage img {
+  filter:
+    drop-shadow(0 14px 34px rgba(37, 194, 160, 0.1))
+    drop-shadow(0 3px 14px rgba(0, 0, 0, 0.24));
+}
+
+[data-theme="dark"] .picx-logo-stage img {
+  filter:
+    drop-shadow(0 14px 34px rgba(37, 194, 160, 0.095))
+    drop-shadow(0 4px 16px rgba(0, 0, 0, 0.34));
 }
 
 .picx-logo-stage::after {
@@ -263,7 +301,19 @@
   right: 14%;
   bottom: 14%;
   height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(37, 194, 160, 0.4), rgba(47, 128, 237, 0.34), transparent);
+}
+
+[data-theme="dark"] .picx-logo-stage::after {
   background: linear-gradient(90deg, transparent, rgba(37, 194, 160, 0.38), rgba(47, 128, 237, 0.32), transparent);
+}
+
+.picx-profile-chip {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+[data-theme="dark"] .picx-profile-chip {
+  color: rgba(255, 255, 255, 0.45);
 }
 
 @media (max-width: 639px) {
@@ -272,7 +322,7 @@
   }
 
   .picx-logo-stage::before {
-    inset: 12% 0;
+    inset: 18% 8%;
   }
 
   .picx-article-rail {
@@ -486,6 +536,49 @@
     0 18px 48px rgba(0, 0, 0, 0.16);
 }
 
+/* ── Homepage edge rails ─────────────────────────────────────── */
+.pic-home-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.pic-home-frame::before,
+.pic-home-frame::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 70;
+  display: none;
+  width: 1px;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(37, 194, 160, 0.32) 16%, rgba(47, 128, 237, 0.16) 50%, rgba(37, 194, 160, 0.24) 84%, transparent 100%);
+  box-shadow: 0 0 26px rgba(37, 194, 160, 0.16);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.pic-home-frame::before {
+  left: 0;
+}
+
+.pic-home-frame::after {
+  right: 0;
+}
+
+[data-theme="dark"] .pic-home-frame::before,
+[data-theme="dark"] .pic-home-frame::after {
+  opacity: 0.8;
+  box-shadow: 0 0 34px rgba(37, 194, 160, 0.22);
+}
+
+@media (min-width: 1024px) {
+  .pic-home-frame::before,
+  .pic-home-frame::after {
+    display: block;
+  }
+}
+
 /* ── Agent runtime brief ─────────────────────────────────────── */
 .agent-brief-shell {
   position: relative;
@@ -666,15 +759,25 @@
   min-height: 150px;
   flex-direction: column;
   justify-content: center;
-  border: 1px solid rgba(37, 194, 160, 0.35);
+  border: 1px solid rgba(0, 84, 61, 0.18);
   border-radius: 999px;
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(37, 194, 160, 0.18), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(226, 244, 237, 0.94));
+  box-shadow:
+    0 0 0 10px rgba(37, 194, 160, 0.08),
+    0 28px 80px rgba(5, 35, 27, 0.12);
+  padding: 1.5rem;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+[data-theme="dark"] .agent-brief-core {
+  border-color: rgba(37, 194, 160, 0.35);
   background: rgba(7, 18, 16, 0.92);
   box-shadow:
     0 0 0 10px rgba(37, 194, 160, 0.08),
     0 28px 80px rgba(0, 0, 0, 0.28);
-  padding: 1.5rem;
-  text-align: center;
-  transform: translate(-50%, -50%);
 }
 
 .agent-brief-core::before,
@@ -695,19 +798,27 @@
 }
 
 .agent-brief-core .mono {
-  color: #25c2a0;
+  color: #007d5b;
   font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
 }
 
+[data-theme="dark"] .agent-brief-core .mono {
+  color: #25c2a0;
+}
+
 .agent-brief-core strong {
-  color: #fff;
+  color: #101312;
   font-family: "Clash Grotesk", Inter, sans-serif;
   font-size: 2.45rem;
   font-weight: 600;
   line-height: 0.95;
   margin-top: 0.6rem;
+}
+
+[data-theme="dark"] .agent-brief-core strong {
+  color: #fff;
 }
 
 .agent-brief-flow {
@@ -859,14 +970,20 @@
   }
 
   .agent-brief-stage {
-    min-height: 780px;
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    padding: 1rem;
   }
 
   .agent-brief-flow {
-    left: 1rem;
-    right: 1rem;
-    top: 1rem;
+    position: relative;
+    z-index: 5;
+    left: auto;
+    right: auto;
+    top: auto;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 3.6rem;
   }
 
   .agent-brief-flow span:last-child {
@@ -874,9 +991,13 @@
   }
 
   .agent-brief-core {
-    top: 33%;
+    position: relative;
+    left: auto;
+    top: auto;
     width: calc(100% - 3rem);
     min-height: 138px;
+    margin: 2.4rem auto 0;
+    transform: none;
   }
 
   .agent-brief-core strong {
@@ -884,14 +1005,24 @@
   }
 
   .agent-brief-checks {
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
     grid-template-columns: 1fr;
+    margin-top: 3.5rem;
   }
 
   .agent-brief-check {
     min-height: 0;
+  }
+
+  .agent-brief-core::before {
+    inset: -12px;
+  }
+
+  .agent-brief-core::after {
+    inset: -22px;
   }
 }
 
