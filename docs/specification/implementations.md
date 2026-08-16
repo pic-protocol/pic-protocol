@@ -14,18 +14,14 @@ protocol technical specification is published, if it directly implements the
 **PIC Specification** and preserves the invariants of the
 **PIC Formal Model**.
 
-## Work in progress
+## Open-source implementations
 
 The following open-source implementation projects are being developed against
-the current PIC direction. They are useful for experimentation and review, but
-they should be treated as **work in progress** until they declare a stable
-conformance target.
+the current PIC direction. They are useful for experimentation, review, and
+implementation alignment with the PIC specification.
 
 <div style={{display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", margin: "1.5rem 0"}}>
   <article className="glow-card" style={{borderRadius: "12px", padding: "1.25rem"}}>
-    <p className="mono" style={{margin: "0 0 0.75rem", color: "var(--pic-accent)", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase"}}>
-      Work in progress
-    </p>
     <h3 style={{marginTop: 0}}>PIC Rust</h3>
     <p>
       Rust implementation track for PIC components: protocol libraries,
@@ -36,9 +32,6 @@ conformance target.
   </article>
 
   <article className="glow-card" style={{borderRadius: "12px", padding: "1.25rem"}}>
-    <p className="mono" style={{margin: "0 0 0.75rem", color: "var(--pic-accent)", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase"}}>
-      Work in progress
-    </p>
     <h3 style={{marginTop: 0}}>PIC-X</h3>
     <p>
       Open-source <strong>Provenance Identity Continuity Exchange</strong>:
