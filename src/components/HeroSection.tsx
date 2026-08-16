@@ -6,10 +6,10 @@ export const HeroSection = () => {
       <div className="relative  pt-px xl:max-w-468 w-full xl:mx-auto">
         <div
           id="tw-scope"
-          className="mx-auto flex dark:bg-[#1a1a1c] -mt-70 pt-68 xl:-mt-37 xl:pt-40 px-6 xl:px-30 justify-center items-center max-h-219 xl:max-h-242 relative overflow-hidden!"
+          className="pic-home-hero mx-auto flex dark:bg-[#1a1a1c] -mt-70 pt-68 xl:-mt-37 xl:pt-40 px-6 xl:px-30 justify-center items-center max-h-219 xl:max-h-242 relative overflow-hidden!"
         >
           <img
-            className="absolute left-[50%] scale-[1.2] min-[1440px]:scale-[1.1] transform translate-x-[-50%] md:w-full 2xl:w-420 -bottom-40 md:bottom-14 2xl:bottom-0"
+            className="pic-home-hero-chain absolute left-[50%] scale-[1.2] min-[1440px]:scale-[1.1] transform translate-x-[-50%] md:w-full 2xl:w-420 -bottom-40 md:bottom-14 2xl:bottom-0"
             src="./img/chain.png"
             alt=""
           />
