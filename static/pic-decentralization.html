@@ -44,21 +44,21 @@
   .topbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
   .back{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;max-width:100%;font-family:var(--mono);font-size:12.5px;color:var(--muted);text-decoration:none;padding:6px 11px;border:1px solid var(--line);border-radius:999px}
   .back:hover{color:var(--accent-2);border-color:var(--accent)}
-  .introHead{display:block}
+  .introHead{display:block;max-width:1180px}
   .introCopy{min-width:0}
   .introMeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 11px}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-2);margin:0}
   .featureTag{font-family:var(--mono);font-size:11px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2);border:1px solid color-mix(in srgb,var(--accent) 48%,var(--line));border-radius:999px;padding:5px 8px;background:color-mix(in srgb,var(--accent) 8%,var(--panel))}
-  .releaseWarn{display:inline-flex;align-items:center;gap:7px;max-width:100%;padding:6px 10px;border:1px solid color-mix(in srgb,var(--amber) 54%,var(--line));border-radius:999px;background:color-mix(in srgb,var(--amber) 10%,var(--panel));color:var(--amber);font-family:var(--mono);font-size:11px;font-weight:650;line-height:1.25;white-space:normal}
+  .releaseWarn{display:inline-flex;align-items:center;gap:7px;max-width:100%;padding:6px 10px;border:1px solid color-mix(in srgb,var(--amber) 54%,var(--line));border-radius:999px;background:color-mix(in srgb,var(--amber) 10%,var(--panel));color:var(--amber);font-family:var(--mono);font-size:11px;font-weight:650;line-height:1.25;white-space:nowrap}
   .releaseWarn::before{content:"!";display:grid;place-items:center;width:16px;height:16px;flex:0 0 auto;border-radius:50%;background:var(--amber);color:var(--bg);font-size:11px}
-  h1{font-family:var(--mono);font-weight:650;font-size:42px;line-height:1.08;letter-spacing:0;margin:0 0 12px;text-wrap:balance;overflow-wrap:anywhere}
-  .lede{color:var(--muted);margin:0 0 22px;font-size:17px;max-width:1180px;overflow-wrap:anywhere}
+  h1{font-family:var(--mono);font-weight:650;font-size:42px;line-height:1.08;letter-spacing:0;margin:0 0 12px;text-wrap:balance;overflow-wrap:break-word}
+  .lede{color:var(--muted);margin:0 0 22px;font-size:17px;max-width:1180px;overflow-wrap:break-word}
   .lede b{color:var(--ink);font-weight:650}
 
   .shell{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
   .shell>*{min-width:0}
   @media (max-width:980px){.shell{grid-template-columns:1fr}.wrap{padding:18px}h1{font-size:34px}.lede{font-size:16px}}
-  @media (max-width:760px){.introMeta{align-items:flex-start}.releaseWarn{width:100%}}
+  @media (max-width:640px){.introMeta{align-items:flex-start}.releaseWarn{width:100%;white-space:normal}}
 
   .sceneBand{position:relative;min-width:0}
   .sceneHead{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:10px}
@@ -72,8 +72,8 @@
     .topbar{gap:7px}
     .back{font-size:12px;padding:6px 9px}
     .wrap{width:100vw;max-width:100vw}
-    .lede{width:100%;max-width:34ch;font-size:15.5px;word-break:normal;overflow-wrap:break-word;hyphens:auto}
-    .sceneHead p{max-width:34ch;word-break:normal;overflow-wrap:break-word}
+    .lede{width:100%;max-width:100%;font-size:15.5px;word-break:normal;overflow-wrap:break-word;hyphens:auto}
+    .sceneHead p{max-width:100%;word-break:normal;overflow-wrap:break-word}
     .statusPill{margin-left:0}
     .scene{min-height:0;overflow:visible}
     canvas{height:430px}
@@ -105,8 +105,8 @@
   .fact{border:1px solid var(--line);border-radius:8px;padding:10px 11px;background:var(--panel2)}
   .fact b{display:block;font-family:var(--mono);font-size:11.5px;margin-bottom:3px}
   .fact span{display:block;color:var(--muted);font-size:12.5px}
-  .log{grid-area:log;height:100%;min-height:178px;overflow:auto;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 11px;font-family:var(--mono);font-size:12px;line-height:1.7}
-  .logTitle{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 7px}
+  .log{grid-area:log;height:100%;min-height:178px;overflow:auto;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:0 11px 10px;font-family:var(--mono);font-size:12px;line-height:1.7}
+  .logTitle{position:sticky;top:0;z-index:1;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 -11px 7px;padding:10px 11px 7px;background:var(--panel2);border-bottom:1px solid var(--line)}
   .line{opacity:0;transform:translateY(3px);transition:opacity .2s,transform .2s;overflow-wrap:anywhere}
   .line.on{opacity:1;transform:none}
   .ok{color:var(--accent-2);font-weight:650}.hot{color:var(--amber);font-weight:650}.cool{color:var(--cyan);font-weight:650}.dim{color:var(--muted)}.strong{color:var(--ink);font-weight:650}
@@ -122,6 +122,13 @@
     .controls{margin-bottom:2px}
     .caption{border-top:1px solid var(--line);padding-top:12px}
     .log{height:220px}
+  }
+  @media (min-width:1180px){
+    .shell{grid-template-columns:minmax(0,1fr) minmax(340px,420px)}
+    .panel{position:sticky;top:16px;grid-template-columns:1fr;grid-template-areas:none;max-height:calc(100vh - 32px);overflow:auto}
+    .controls,.facts,.log,.caption{grid-area:auto}
+    .facts{grid-template-columns:1fr}
+    .log{height:clamp(220px,32vh,360px)}
   }
   @media (max-width:720px){.facts{grid-template-columns:1fr}}
   .foot{margin-top:22px;color:var(--muted);font-size:12.5px}
@@ -152,19 +159,19 @@
     </div>
   </div>
   <p class="lede">Authority starts in a single <b>governance box</b>: a <b>wallet</b> or <b>IdP</b> creates the
-    authority token, and that IdP can itself be <b>PIC-X compliant</b>. PIC-X exchange lives in the same boundary,
+    authority token, and that IdP can itself be <b>PIC&#8209;X compliant</b>. PIC&#8209;X exchange lives in the same boundary,
     then sends a compact checkpoint into a fast <b>subchain</b> across a decentralized constellation:
     three moving swarms of autonomous AI agents. <b>Governance programs policy into the Trust Anchor guardrails</b>
     before the agents move: every handoff crosses a governed policy check, and any bypass is rejected.
     In this example every fourth signed agent hop returns to PIC-X and folds into a compact
-    checkpoint. Governance remains anchored at the IdP source and at PIC-X enforcement.</p>
+    checkpoint. Governance remains anchored at the IdP source and at PIC&#8209;X enforcement.</p>
 
   <div class="shell">
     <main class="sceneBand">
       <div class="sceneHead">
         <div>
           <h2 id="phaseTitle">Ready: governance before agents</h2>
-          <p id="phaseText">Run the loop to watch PIC-X deploy policy guardrails first, then let compliant AI-agent swarms move under Governance.</p>
+          <p id="phaseText">Run the sequence to watch PIC&#8209;X deploy policy guardrails first, then let compliant AI-agent swarms move under Governance.</p>
         </div>
         <div class="statusPill" id="statusPill">governance ready</div>
       </div>
@@ -193,12 +200,12 @@
 
     <aside class="panel">
       <div class="controls">
-        <button class="btn" id="runBtn">Run the loop</button>
-        <button class="btn ghost" id="resetBtn" disabled>Stop</button>
+        <button class="btn" id="runBtn">Run sequence</button>
+        <button class="btn ghost" id="resetBtn" disabled>Reset</button>
       </div>
       <div class="facts">
-        <div class="fact"><b>Governance box</b><span>Wallet or PIC-X-compliant IdP authority and PIC-X exchange stay in one boundary and program the policies.</span></div>
-        <div class="fact"><b>Governance anchors</b><span>Control remains at the IdP source and PIC-X enforcement; agents only move inside governed limits.</span></div>
+        <div class="fact"><b>Governance box</b><span>Wallet or PIC&#8209;X-compliant IdP authority and PIC&#8209;X exchange stay in one boundary and program the policies.</span></div>
+        <div class="fact"><b>Governance anchors</b><span>Control remains at the IdP source and PIC&#8209;X enforcement; agents only move inside governed limits.</span></div>
         <div class="fact"><b>Trust Anchors</b><span>They are policy-executing guardrails between agents. A bypass turns red and is rejected.</span></div>
         <div class="fact"><b>Revocation</b><span>The wallet or IdP can revoke at PIC-X; PIC-X can also revoke by local policy.</span></div>
       </div>
@@ -208,7 +215,7 @@
       </div>
       <div class="caption">
         <h3>What the moving token means</h3>
-        <p>The bright carrier starts inside governance, where IdP authority and PIC-X exchange are already bound
+        <p>The bright carrier starts inside governance, where IdP authority and PIC&#8209;X exchange are already bound
           together. The checkpoint then jumps into a moving swarm of autonomous AI agents; each signed hop adds a
           local transition only after crossing a governance-controlled Trust Anchor policy check. The amber policy rails
           show Governance programming the guardrails that execute those policies. The links return and fold back into one
@@ -260,6 +267,7 @@ const sizeValue = document.getElementById("sizeValue");
 const sizeFill = document.getElementById("sizeFill");
 const MAX_HOPS = 4;
 const SEGMENTS = 3;
+const MAX_ROUNDS = 4;
 const FLOW = {
   policyDeploy: 2200,
   prepare: 650,
@@ -345,7 +353,7 @@ function sleep(ms){
   const mine = token;
   return new Promise((res,rej)=>setTimeout(()=>mine===token ? res() : rej("cancelled"), PRM ? 0 : ms));
 }
-function cancel(){ token++; running=false; runBtn.disabled=false; resetBtn.disabled=true; }
+function cancel(){ token++; running=false; runBtn.disabled=false; runBtn.textContent="Run sequence"; resetBtn.disabled=true; }
 function resize(){
   dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
   const box = canvas.getBoundingClientRect();
@@ -413,9 +421,11 @@ function updateHud(){
     ? "deploying policies"
     : state.phase === "guardrail"
     ? "policy rejects"
+    : state.phase === "complete"
+    ? "sequence complete"
     : "policy rails · g"+Math.max(1,state.segment)+" · "+state.hop+"/"+MAX_HOPS;
   picxValue.textContent = state.phase === "source" ? "awaiting PCA0" : "checkpoint "+pcaLabel(state.checkpoint);
-  picxFill.style.width = state.phase === "source" ? "0%" : Math.min(100,((state.checkpoint+1)/(SEGMENTS+1))*100)+"%";
+  picxFill.style.width = state.phase === "source" ? "0%" : Math.min(100,((state.checkpoint+1)/(MAX_ROUNDS+1))*100)+"%";
   sizeValue.textContent = state.carried === 1 ? "1 compact checkpoint" : state.carried+" chain links";
   sizeFill.style.width = state.carried === 1 ? "18%" : Math.min(100,state.carried/MAX_HOPS*100)+"%";
   document.getElementById("hopMeter").classList.toggle("warn", state.hop >= MAX_HOPS-1 && state.phase !== "compacted");
@@ -454,7 +464,7 @@ function resetState(){
   state.rogueTo=null;
   state.rogueT=0;
   logBody.innerHTML="";
-  setPhase("Ready: governance before agents","Run the loop to watch PIC-X deploy policy guardrails first, then let compliant AI-agent groups move under Governance.");
+  setPhase("Ready: governance before agents","Run the sequence to watch PIC-X deploy policy guardrails first, then let four compliant AI-agent groups move under Governance.");
   updateHud();
 }
 resetState();
@@ -1216,6 +1226,7 @@ async function run(){
   const mine = ++token;
   running = true;
   runBtn.disabled = true;
+  runBtn.textContent = "Running";
   resetBtn.disabled = false;
   let pcaIndex = 0;
   try{
@@ -1239,7 +1250,7 @@ async function run(){
     log('<span class="ok">PCA0 issued.</span> PIC-X does not invent authority; governance exchanges the source token and programs policy into the Trust Anchors.');
     await sleep(FLOW.groupGap);
 
-    while(mine === token){
+    while(mine === token && pcaIndex < MAX_ROUNDS){
       const segment = pcaIndex % SEGMENTS + 1;
       const path = segmentPaths[segment-1];
       const base = pcaLabel(pcaIndex);
@@ -1312,16 +1323,35 @@ async function run(){
       state.to = "gov";
       state.travel = 1;
       updateHud();
-      log('<span class="ok">'+nextPca+' issued.</span> The chain keeps growing until Stop.');
-      setPhase("Chain keeps growing",nextPca+" is compact again. The next subchain starts from this checkpoint; Stop resets the demo.");
-      await sleep(FLOW.loopPause);
+      const hasMoreRounds = pcaIndex < MAX_ROUNDS;
+      log('<span class="ok">'+nextPca+' issued.</span> '+(hasMoreRounds ? "The next governed subchain starts from this checkpoint." : "The finite four-round sequence stops here."));
+      if(hasMoreRounds){
+        setPhase("Next subchain prepared",nextPca+" is compact again. The next AI-agent group starts from this checkpoint.");
+        await sleep(FLOW.loopPause);
+      }
+    }
+    if(mine === token){
+      state.phase = "complete";
+      state.segment = 0;
+      state.hop = 0;
+      state.carried = 1;
+      state.trail = [];
+      state.tokenLabel = pcaLabel(pcaIndex);
+      state.from = "gov";
+      state.to = "gov";
+      state.travel = 1;
+      state.compress = 1;
+      setPhase("Sequence complete: "+pcaLabel(pcaIndex)+" settled","The demo stops after four governed subchain groups. Run again to replay the same bounded sequence.");
+      updateHud();
+      log('<span class="strong">sequence complete.</span> Four subchain groups returned to PIC-X and folded into <span class="strong">'+pcaLabel(pcaIndex)+'</span>.');
     }
   }catch(_err){
   }finally{
     if(mine === token){
       running = false;
       runBtn.disabled = false;
-      resetBtn.disabled = true;
+      runBtn.textContent = "Run again";
+      resetBtn.disabled = false;
     }
   }
 }
